@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.vue';
+import Footer from '../../components/Footer.vue';
+
+// Get all publication markdown files
+const publicationModules = import.meta.glob('./*.md', { eager: true });
+
+// Convert to array format
+const publications = Object.entries(publicationModules).map(([filepath, module]) => ({
+  frontmatter: module.frontmatter,
+  url: filepath.replace('./', '/publications/').replace('.md', ''),
+  file: filepath,
+  Content: module.Content
+}));
+
+// Sort publications by year (descending) and then by title
+const sortedPublications = publications.sort((a, b) => {
+  if (b.frontmatter.year !== a.frontmatter.year) {
+    return b.frontmatter.year - a.frontmatter.year;
+  }
+  return a.frontmatter.title.localeCompare(b.frontmatter.title);
+});
+
+// Group publications by year
+const publicationsByYear = sortedPublications.reduce((acc, pub) => {
+  const year = pub.frontmatter.year;
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(pub);
+  return acc;
+}, {});
+
+// Get featured publications
+const featuredPublications = publications.filter(pub => pub.frontmatter.featured);
+
+// Calculate statistics
+const totalPublications = publications.length;
+const totalCitations = publications.reduce((sum, pub) => sum + (pub.frontmatter.citations || 0), 0);
+const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).length;
+---
+
+<Layout title="Publications">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;600&display=swap');
+  </style>
+  <Navigation client:load />
+  
+  <main class="pt-20">
+    <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <div class="container-custom">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 heading-hero">Research Publications</h1>
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto text-body">
+          Our contributions to marine remote sensing science
+        </p>
+        
+        <!-- Publication Statistics -->
+        <div class="grid grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-blue-600">{totalPublications}</div>
+            <div class="text-sm text-gray-600">Publications</div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-green-600">{totalCitations}</div>
+            <div class="text-sm text-gray-600">Citations</div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-purple-600">{openAccessCount}</div>
+            <div class="text-sm text-gray-600">Open Access</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-custom py-12">
+      <!-- Featured Publications -->
+      {featuredPublications.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center heading-section">Featured Publications</h2>
+          <div class="space-y-6 max-w-5xl mx-auto">
+            {featuredPublications.map((pub) => (
+              <div class="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-l-4 border-blue-600">
+                <div class="flex items-start justify-between mb-2">
+                  <span class="text-sm font-semibold text-blue-600 heading-small">Featured</span>
+                  <span class="text-sm text-gray-500">{pub.frontmatter.year}</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2 heading-card">
+                  <a href={pub.url} class="hover:text-blue-600 transition-colors">
+                    {pub.frontmatter.title}
+                  </a>
+                </h3>
+                <p class="text-gray-700 mb-3 text-body">
+                  {pub.frontmatter.authors}
+                </p>
+                <p class="text-gray-600 text-sm mb-2 text-body">
+                  <em>{pub.frontmatter.journal}</em>
+                  {pub.frontmatter.volume && `, ${pub.frontmatter.volume}`}
+                  {pub.frontmatter.issue && `(${pub.frontmatter.issue})`}
+                  {pub.frontmatter.pages && `, ${pub.frontmatter.pages}`}
+                </p>
+                {pub.frontmatter.abstract && (
+                  <p class="text-gray-600 text-sm mb-4 text-body">
+                    {pub.frontmatter.abstract}
+                  </p>
+                )}
+                <div class="flex flex-wrap gap-3">
+                  {pub.frontmatter.pdf && (
+                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                      PDF
+                    </a>
+                  )}
+                  {pub.frontmatter.doi && (
+                    <a href={`https://doi.org/${pub.frontmatter.doi}`} target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      DOI: {pub.frontmatter.doi}
+                    </a>
+                  )}
+                  {pub.frontmatter.openAccess && (
+                    <span class="text-green-600 text-sm font-medium">Open Access</span>
+                  )}
+                  {pub.frontmatter.citations > 0 && (
+                    <span class="text-gray-500 text-sm">
+                      Cited by {pub.frontmatter.citations}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Publications by Year -->
+      {Object.keys(publicationsByYear).sort((a, b) => b - a).map((year) => (
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 heading-subsection">{year}</h2>
+          
+          <div class="space-y-6 max-w-5xl mx-auto">
+            {publicationsByYear[year].map((pub) => (
+              <article class="border-l-2 border-gray-200 pl-6 hover:border-blue-400 transition-colors">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 heading-card">
+                  <a href={pub.url} class="hover:text-blue-600 transition-colors">
+                    {pub.frontmatter.title}
+                  </a>
+                </h3>
+                <p class="text-gray-700 mb-2 text-body">
+                  {pub.frontmatter.authors}
+                </p>
+                <p class="text-gray-600 text-sm mb-3 italic text-body">
+                  {pub.frontmatter.journal}
+                  {pub.frontmatter.volume && `, ${pub.frontmatter.volume}`}
+                  {pub.frontmatter.issue && `(${pub.frontmatter.issue})`}
+                  {pub.frontmatter.pages && `, ${pub.frontmatter.pages}`}
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                  {pub.frontmatter.pdf && (
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                      PDF
+                    </a>
+                  )}
+                  {pub.frontmatter.doi && (
+                    <a href={`https://doi.org/${pub.frontmatter.doi}`} target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                      DOI
+                    </a>
+                  )}
+                  {pub.frontmatter.openAccess && (
+                    <span class="text-green-600 font-medium">Open Access</span>
+                  )}
+                  {pub.frontmatter.citations > 0 && (
+                    <span class="text-gray-500">
+                      Cited by {pub.frontmatter.citations}
+                    </span>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  article {
+    transition: all 0.3s ease;
+  }
+  
+  article:hover {
+    padding-left: 1.75rem;
+  }
+</style>

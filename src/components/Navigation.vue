@@ -15,21 +15,9 @@
         <div class="hidden md:flex items-center space-x-8">
           <a href="/" class="nav-link">Home</a>
           <a href="/#research" class="nav-link">Research</a>
+          <a href="/#projects" class="nav-link">Projects</a>
+          <a href="/#publications" class="nav-link">Publications</a>
           <a href="/team" class="nav-link">Team</a>
-          <div class="relative group">
-            <button class="nav-link flex items-center">
-              About
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-              <a href="/about/mission" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mission</a>
-              <a href="/facilities" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Facilities</a>
-            </div>
-          </div>
-          <a href="/resources/data-portal" class="nav-link">Data Portal</a>
-          <a href="/news/latest-research" class="nav-link">News</a>
           <a href="/#contact" class="nav-link">Contact</a>
         </div>
         
@@ -45,16 +33,9 @@
         <div class="flex flex-col space-y-4">
           <a href="/" @click="closeMobileMenu" class="nav-link-mobile">Home</a>
           <a href="/#research" @click="closeMobileMenu" class="nav-link-mobile">Research</a>
+          <a href="/#projects" @click="closeMobileMenu" class="nav-link-mobile">Projects</a>
+          <a href="/#publications" @click="closeMobileMenu" class="nav-link-mobile">Publications</a>
           <a href="/team" @click="closeMobileMenu" class="nav-link-mobile">Team</a>
-          <div class="px-2">
-            <div class="font-medium text-gray-700 mb-2">About</div>
-            <div class="pl-4 space-y-2">
-              <a href="/about/mission" @click="closeMobileMenu" class="block text-gray-600">Mission</a>
-              <a href="/facilities" @click="closeMobileMenu" class="block text-gray-600">Facilities</a>
-            </div>
-          </div>
-          <a href="/resources/data-portal" @click="closeMobileMenu" class="nav-link-mobile">Data Portal</a>
-          <a href="/news/latest-research" @click="closeMobileMenu" class="nav-link-mobile">News</a>
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
         </div>
       </div>
