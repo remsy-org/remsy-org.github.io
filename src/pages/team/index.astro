@@ -1,0 +1,253 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.vue';
+import Footer from '../../components/Footer.vue';
+
+// Get all team member markdown files using import.meta.glob
+const teamMemberModules = import.meta.glob('./*.md', { eager: true });
+const alumniModules = import.meta.glob('./alumni/*.md', { eager: true });
+
+// Convert to array format similar to Astro.glob
+const teamMembers = Object.entries(teamMemberModules).map(([filepath, module]) => ({
+  frontmatter: module.frontmatter,
+  url: filepath.replace('./', '/team/').replace('.md', ''),
+  file: filepath,
+  Content: module.Content
+}));
+
+const alumni = Object.entries(alumniModules).map(([filepath, module]) => ({
+  frontmatter: module.frontmatter,
+  url: filepath.replace('./', '/team/').replace('.md', ''),
+  file: filepath,
+  Content: module.Content
+}));
+
+// Filter and categorize team members based on frontmatter
+const principals = teamMembers.filter(member => 
+  member.frontmatter.role === 'principal-investigator' || 
+  member.frontmatter.role === 'professor'
+).sort((a, b) => (a.frontmatter.order || 999) - (b.frontmatter.order || 999));
+
+const researchers = teamMembers.filter(member => 
+  member.frontmatter.role === 'research-scientist' || 
+  member.frontmatter.role === 'postdoc'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const phdStudents = teamMembers.filter(member => 
+  member.frontmatter.role === 'phd-student'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const mscStudents = teamMembers.filter(member => 
+  member.frontmatter.role === 'msc-student'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const undergrads = teamMembers.filter(member => 
+  member.frontmatter.role === 'undergraduate'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const staff = teamMembers.filter(member => 
+  member.frontmatter.role === 'staff'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+---
+
+<Layout title="Our Team">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+  </style>
+  <Navigation client:load />
+  
+  <main class="pt-20">
+    <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <div class="container-custom">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: 'Orbitron', monospace; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Our Research Team</h1>
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+          A diverse group of scientists and students advancing marine remote sensing
+        </p>
+        
+        <!-- Team Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-blue-600">{principals.length}</div>
+            <div class="text-sm text-gray-600">Faculty</div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-green-600">{researchers.length}</div>
+            <div class="text-sm text-gray-600">Researchers</div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-purple-600">{phdStudents.length}</div>
+            <div class="text-sm text-gray-600">PhD Students</div>
+          </div>
+          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+            <div class="text-3xl font-bold text-orange-600">{mscStudents.length}</div>
+            <div class="text-sm text-gray-600">M.Sc. Students</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-custom py-12">
+      <!-- Principal Investigators -->
+      {principals.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center" style="font-family: 'Orbitron', monospace; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">Leadership</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {principals.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6" style="border-top: 3px solid #0066cc;">
+                  <div class="flex items-start space-x-4">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-24 h-24 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.5px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-blue-600 text-sm font-medium">{member.frontmatter.position}</p>
+                      <p class="text-gray-600 text-sm mt-2">{member.frontmatter.research}</p>
+                      {member.frontmatter.email && (
+                        <p class="text-gray-500 text-sm mt-2">📧 {member.frontmatter.email}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Research Scientists -->
+      {researchers.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center" style="font-family: 'Orbitron', monospace; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">Research Scientists</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {researchers.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6" style="border-top: 2px solid #00d4aa;">
+                  <div class="flex items-center space-x-4">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-20 h-20 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-lg font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.5px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-green-600 text-sm">{member.frontmatter.position}</p>
+                      <p class="text-gray-600 text-xs mt-1">{member.frontmatter.research}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- PhD Students -->
+      {phdStudents.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center" style="font-family: 'Orbitron', monospace; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">PhD Students</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {phdStudents.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-left: 3px solid #6366f1;">
+                  <div class="flex items-center space-x-3">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-16 h-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-purple-600 text-sm">{member.frontmatter.research}</p>
+                      {member.frontmatter.advisor && (
+                        <p class="text-gray-500 text-xs mt-1">Advisor: {member.frontmatter.advisor}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- M.Sc. Students -->
+      {mscStudents.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center" style="font-family: 'Orbitron', monospace; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">M.Sc. Students</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mscStudents.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-left: 3px solid #10b981;">
+                  <div class="flex items-center space-x-3">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-16 h-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-green-600 text-sm">{member.frontmatter.research}</p>
+                      {member.frontmatter.advisor && (
+                        <p class="text-gray-500 text-xs mt-1">Advisor: {member.frontmatter.advisor}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Alumni Link -->
+      {alumni.length > 0 && (
+        <section class="text-center py-12">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4" style="font-family: 'Orbitron', monospace; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Alumni Network</h2>
+            <p class="text-xl mb-6">200+ graduates working worldwide in academia, government, and industry</p>
+            <a href="/team/alumni" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+              View Alumni Directory →
+            </a>
+          </div>
+        </section>
+      )}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>

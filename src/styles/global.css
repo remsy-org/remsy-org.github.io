@@ -1,0 +1,201 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  --color-primary: #0066cc;
+  --color-secondary: #00a8e8;
+  --color-accent: #00d4aa;
+  --color-dark: #0a1628;
+  --color-light: #f7f9fb;
+  --font-heading: 'Orbitron', monospace;
+  --font-body: 'Roboto', sans-serif;
+}
+
+/* Global Typography - High specificity to prevent overrides */
+html body {
+  font-family: var(--font-body) !important;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  font-family: var(--font-heading) !important;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+body h1 {
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+body h2 {
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+body h3 {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+body h4, body h5, body h6 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+body p, body li, body span, body a {
+  font-family: var(--font-body) !important;
+}
+
+/* Typography Classes */
+
+/* Heading styles with Orbitron */
+.heading-hero {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.heading-section {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.heading-subsection {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.heading-card {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.heading-small {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Body text styles with Roboto */
+.text-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-body-light {
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.text-subtitle {
+  font-family: var(--font-body);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.text-description {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+.text-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* Navigation specific */
+.nav-brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-link-styled {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.container-custom {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.btn-primary {
+  background-color: rgb(37 99 235);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: rgb(29 78 216);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: rgb(37 99 235);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  border: 2px solid rgb(37 99 235);
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: rgb(37 99 235);
+  color: white;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.topographic-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 80%, transparent 50%, rgba(0, 102, 204, 0.05) 50.5%, rgba(0, 102, 204, 0.05) 60%, transparent 60.5%),
+    radial-gradient(circle at 80% 20%, transparent 40%, rgba(0, 168, 232, 0.05) 40.5%, rgba(0, 168, 232, 0.05) 50%, transparent 50.5%),
+    radial-gradient(circle at 40% 40%, transparent 65%, rgba(0, 212, 170, 0.05) 65.5%, rgba(0, 212, 170, 0.05) 70%, transparent 70.5%);
+}
