@@ -16,7 +16,7 @@ image: /images/team/shai-efrati.jpg
 
 ## Education
 
-- **M.S. in Marine Science** (2013)  
+- **M.Sc. in Marine GeoSciences** (2013)  
   Dr. Moses Strauss Department of Marine Geosciences - University of Haifa
   Thesis: "Intrusion of coastal waters into the pelagic Eastern Mediterranean: In situ and satellite-based characterization"
 

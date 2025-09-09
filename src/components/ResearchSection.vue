@@ -132,7 +132,7 @@ const researchAreas = [
     icon: DatabaseIcon,
     topics: [
       "Automatization of the ocean data integration process",
-      "Identification of emerging patterns in multidisciplinary oceanic datasets]",
+      "Identification of emerging patterns in multidisciplinary oceanic datasets",
     ]
   },
   {
