@@ -6,10 +6,10 @@ description: Professor & Lab Director - Marine Remote Sensing Laboratory
 role: principal-investigator
 order: 1
 research: Satellite oceanography, bio-optical algorithms, climate-ocean interactions
-email: sarah.mitchell@university.edu
+email: ylehahn@univ.haifa.ac.il
 photo: /images/team/yoav-lehahn.jpg
 author: Marine Remote Sensing Lab
-date: 2024-01-10
+date: 2025-09-10
 tags: [faculty, principal-investigator, oceanography]
 image: /images/team/yoav-lehahn.jpg
 ---

@@ -118,6 +118,11 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
                       DOI: {pub.frontmatter.doi}
                     </a>
                   )}
+                  {pub.frontmatter.url && (
+                    <a href={pub.frontmatter.url} target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      URL: {pub.frontmatter.url}
+                    </a>
+                  )}
                   {pub.frontmatter.openAccess && (
                     <span class="text-green-600 text-sm font-medium">Open Access</span>
                   )}
@@ -167,6 +172,11 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
                   {pub.frontmatter.doi && (
                     <a href={`https://doi.org/${pub.frontmatter.doi}`} target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
                       DOI
+                    </a>
+                  )}
+                  {pub.frontmatter.url && (
+                    <a href={pub.frontmatter.url} target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                      URL: {pub.frontmatter.url}
                     </a>
                   )}
                   {pub.frontmatter.openAccess && (

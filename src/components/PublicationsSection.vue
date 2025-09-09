@@ -23,20 +23,6 @@
           </a>
         </div>
         
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div class="p-6 bg-gray-50 rounded-lg">
-            <div class="text-3xl font-bold text-blue-600 mb-2">50+</div>
-            <div class="text-gray-600 text-body">Publications</div>
-          </div>
-          <div class="p-6 bg-gray-50 rounded-lg">
-            <div class="text-3xl font-bold text-green-600 mb-2">500+</div>
-            <div class="text-gray-600 text-body">Citations</div>
-          </div>
-          <div class="p-6 bg-gray-50 rounded-lg">
-            <div class="text-3xl font-bold text-purple-600 mb-2">Open</div>
-            <div class="text-gray-600 text-body">Access Research</div>
-          </div>
-        </div>
       </div>
     </div>
   </section>

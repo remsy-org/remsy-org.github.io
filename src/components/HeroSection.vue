@@ -7,11 +7,6 @@
     </div>
     
     <div class="container-custom relative z-10 text-center text-white py-20">
-      <div class="flex justify-center items-center">
-        <div class="flex items-center">
-          <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-lg h-lg">
-        </div>
-      </div>
       <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in heading-hero">
         Remote Sensing of Marine Systems
         <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">Yoav Lehahn's group</span>

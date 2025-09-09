@@ -25,8 +25,15 @@ const alumni = Object.entries(alumniModules).map(([filepath, module]) => ({
 // Filter and categorize team members based on frontmatter
 const principals = teamMembers.filter(member => 
   member.frontmatter.role === 'principal-investigator' || 
-  member.frontmatter.role === 'professor'
+  member.frontmatter.role === 'professor' ||
+  member.frontmatter.role === 'lab-manager' || 
+  member.frontmatter.role === 'admin'
 ).sort((a, b) => (a.frontmatter.order || 999) - (b.frontmatter.order || 999));
+
+const admin = teamMembers.filter(member => 
+  member.frontmatter.role === 'lab-manager' || 
+  member.frontmatter.role === 'admin'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
 
 const researchers = teamMembers.filter(member => 
   member.frontmatter.role === 'research-scientist' || 
@@ -77,7 +84,7 @@ const staff = teamMembers.filter(member =>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {principals.map((member) => (
               <a href={member.url} class="block group">
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6" style="border-top: 3px solid #0066cc;">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-top: 3px solid #6366f1;">
                   <div class="flex items-start space-x-4">
                     {member.frontmatter.photo ? (
                       <img 
@@ -111,27 +118,27 @@ const staff = teamMembers.filter(member =>
       <!-- Students -->
       {students.length > 0 && (
         <section class="mb-16">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {students.map((member) => (
               <a href={member.url} class="block group">
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-left: 3px solid #6366f1;">
-                  <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-top: 3px solid #6366f1;">
+                  <div class="flex items-center space-x-4">
                     {member.frontmatter.photo ? (
                       <img 
                         src={member.frontmatter.photo} 
                         alt={member.frontmatter.title}
-                        class="w-16 h-16 rounded-full object-cover"
+                        class="w-24 h-24 rounded-full object-cover"
                       />
                     ) : (
-                      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
+                      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
                         {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
                       </div>
                     )}
                     <div class="flex-1">
-                      <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
                         {member.frontmatter.title}
                       </h3>
-                      <p class="text-purple-600 text-sm">{member.frontmatter.research}</p>
+                      <p class="text-purple-600 text-sm font-medium">{member.frontmatter.research}</p>
                       {member.frontmatter.advisor && (
                         <p class="text-gray-500 text-xs mt-1">Advisor: {member.frontmatter.advisor}</p>
                       )}

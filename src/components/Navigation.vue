@@ -6,7 +6,7 @@
           <a href="/" class="flex items-center space-x-3">
             <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-10 h-10">
             <div>
-              <h1 class="text-xl font-bold text-gray-900 nav-brand">Marine Sensing Lab</h1>
+              <h1 class="text-xl font-bold text-gray-900 nav-brand">Remote Sensing of Marine Systems</h1>
               <p class="text-xs text-gray-600 nav-brand" style="font-weight: 400; text-transform: uppercase;">Remote Sensing Research</p>
             </div>
           </a>

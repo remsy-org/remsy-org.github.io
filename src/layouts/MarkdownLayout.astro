@@ -40,6 +40,26 @@ const formattedDate = frontmatter.date ? new Date(frontmatter.date).toLocaleDate
           {frontmatter.description && (
             <p class="text-xl text-gray-600 mb-4">{frontmatter.description}</p>
           )}
+          {frontmatter.advisor && (
+            <p>
+              <span class="text-xl text-black-600 mb-4">Advisor: </span>
+              <span class="text-xl text-gray-600 mb-4">{frontmatter.advisor}</span>
+            </p>
+          )}
+
+          {frontmatter.email && (
+            <p>
+              <span class="text-xl text-black-600 mb-4">Email: </span>
+              <span class="text-xl text-gray-600 mb-4">{frontmatter.email}</span>
+            </p>
+          )}
+
+          {frontmatter.office && (
+            <p>
+              <span class="text-xl text-black-600 mb-4">Office: </span>
+              <span class="text-xl text-gray-600 mb-4">{frontmatter.office}</span>
+            </p>
+          )}
           
           <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
             {frontmatter.author && (
