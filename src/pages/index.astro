@@ -8,6 +8,27 @@ import PublicationsSection from '../components/PublicationsSection.vue';
 import ProjectsSection from '../components/ProjectsSection.vue';
 import ContactSection from '../components/ContactSection.vue';
 import Footer from '../components/Footer.vue';
+
+// Get featured publications from MD files
+const publicationFiles = import.meta.glob('../pages/publications/*.md', { eager: true });
+const featuredPublications = Object.values(publicationFiles)
+  .filter(file => file.frontmatter?.featured === true)
+  .map(file => ({
+    title: file.frontmatter.title,
+    authors: file.frontmatter.authors,
+    journal: file.frontmatter.journal,
+    volume: file.frontmatter.volume,
+    pages: file.frontmatter.pages,
+    year: file.frontmatter.year,
+    doi: file.frontmatter.doi,
+    url: file.frontmatter.url,
+    pdf: file.frontmatter.pdf,
+    openAccess: file.frontmatter.openAccess,
+    abstract: file.frontmatter.abstract,
+    keywords: file.frontmatter.keywords,
+    featured: file.frontmatter.featured
+  }))
+  .sort((a, b) => b.year - a.year);
 ---
 
 <Layout title="Marine Remote Sensing Lab">
@@ -15,7 +36,7 @@ import Footer from '../components/Footer.vue';
   <main>
     <HeroSection client:visible />
     <ResearchSection client:visible />
-    <PublicationsSection client:visible />
+    <PublicationsSection client:visible featuredPublications={featuredPublications} />
     <ContactSection client:visible />
   </main>
   <Footer />

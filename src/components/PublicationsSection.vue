@@ -8,13 +8,17 @@
         </p>
       </div>
       
-      <div class="max-w-4xl mx-auto">
-        <p class="text-center text-gray-600 mb-8 text-body">
+      <div class="max-w-5xl mx-auto">
+        <!-- Featured Publications -->
+        <FeaturedPublications v-if="featuredPublications.length > 0" :featuredPublications="featuredPublications" />
+        
+        <!-- Fallback if no featured publications -->
+        <p v-else class="text-center text-gray-600 mb-8 text-body">
           View our recent publications and research outputs
         </p>
         
         <!-- View All Publications Link -->
-        <div class="text-center">
+        <div class="text-center mt-12">
           <a href="/publications" class="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors heading-small text-lg">
             View All Publications
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,8 +33,31 @@
 </template>
 
 <script setup lang="ts">
-// Publications are now managed through markdown files in /src/pages/publications/
-// This component serves as a simple gateway to the full publications page
+import FeaturedPublications from './FeaturedPublications.vue';
+
+interface Publication {
+  title: string;
+  authors: string;
+  journal: string;
+  volume?: string;
+  pages?: string;
+  year: number;
+  doi?: string;
+  url?: string;
+  pdf?: boolean;
+  openAccess?: boolean;
+  abstract?: string;
+  keywords?: string[];
+  featured?: boolean;
+}
+
+// Accept publications as a prop from the parent Astro component
+const props = defineProps<{
+  featuredPublications?: Publication[]
+}>();
+
+// Use default empty array if not provided
+const featuredPublications = props.featuredPublications || [];
 </script>
 
 <style scoped>
