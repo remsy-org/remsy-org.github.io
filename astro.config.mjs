@@ -12,6 +12,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()]
-  }
-  base: '/remsy-org.github.io/', // Replace with your repository name
+  },
+  base: 'https://github.com/remsy-org/remsy-org.github.io/', // Replace with your repository name
 });
