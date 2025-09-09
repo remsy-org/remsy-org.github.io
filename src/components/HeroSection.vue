@@ -7,23 +7,19 @@
     </div>
     
     <div class="container-custom relative z-10 text-center text-white py-20">
+      <div class="flex justify-center items-center">
+        <div class="flex items-center">
+          <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-lg h-lg">
+        </div>
+      </div>
       <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in heading-hero">
-        Illuminating Ocean Dynamics
-        <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">Through Remote Sensing</span>
+        Remote Sensing of Marine Systems
+        <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">Yoav Lehahn's group</span>
       </h1>
       
       <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto opacity-90 animate-slide-up text-subtitle">
-        Advancing marine science through cutting-edge satellite technology and data analysis to understand and protect our oceans
+        A bird's eye view on processes and patterns in the marine environment
       </p>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up-delay">
-        <a href="#research" class="btn-primary bg-white text-blue-900 hover:bg-gray-100">
-          Explore Our Research
-        </a>
-        <a href="#team" class="btn-secondary border-white text-white hover:bg-white hover:text-blue-900">
-          Meet Our Team
-        </a>
-      </div>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-left">
         <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
@@ -47,6 +43,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
           <h3 class="text-xl font-semibold mb-2 heading-card">Climate Impact</h3>
+          <img src='https://upload.wikimedia.org/wikipedia/commons/4/44/Ocean_Beach.jpg'/>
           <p class="text-sm opacity-80 text-body">Understanding ocean-atmosphere interactions and climate change effects</p>
         </div>
       </div>

@@ -7,11 +7,11 @@ role: principal-investigator
 order: 2
 research: Ocean color remote sensing, machine learning, coastal dynamics
 email: james.chen@university.edu
-photo: /images/team/james-chen.jpg
+photo: https://placehold.co/400x400/blue/white?text=Dr.+James+Chen&font=roboto
 author: Marine Remote Sensing Lab
 date: 2024-01-10
 tags: [faculty, principal-investigator, machine-learning]
-image: https://via.placeholder.com/800x400/00a8e8/ffffff?text=Dr.+James+Chen
+image: https://placehold.co/800x200/orange/white?text=Dr.+James+Chen&font=roboto
 ---
 
 # Dr. James Chen

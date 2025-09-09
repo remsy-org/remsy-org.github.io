@@ -1,11 +1,17 @@
 ---
 layout: ../../layouts/MarkdownLayout.astro
-title: Professor Yoav Lehahn
+title: Prof. Yoav Lehahn
+position: Professor & Lab Director
 description: Professor & Lab Director - Marine Remote Sensing Laboratory
+role: principal-investigator
+order: 1
+research: Satellite oceanography, bio-optical algorithms, climate-ocean interactions
+email: sarah.mitchell@university.edu
+photo: /images/team/yoav-lehahn.jpg
 author: Marine Remote Sensing Lab
 date: 2024-01-10
 tags: [faculty, principal-investigator, oceanography]
-image: https://via.placeholder.com/800x400/0066cc/ffffff?text=Dr.+Sarah+Mitchell
+image: /images/team/yoav-lehahn.jpg
 ---
 
 # Professor Yoav Lehahn

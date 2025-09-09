@@ -7,11 +7,12 @@ role: principal-investigator
 order: 1
 research: Satellite oceanography, bio-optical algorithms, climate-ocean interactions
 email: sarah.mitchell@university.edu
-photo: /images/team/sarah-mitchell.jpg
+photo: https://placehold.co/400x400/blue/white?text=Dr.+Sarah+Mitchell&font=roboto
 author: Marine Remote Sensing Lab
 date: 2024-01-10
 tags: [faculty, principal-investigator, oceanography]
-image: https://via.placeholder.com/800x400/0066cc/ffffff?text=Dr.+Sarah+Mitchell
+image: https://placehold.co/800x200/orange/white?text=Dr.+Sarah+Mitchell&font=roboto
+
 ---
 
 # Dr. Sarah Mitchell
