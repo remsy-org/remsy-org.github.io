@@ -8,38 +8,17 @@
     
     <div class="container-custom relative z-10 text-center text-white py-20">
       <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in heading-hero">
-        Remote Sensing of Marine Systems
-        <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">Yoav Lehahn's group</span>
+        {{ heroData?.title || 'Remote Sensing of Marine Systems' }}
+        <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">{{ heroData?.subtitle || "Yoav Lehahn's group" }}</span>
       </h1>
       
       <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto opacity-90 animate-slide-up text-subtitle">
-        A bird's eye view on processes and patterns in the marine environment
+        {{ heroData?.tagline || "A bird's eye view on processes and patterns in the marine environment" }}
       </p>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-left">
-        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-          <svg class="w-12 h-12 mb-4 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-          <h3 class="text-xl font-semibold mb-2 heading-card">Satellite Monitoring</h3>
-          <p class="text-sm opacity-80 text-body">Real-time ocean observation using advanced satellite imagery and sensors</p>
-        </div>
-        
-        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-          <svg class="w-12 h-12 mb-4 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-          </svg>
-          <h3 class="text-xl font-semibold mb-2 heading-card">Data Analytics</h3>
-          <p class="text-sm opacity-80 text-body">Machine learning and AI for ocean pattern recognition and prediction</p>
-        </div>
-        
-        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-          <svg class="w-12 h-12 mb-4 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <h3 class="text-xl font-semibold mb-2 heading-card">Climate Impact</h3>
-          <img src='https://upload.wikimedia.org/wikipedia/commons/4/44/Ocean_Beach.jpg'/>
-          <p class="text-sm opacity-80 text-body">Understanding ocean-atmosphere interactions and climate change effects</p>
+      <div v-if="heroData?.features" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-left">
+        <div v-for="feature in heroData.features" :key="feature.title">
+          <img :src=feature.image />
         </div>
       </div>
     </div>
@@ -53,6 +32,86 @@
 </template>
 
 <script setup lang="ts">
+import { h } from 'vue';
+
+interface HeroData {
+  title: string;
+  subtitle: string;
+  tagline: string;
+  features?: Array<{
+    icon: string;
+    title: string;
+    description: string;
+  }>;
+}
+
+const props = defineProps<{
+  heroData?: HeroData;
+}>();
+
+// Icon components
+const MonitorIcon = {
+  render() {
+    return h('svg', { 
+      class: 'w-12 h-12 mb-4 text-cyan-300',
+      fill: 'none', 
+      stroke: 'currentColor', 
+      viewBox: '0 0 24 24' 
+    }, [
+      h('path', {
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        'stroke-width': '2',
+        d: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+      })
+    ]);
+  }
+};
+
+const ChartIcon = {
+  render() {
+    return h('svg', { 
+      class: 'w-12 h-12 mb-4 text-cyan-300',
+      fill: 'none', 
+      stroke: 'currentColor', 
+      viewBox: '0 0 24 24' 
+    }, [
+      h('path', {
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        'stroke-width': '2',
+        d: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+      })
+    ]);
+  }
+};
+
+const GlobeIcon = {
+  render() {
+    return h('svg', { 
+      class: 'w-12 h-12 mb-4 text-cyan-300',
+      fill: 'none', 
+      stroke: 'currentColor', 
+      viewBox: '0 0 24 24' 
+    }, [
+      h('path', {
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        'stroke-width': '2',
+        d: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+      })
+    ]);
+  }
+};
+
+function getIcon(iconName: string) {
+  const icons: Record<string, any> = {
+    'monitor': MonitorIcon,
+    'chart': ChartIcon,
+    'globe': GlobeIcon
+  };
+  return icons[iconName] || MonitorIcon;
+}
 </script>
 
 <style scoped>

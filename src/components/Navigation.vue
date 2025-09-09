@@ -7,7 +7,7 @@
             <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-10 h-10">
             <div>
               <h1 class="text-xl font-bold text-gray-900 nav-brand">Remote Sensing of Marine Systems</h1>
-              <p class="text-xs text-gray-600 nav-brand" style="font-weight: 400; text-transform: uppercase;">Remote Sensing Research</p>
+              <p class="text-xs text-gray-600 nav-brand" style="font-weight: 400; text-transform: uppercase;">Yoav Lehahn's research group</p>
             </div>
           </a>
         </div>
@@ -15,7 +15,6 @@
         <div class="hidden md:flex items-center space-x-8">
           <a href="/" class="nav-link">Home</a>
           <a href="/#research" class="nav-link">Research</a>
-          <a href="/#projects" class="nav-link">Projects</a>
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/team" class="nav-link">Team</a>
           <a href="/#contact" class="nav-link">Contact</a>

@@ -2,9 +2,8 @@
   <section id="publications" class="py-20 bg-white">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">Recent Publications</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">Research Highlights</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto text-body">
-          Our latest contributions to marine remote sensing research
         </p>
       </div>
       

@@ -2,9 +2,11 @@
   <section id="research" class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">Research Areas</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">Research</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto text-body">
-          Our interdisciplinary approach combines satellite technology, oceanography, and data science to address critical marine challenges
+          We integrate in-situ data with remote-sensing observations from satellites, 
+          airplanes and drones to characterize variability patterns and motions over multiple spatial and temporal scales,
+          providing observational insights into various aspects of marine research. 
         </p>
       </div>
       
@@ -88,80 +90,73 @@ const DatabaseIcon = {
 const researchAreas = [
   {
     id: 1,
-    title: 'Ocean Color Remote Sensing',
-    description: 'Monitoring phytoplankton dynamics and water quality using spectral analysis',
+    title: 'Plankton biogeography and spatial patterning',
+    description: '',
     gradient: 'from-blue-500 to-cyan-500',
-    icon: WaveIcon,
+    icon: '',
     topics: [
-      'Chlorophyll-a concentration mapping',
-      'Harmful algal bloom detection',
-      'Primary productivity estimation',
-      'Coastal water quality assessment'
+      "Global patterns of plankton patchiness",
+      "Lagrangian study of phytoplankton patch dynamics",
+      "Physical and biological controls on plankton organization"
     ]
   },
   {
     id: 2,
-    title: 'Sea Surface Temperature',
-    description: 'Tracking thermal patterns and ocean-atmosphere heat exchange',
+    title: 'Dynamics of jellyfish swarms',
+    description: '',
     gradient: 'from-orange-500 to-red-500',
-    icon: SatelliteIcon,
+    icon: '',
     topics: [
-      'Climate variability studies',
-      'Upwelling detection',
-      'Marine heatwave monitoring',
-      'Fisheries management support'
+      "Characterization of swimming patterns",
+      "Impact of swimming on movement",
+      "Spatiotemporal distribution patterns"
     ]
   },
   {
     id: 3,
-    title: 'Ocean Dynamics & Circulation',
-    description: 'Understanding current systems and mesoscale features',
+    title: 'Circulation, biogeochemistry, and ecology of the Eastern Mediterranean Sea (EMS)',
+    description: '',
     gradient: 'from-purple-500 to-indigo-500',
-    icon: ChartIcon,
+    icon: '',
     topics: [
-      'Eddy detection and tracking',
-      'Current velocity estimation',
-      'Frontal zone identification',
-      'Transport pathway analysis'
+      "Connectivity between coastal and pelagic waters",
+      "Ecological impact of submesoscale horizontal stirring",
+      "Quantification of variability patterns across space (meters to hundreds of km) and time (days to decades)"
     ]
   },
   {
     id: 4,
-    title: 'Coastal Zone Management',
-    description: 'Monitoring coastal environments and human impacts',
+    title: 'Data-driven ocean research',
+    description: '',
     gradient: 'from-green-500 to-teal-500',
-    icon: GlobeIcon,
+    icon: DatabaseIcon,
     topics: [
-      'Shoreline change detection',
-      'Sediment transport mapping',
-      'Mangrove/coral reef monitoring',
-      'Maritime traffic analysis'
+      "Automatization of the ocean data integration process",
+      "Identification of emerging patterns in multidisciplinary oceanic datasets]",
     ]
   },
   {
     id: 5,
-    title: 'Bio-Optical Modeling',
-    description: 'Developing algorithms for marine ecosystem parameters',
+    title: 'The sea surface microlayer (SML): from dynamics to variability patterns ',
+    description: '',
     gradient: 'from-pink-500 to-rose-500',
-    icon: BeakerIcon,
+    icon: '',
     topics: [
-      'Algorithm development',
-      'Validation with in-situ data',
-      'Machine learning applications',
-      'Uncertainty quantification'
+      "Impact of ocean circulation on SML physicochemical properties",
+      "Development and implementation of remote sensing approaches",
+      "Quantification of spatiotemporal variability patterns"
     ]
   },
   {
     id: 6,
-    title: 'Big Data & AI Applications',
-    description: 'Leveraging advanced computing for ocean insights',
+    title: "Ecology of Israel's inland water bodies",
+    description: '',
     gradient: 'from-gray-600 to-gray-800',
-    icon: DatabaseIcon,
+    icon: '',
     topics: [
-      'Deep learning for pattern recognition',
-      'Time series forecasting',
-      'Data fusion techniques',
-      'Cloud computing platforms'
+      "Data-driven research of Lake Kinneret ecosystem",
+      "Ecosystem sensitivity to changes in weather condition",
+      "Satellite remote sensing of reservoir water quality"
     ]
   }
 ];
