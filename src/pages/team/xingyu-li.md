@@ -4,7 +4,7 @@ title: Xingyu Li
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Upwelling dynamics
+research: Sea surface microlayer
 advisor: Prof. Yoav Lehahn, Dr. Eyal Rahav & Dr. Aviv Solodoch
 email: carlos.m@university.edu
 photo: /images/team/xingyu-li.jpg

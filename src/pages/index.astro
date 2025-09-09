@@ -9,7 +9,7 @@ import ProjectsSection from '../components/ProjectsSection.vue';
 import ContactSection from '../components/ContactSection.vue';
 import Footer from '../components/Footer.vue';
 
-// Get featured publications from MD files
+// Get content from MD files
 const publicationFiles = import.meta.glob('../pages/publications/*.md', { eager: true });
 const featuredPublications = Object.values(publicationFiles)
   .filter(file => file.frontmatter?.featured === true)
@@ -29,15 +29,23 @@ const featuredPublications = Object.values(publicationFiles)
     featured: file.frontmatter.featured
   }))
   .sort((a, b) => b.year - a.year);
+
+// Get hero content
+const heroFile = await import('../content/hero.md');
+const heroData = heroFile.frontmatter;
+
+// Get contact content
+const contactFile = await import('../content/contact.md');
+const contactData = contactFile.frontmatter;
 ---
 
 <Layout title="Marine Remote Sensing Lab">
   <Navigation client:load />
   <main>
-    <HeroSection client:visible />
+    <HeroSection client:visible heroData={heroData} />
     <ResearchSection client:visible />
     <PublicationsSection client:visible featuredPublications={featuredPublications} />
-    <ContactSection client:visible />
+    <ContactSection client:visible contactData={contactData} />
   </main>
   <Footer />
 </Layout>

@@ -72,7 +72,6 @@ const staff = teamMembers.filter(member =>
       <div class="container-custom">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: 'Orbitron', monospace; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Our Research Team</h1>
         <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
-          A diverse group of scientists and students advancing marine remote sensing
         </p>
       </div>
     </div>
@@ -138,7 +137,7 @@ const staff = teamMembers.filter(member =>
                       <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
                         {member.frontmatter.title}
                       </h3>
-                      <p class="text-purple-600 text-sm font-medium">{member.frontmatter.research}</p>
+                      <p class="text-purple-600 text-sm font-medium">{member.frontmatter.position}, {member.frontmatter.research}</p>
                       {member.frontmatter.advisor && (
                         <p class="text-gray-500 text-xs mt-1">Advisor: {member.frontmatter.advisor}</p>
                       )}
@@ -152,7 +151,7 @@ const staff = teamMembers.filter(member =>
       )}
 
       <!-- Alumni Link -->
-      {alumni.length > 0 && (
+      {alumni.length === 0 && (
         <section class="text-center py-12">
           <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 max-w-2xl mx-auto">
             <h2 class="text-3xl font-bold mb-4" style="font-family: 'Orbitron', monospace; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Alumni Network</h2>

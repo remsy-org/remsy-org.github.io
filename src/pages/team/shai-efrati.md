@@ -5,7 +5,7 @@ position: Lab Manager
 description: Lab Manager
 role: lab-manager
 order: 200
-research: Satellite oceanography, bio-optical algorithms, climate-ocean interactions
+research: 
 email: sefrati1@univ.haifa.ac.il
 photo: /images/team/shai-efrati.jpg
 author: Marine Remote Sensing Lab

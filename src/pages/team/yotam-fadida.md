@@ -4,7 +4,7 @@ title: Yotam Fadida
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Upwelling dynamics
+research: Circulation and ecology of the Eastern Mediterranean Sea
 advisor: Prof. Yoav Lehahn & Dr. Eli Biton
 email: carlos.m@university.edu
 photo: /images/team/yotam-fadida.jpg

@@ -52,24 +52,8 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
       <div class="container-custom">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 heading-hero">Research Publications</h1>
         <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto text-body">
-          Our contributions to marine remote sensing science
         </p>
         
-        <!-- Publication Statistics -->
-        <div class="grid grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
-          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div class="text-3xl font-bold text-blue-600">{totalPublications}</div>
-            <div class="text-sm text-gray-600">Publications</div>
-          </div>
-          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div class="text-3xl font-bold text-green-600">{totalCitations}</div>
-            <div class="text-sm text-gray-600">Citations</div>
-          </div>
-          <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div class="text-3xl font-bold text-purple-600">{openAccessCount}</div>
-            <div class="text-sm text-gray-600">Open Access</div>
-          </div>
-        </div>
       </div>
     </div>
 

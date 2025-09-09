@@ -4,8 +4,8 @@ title: Jean Pierre Obeid
 position: M.Sc. Student
 description: M.Sc. Student
 role: msc-student
-research: Water quality monitoring
-advisor: Prof. Yoav Lehahn, Shalabaney and Dr. Aviv Solodoch
+research: Sea surface microlayer
+advisor: Prof. Yoav Lehahn, Dr. Atef Shalabaney & Dr. Aviv Solodoch
 email: emma.d@university.edu
 photo: /images/team/jean-pierre-obeid.jpg
 author: Marine Remote Sensing Lab

@@ -4,7 +4,7 @@ title: Maya Bloch
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Upwelling dynamics
+research: Data driven ocean research
 advisor: Prof. Yoav Lehahn
 email: carlos.m@university.edu
 photo: /images/team/maya-bloch.jpg
