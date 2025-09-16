@@ -87,13 +87,77 @@ const DatabaseIcon = {
   }
 };
 
+const JellyfishIcon = {
+  render() {
+    return h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', { d: 'M12 2C8 2 5 5 5 9c0 1.5.5 2.8 1.3 3.9L6 16c-.1.6.2 1.1.7 1.4l1.5 2.8c.2.4.6.8 1.1.8s.9-.4 1.1-.8l.6-1.2.6 1.2c.2.4.6.8 1.1.8s.9-.4 1.1-.8l.6-1.2.6 1.2c.2.4.6.8 1.1.8s.9-.4 1.1-.8l1.5-2.8c.5-.3.8-.8.7-1.4l-.3-3.1C18.5 11.8 19 10.5 19 9c0-4-3-7-7-7zm0 2c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5zm-2 3c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1zm4 0c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1z' })
+    ]);
+  }
+};
+
+const PhytoplanktonIcon = {
+  render() {
+    return h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      // Central cell
+      h('circle', { cx: '12', cy: '12', r: '3', fill: 'currentColor', opacity: '0.8' }),
+      // Radiating flagella/appendages
+      h('path', { d: 'M12 5v4M12 15v4M19 12h-4M9 12H5', stroke: 'currentColor', strokeWidth: '1.5', fill: 'none' }),
+      // Diagonal appendages
+      h('path', { d: 'M16.5 7.5L14 10M10 14l-2.5 2.5M16.5 16.5L14 14M10 10L7.5 7.5', stroke: 'currentColor', strokeWidth: '1.5', fill: 'none' }),
+      // Small circular organelles
+      h('circle', { cx: '8', cy: '8', r: '1.5', fill: 'currentColor', opacity: '0.6' }),
+      h('circle', { cx: '16', cy: '8', r: '1.5', fill: 'currentColor', opacity: '0.6' }),
+      h('circle', { cx: '8', cy: '16', r: '1.5', fill: 'currentColor', opacity: '0.6' }),
+      h('circle', { cx: '16', cy: '16', r: '1.5', fill: 'currentColor', opacity: '0.6' })
+    ]);
+  }
+};
+
+const IsraelMapIcon = {
+  render() {
+    return h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      // Simplified Israel map outline (without West Bank and Gaza)
+      h('path', { 
+        d: 'M11 3L10.5 4L10 5.5L9.5 7L9 9L8.5 11L8 13L8.5 15L9 17L9.5 18.5L10 19.5L10.5 20.5L11 21L11.5 20.5L12 19L12.5 17L13 15L13.5 13L14 11L14.5 9L15 7L14.5 5.5L14 4L13.5 3.5L13 3L12 2.5L11 3Z',
+        fill: 'currentColor'
+      }),
+      // Mediterranean coastline indicator
+      h('path', { 
+        d: 'M7 8C6.5 8 6 8.5 6 9S6.5 10 7 10M7 12C6.5 12 6 12.5 6 13S6.5 14 7 14M7 16C6.5 16 6 16.5 6 17S6.5 18 7 18',
+        stroke: 'currentColor',
+        strokeWidth: '0.5',
+        fill: 'none',
+        opacity: '0.5'
+      })
+    ]);
+  }
+};
+
+const OceanCirculationIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '1.5', viewBox: '0 0 24 24' }, [
+      // Large gyre
+      h('path', { 
+        d: 'M12 3C7 3 3 7 3 12C3 14 3.5 15.5 4.5 16.5L6 15C5.5 14 5 13 5 12C5 8 8 5 12 5C16 5 19 8 19 12C19 16 16 19 12 19C11 19 10 18.5 9 18L7.5 19.5C8.5 20.5 10 21 12 21C17 21 21 17 21 12C21 7 17 3 12 3Z',
+        fill: 'none'
+      }),
+      // Small eddies
+      h('circle', { cx: '9', cy: '9', r: '2', fill: 'none' }),
+      h('circle', { cx: '15', cy: '15', r: '2', fill: 'none' }),
+      // Current arrows
+      h('path', { d: 'M7 12L5 10M7 12L5 14', strokeLinecap: 'round' }),
+      h('path', { d: 'M17 12L19 10M17 12L19 14', strokeLinecap: 'round' })
+    ]);
+  }
+};
+
 const researchAreas = [
   {
     id: 1,
     title: 'Plankton biogeography and spatial patterning',
     description: '',
     gradient: 'from-blue-500 to-cyan-500',
-    icon: '',
+    icon: PhytoplanktonIcon,
     topics: [
       "Global patterns of plankton patchiness",
       "Lagrangian study of phytoplankton patch dynamics",
@@ -105,7 +169,7 @@ const researchAreas = [
     title: 'Dynamics of jellyfish swarms',
     description: '',
     gradient: 'from-orange-500 to-red-500',
-    icon: '',
+    icon: JellyfishIcon,
     topics: [
       "Characterization of swimming patterns",
       "Impact of swimming on movement",
@@ -117,7 +181,7 @@ const researchAreas = [
     title: 'Circulation, biogeochemistry, and ecology of the Eastern Mediterranean Sea (EMS)',
     description: '',
     gradient: 'from-purple-500 to-indigo-500',
-    icon: '',
+    icon: OceanCirculationIcon,
     topics: [
       "Connectivity between coastal and pelagic waters",
       "Ecological impact of submesoscale horizontal stirring",
@@ -140,7 +204,7 @@ const researchAreas = [
     title: 'The sea surface microlayer (SML): from dynamics to variability patterns ',
     description: '',
     gradient: 'from-pink-500 to-rose-500',
-    icon: '',
+    icon: WaveIcon,
     topics: [
       "Impact of ocean circulation on SML physicochemical properties",
       "Development and implementation of remote sensing approaches",
@@ -152,7 +216,7 @@ const researchAreas = [
     title: "Ecology of Israel's inland water bodies",
     description: '',
     gradient: 'from-gray-600 to-gray-800',
-    icon: '',
+    icon: IsraelMapIcon,
     topics: [
       "Data-driven research of Lake Kinneret ecosystem",
       "Ecosystem sensitivity to changes in weather condition",
