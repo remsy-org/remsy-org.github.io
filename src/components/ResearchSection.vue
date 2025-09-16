@@ -116,14 +116,22 @@ const PhytoplanktonIcon = {
 const LakeKinneretIcon = {
   render() {
     return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '2', viewBox: '0 0 24 24' }, [
-      // Map pin with water wave
+      // Waves similar to SeaSurfaceLayerIcon style
       h('path', { 
-        d: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z',
+        d: 'M3 12C4.5 11 5.5 11 7 12S9.5 13 11 12S13.5 11 15 12S17.5 13 19 12S20.5 11 22 12',
         strokeLinecap: 'round',
         strokeLinejoin: 'round'
       }),
       h('path', { 
-        d: 'M15 11a3 3 0 11-6 0 3 3 0 016 0z',
+        d: 'M3 17C4.5 16 5.5 16 7 17S9.5 18 11 17S13.5 16 15 17S17.5 18 19 17S20.5 16 22 17',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      }),
+      // Circle representing contained water body (lake)
+      h('circle', {
+        cx: '12',
+        cy: '8',
+        r: '3',
         strokeLinecap: 'round',
         strokeLinejoin: 'round'
       })
