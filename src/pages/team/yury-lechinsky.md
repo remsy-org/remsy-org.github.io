@@ -5,8 +5,7 @@ position: PhD Student
 description: PhD Student
 role: phd-student
 research: Ecology of inland water bodies
-advisor: Prof. Yoav Lehahn & Dr. Gideon Gal
-email: carlos.m@university.edu
+advisor: Jointly supervised with Dr. Gideon Gal
 photo: /images/team/yury-lechinsky.jpg
 author: Remote Sensing of Marine Systems
 date: 2025-09-10

@@ -5,8 +5,8 @@ position: PhD Student
 description: PhD Student
 role: phd-student
 research: Data driven ocean research
-advisor: Prof. Yoav Lehahn & Dr. Igal Berenshtein
-email: carlos.m@university.edu
+advisor: Jointly supervised with Dr. Igal Berenshtein
+email: lapidot4@gmail.com
 photo: /images/team/omri-lapidot.jpg
 author: Remote Sensing of Marine Systems
 date: 2025-09-10

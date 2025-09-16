@@ -5,8 +5,8 @@ position: PhD Student
 description: PhD Student
 role: phd-student
 research: Circulation and ecology of the Eastern Mediterranean Sea
-advisor: Prof. Yoav Lehahn & Dr. Eli Biton
-email: carlos.m@university.edu
+advisor: Jointly supervised with Dr. Eli Biton
+email: yotam@ocean.org.il
 photo: /images/team/yotam-fadida.jpg
 author: Remote Sensing of Marine Systems
 date: 2025-09-10

@@ -5,8 +5,7 @@ position: PhD Student
 description: PhD Student
 role: phd-student
 research: Data driven ocean research
-advisor: Prof. Yoav Lehahn
-email: carlos.m@university.edu
+email: maya.bloch@gmail.com
 photo: /images/team/maya-bloch.jpg
 author: Remote Sensing of Marine Systems
 date: 2025-09-10
