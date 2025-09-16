@@ -50,7 +50,7 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
   <main class="pt-20">
     <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
       <div class="container-custom">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 heading-hero">Research Publications</h1>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 heading-hero">Recent Publications</h1>
         <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto text-body">
         </p>
         
@@ -59,7 +59,7 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
 
     <div class="container-custom py-12">
       <!-- Featured Publications -->
-      {featuredPublications.length > 0 && (
+      {featuredPublications.length > 0 && false && (
         <section class="mb-16">
           <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center heading-section">Featured Publications</h2>
           <div class="space-y-6 max-w-5xl mx-auto">

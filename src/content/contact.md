@@ -1,6 +1,6 @@
 ---
 title: "Get In Touch"
-subtitle: "Connect with our research team"
+subtitle: " "
 email: "ylehahn@univ.haifa.ac.il"
 phone: "+972-5452-80992"
 address:
