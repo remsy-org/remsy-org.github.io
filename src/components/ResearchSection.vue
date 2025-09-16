@@ -116,18 +116,80 @@ const PhytoplanktonIcon = {
 const IsraelMapIcon = {
   render() {
     return h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
-      // Simplified Israel map outline (without West Bank and Gaza)
+      // More accurate Israel map outline
       h('path', { 
-        d: 'M11 3L10.5 4L10 5.5L9.5 7L9 9L8.5 11L8 13L8.5 15L9 17L9.5 18.5L10 19.5L10.5 20.5L11 21L11.5 20.5L12 19L12.5 17L13 15L13.5 13L14 11L14.5 9L15 7L14.5 5.5L14 4L13.5 3.5L13 3L12 2.5L11 3Z',
-        fill: 'currentColor'
+        d: 'M13 2L12.8 3L12.5 3.5L12.3 4.2L12 5L11.8 5.8L11.5 6.5L11.3 7.2L11 8L10.8 9L10.6 10L10.4 11L10.3 12L10.2 13L10.1 14L10 15L10.1 16L10.2 17L10.4 17.8L10.6 18.5L10.9 19.2L11.2 19.8L11.5 20.3L11.9 20.8L12.3 21.2L12.8 21.5L13.2 21.8L13.5 22L13.8 21.8L14 21.5L14.2 21L14.4 20.3L14.5 19.5L14.6 18.5L14.7 17.5L14.8 16.5L14.9 15.5L15 14.5L15 13.5L15 12.5L14.9 11.5L14.8 10.5L14.7 9.5L14.6 8.5L14.4 7.5L14.2 6.5L14 5.5L13.8 4.5L13.5 3.5L13.2 2.8L13 2Z',
+        fill: 'currentColor',
+        opacity: '0.9'
       }),
-      // Mediterranean coastline indicator
+      // Dead Sea
+      h('ellipse', { 
+        cx: '15.5',
+        cy: '16',
+        rx: '0.8',
+        ry: '1.5',
+        fill: 'currentColor',
+        opacity: '0.4'
+      }),
+      // Lake Kinneret (Sea of Galilee)
+      h('circle', { 
+        cx: '14',
+        cy: '7',
+        r: '0.8',
+        fill: 'currentColor',
+        opacity: '0.4'
+      }),
+      // Mediterranean waves
       h('path', { 
-        d: 'M7 8C6.5 8 6 8.5 6 9S6.5 10 7 10M7 12C6.5 12 6 12.5 6 13S6.5 14 7 14M7 16C6.5 16 6 16.5 6 17S6.5 18 7 18',
+        d: 'M9 6C8.5 6 8 6.5 8 7M9 9C8.5 9 8 9.5 8 10M9 12C8.5 12 8 12.5 8 13M9 15C8.5 15 8 15.5 8 16',
         stroke: 'currentColor',
-        strokeWidth: '0.5',
+        strokeWidth: '0.8',
         fill: 'none',
-        opacity: '0.5'
+        opacity: '0.3',
+        strokeLinecap: 'round'
+      })
+    ]);
+  }
+};
+
+const SeaSurfaceLayerIcon = {
+  render() {
+    return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '1.5', viewBox: '0 0 24 24' }, [
+      // Water surface with microlayer
+      h('path', { 
+        d: 'M3 8C4.5 7 5.5 7 7 8S9.5 9 11 8S13.5 7 15 8S17.5 9 19 8S20.5 7 22 8',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      }),
+      // Thin microlayer line above surface
+      h('path', { 
+        d: 'M3 6C4.5 5.5 5.5 5.5 7 6S9.5 6.5 11 6S13.5 5.5 15 6S17.5 6.5 19 6S20.5 5.5 22 6',
+        strokeWidth: '2',
+        opacity: '0.8',
+        strokeLinecap: 'round'
+      }),
+      // Subsurface water
+      h('path', { 
+        d: 'M3 11C4.5 10 5.5 10 7 11S9.5 12 11 11S13.5 10 15 11S17.5 12 19 11S20.5 10 22 11',
+        opacity: '0.4',
+        strokeLinecap: 'round'
+      }),
+      h('path', { 
+        d: 'M3 14C4.5 13 5.5 13 7 14S9.5 15 11 14S13.5 13 15 14S17.5 15 19 14S20.5 13 22 14',
+        opacity: '0.3',
+        strokeLinecap: 'round'
+      }),
+      // Particles/molecules in microlayer
+      h('circle', { cx: '6', cy: '5.5', r: '0.5', fill: 'currentColor' }),
+      h('circle', { cx: '10', cy: '5.8', r: '0.5', fill: 'currentColor' }),
+      h('circle', { cx: '14', cy: '5.3', r: '0.5', fill: 'currentColor' }),
+      h('circle', { cx: '18', cy: '5.7', r: '0.5', fill: 'currentColor' }),
+      // Air-sea interface indication
+      h('path', { 
+        d: 'M8 4L8 3M12 4L12 3M16 4L16 3',
+        strokeWidth: '1',
+        opacity: '0.5',
+        strokeLinecap: 'round'
       })
     ]);
   }
@@ -204,7 +266,7 @@ const researchAreas = [
     title: 'The sea surface microlayer (SML): from dynamics to variability patterns ',
     description: '',
     gradient: 'from-pink-500 to-rose-500',
-    icon: WaveIcon,
+    icon: SeaSurfaceLayerIcon,
     topics: [
       "Impact of ocean circulation on SML physicochemical properties",
       "Development and implementation of remote sensing approaches",
