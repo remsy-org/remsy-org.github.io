@@ -113,40 +113,19 @@ const PhytoplanktonIcon = {
   }
 };
 
-const IsraelMapIcon = {
+const LakeKinneretIcon = {
   render() {
-    return h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
-      // More accurate Israel map outline
+    return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '2', viewBox: '0 0 24 24' }, [
+      // Map pin with water wave
       h('path', { 
-        d: 'M13 2L12.8 3L12.5 3.5L12.3 4.2L12 5L11.8 5.8L11.5 6.5L11.3 7.2L11 8L10.8 9L10.6 10L10.4 11L10.3 12L10.2 13L10.1 14L10 15L10.1 16L10.2 17L10.4 17.8L10.6 18.5L10.9 19.2L11.2 19.8L11.5 20.3L11.9 20.8L12.3 21.2L12.8 21.5L13.2 21.8L13.5 22L13.8 21.8L14 21.5L14.2 21L14.4 20.3L14.5 19.5L14.6 18.5L14.7 17.5L14.8 16.5L14.9 15.5L15 14.5L15 13.5L15 12.5L14.9 11.5L14.8 10.5L14.7 9.5L14.6 8.5L14.4 7.5L14.2 6.5L14 5.5L13.8 4.5L13.5 3.5L13.2 2.8L13 2Z',
-        fill: 'currentColor',
-        opacity: '0.9'
+        d: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
       }),
-      // Dead Sea
-      h('ellipse', { 
-        cx: '15.5',
-        cy: '16',
-        rx: '0.8',
-        ry: '1.5',
-        fill: 'currentColor',
-        opacity: '0.4'
-      }),
-      // Lake Kinneret (Sea of Galilee)
-      h('circle', { 
-        cx: '14',
-        cy: '7',
-        r: '0.8',
-        fill: 'currentColor',
-        opacity: '0.4'
-      }),
-      // Mediterranean waves
       h('path', { 
-        d: 'M9 6C8.5 6 8 6.5 8 7M9 9C8.5 9 8 9.5 8 10M9 12C8.5 12 8 12.5 8 13M9 15C8.5 15 8 15.5 8 16',
-        stroke: 'currentColor',
-        strokeWidth: '0.8',
-        fill: 'none',
-        opacity: '0.3',
-        strokeLinecap: 'round'
+        d: 'M15 11a3 3 0 11-6 0 3 3 0 016 0z',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
       })
     ]);
   }
@@ -278,7 +257,7 @@ const researchAreas = [
     title: "Ecology of Israel's inland water bodies",
     description: '',
     gradient: 'from-gray-600 to-gray-800',
-    icon: IsraelMapIcon,
+    icon: LakeKinneretIcon,
     topics: [
       "Data-driven research of Lake Kinneret ecosystem",
       "Ecosystem sensitivity to changes in weather condition",
