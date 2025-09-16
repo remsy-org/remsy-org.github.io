@@ -176,18 +176,18 @@ const SeaSurfaceLayerIcon = {
 
 const OceanCirculationIcon = {
   render() {
-    return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '1.5', viewBox: '0 0 24 24' }, [
-      // Large gyre
+    return h('svg', { fill: 'none', stroke: 'currentColor', strokeWidth: '2', viewBox: '0 0 24 24' }, [
+      // Refresh icon style
       h('path', { 
-        d: 'M12 3C7 3 3 7 3 12C3 14 3.5 15.5 4.5 16.5L6 15C5.5 14 5 13 5 12C5 8 8 5 12 5C16 5 19 8 19 12C19 16 16 19 12 19C11 19 10 18.5 9 18L7.5 19.5C8.5 20.5 10 21 12 21C17 21 21 17 21 12C21 7 17 3 12 3Z',
-        fill: 'none'
+        d: 'M1 4v6h6M23 20v-6h-6',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
       }),
-      // Small eddies
-      h('circle', { cx: '9', cy: '9', r: '2', fill: 'none' }),
-      h('circle', { cx: '15', cy: '15', r: '2', fill: 'none' }),
-      // Current arrows
-      h('path', { d: 'M7 12L5 10M7 12L5 14', strokeLinecap: 'round' }),
-      h('path', { d: 'M17 12L19 10M17 12L19 14', strokeLinecap: 'round' })
+      h('path', { 
+        d: 'M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round'
+      })
     ]);
   }
 };
