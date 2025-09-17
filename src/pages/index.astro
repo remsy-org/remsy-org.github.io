@@ -30,6 +30,22 @@ const featuredPublications = Object.values(publicationFiles)
   }))
   .sort((a, b) => b.year - a.year);
 
+// Get team members from MD files
+const teamFiles = import.meta.glob('../pages/team/*.md', { eager: true });
+const teamMembers = Object.entries(teamFiles).map(([filepath, file]) => ({
+  ...file.frontmatter,
+  url: filepath.replace('../pages', '').replace('.md', '')
+}));
+
+// Filter and categorize team members
+const principals = teamMembers.filter(member => 
+  member.role === 'principal-investigator' || 
+  member.role === 'lab-manager'
+).sort((a, b) => (a.order || 999) - (b.order || 999));
+
+const phdStudents = teamMembers.filter(member => member.role === 'phd-student');
+const mscStudents = teamMembers.filter(member => member.role === 'msc-student');
+
 // Get hero content
 const heroFile = await import('../content/hero.md');
 const heroData = heroFile.frontmatter;
@@ -44,6 +60,7 @@ const contactData = contactFile.frontmatter;
   <main>
     <HeroSection client:visible heroData={heroData} />
     <ResearchSection client:visible />
+    <TeamSection client:visible teamData={{ principals, phdStudents, mscStudents }} />
     <PublicationsSection client:visible featuredPublications={featuredPublications} />
     <ContactSection client:visible contactData={contactData} />
   </main>

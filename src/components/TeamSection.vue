@@ -11,49 +11,41 @@
       <!-- Team Statistics -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
         <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
-          <div class="text-3xl font-bold text-blue-600 mb-2">2</div>
-          <div class="text-sm text-gray-600">Principal Investigators</div>
+          <div class="text-3xl font-bold text-blue-600 mb-2">{{ teamData?.principals?.length || 0 }}</div>
+          <div class="text-sm text-gray-600">Principal Investigators & Lab Manager</div>
         </div>
         <div class="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
-          <div class="text-3xl font-bold text-green-600 mb-2">6</div>
-          <div class="text-sm text-gray-600">Research Scientists</div>
-        </div>
-        <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-          <div class="text-3xl font-bold text-purple-600 mb-2">8</div>
+          <div class="text-3xl font-bold text-green-600 mb-2">{{ teamData?.phdStudents?.length || 0 }}</div>
           <div class="text-sm text-gray-600">PhD Students</div>
         </div>
-        <div class="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
-          <div class="text-3xl font-bold text-orange-600 mb-2">6+</div>
+        <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+          <div class="text-3xl font-bold text-purple-600 mb-2">{{ teamData?.mscStudents?.length || 0 }}</div>
           <div class="text-sm text-gray-600">M.Sc. Students</div>
+        </div>
+        <div class="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
+          <div class="text-3xl font-bold text-orange-600 mb-2">200+</div>
+          <div class="text-sm text-gray-600">Alumni</div>
         </div>
       </div>
 
       <!-- Featured Members Preview -->
-      <div class="mb-16">
+      <div class="mb-16" v-if="teamData?.principals?.length > 0">
         <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">Lab Leadership</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <a href="/team/sarah-mitchell" class="card p-6 hover:shadow-xl transition-all duration-300 block group">
+          <a v-for="member in teamData.principals" :key="member.title" :href="member.url" class="card p-6 hover:shadow-xl transition-all duration-300 block group">
             <div class="flex items-start space-x-4">
-              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
-                SM
+              <img v-if="member.photo" 
+                :src="member.photo" 
+                :alt="member.title"
+                class="w-24 h-24 rounded-full object-cover"
+              />
+              <div v-else class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                {{ getInitials(member.title) }}
               </div>
               <div class="flex-1">
-                <h4 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Dr. Sarah Mitchell</h4>
-                <p class="text-sm text-blue-600 mb-2">Professor & Lab Director</p>
-                <p class="text-sm text-gray-600">Satellite oceanography, bio-optical algorithms, climate-ocean interactions</p>
-              </div>
-            </div>
-          </a>
-          
-          <a href="/team/james-chen" class="card p-6 hover:shadow-xl transition-all duration-300 block group">
-            <div class="flex items-start space-x-4">
-              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white text-2xl font-bold">
-                JC
-              </div>
-              <div class="flex-1">
-                <h4 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Dr. James Chen</h4>
-                <p class="text-sm text-blue-600 mb-2">Associate Professor</p>
-                <p class="text-sm text-gray-600">Ocean color remote sensing, machine learning, coastal dynamics</p>
+                <h4 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">{{ member.title }}</h4>
+                <p class="text-sm text-blue-600 mb-2">{{ member.position }}</p>
+                <p v-if="member.research" class="text-sm text-gray-600">{{ member.research }}</p>
               </div>
             </div>
           </a>
@@ -89,8 +81,31 @@
 </template>
 
 <script setup lang="ts">
-// No hardcoded data needed - everything is in markdown files!
-// This component just provides a preview and links to the full team page
+interface TeamMember {
+  title: string;
+  position: string;
+  role: string;
+  research?: string;
+  email?: string;
+  photo?: string;
+  url?: string;
+  order?: number;
+}
+
+interface TeamData {
+  principals: TeamMember[];
+  phdStudents: TeamMember[];
+  mscStudents: TeamMember[];
+}
+
+const props = defineProps<{
+  teamData: TeamData;
+}>();
+
+// Get initials from name
+const getInitials = (name: string) => {
+  return name.split(' ').map(n => n[0]).join('');
+};
 </script>
 
 <style scoped>
