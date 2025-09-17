@@ -14,15 +14,24 @@ const publications = Object.entries(publicationModules).map(([filepath, module])
   Content: module.Content
 }));
 
+// Separate submitted and published papers
+const submittedPublications = publications.filter(pub => pub.frontmatter.status === 'submitted');
+const publishedPublications = publications.filter(pub => pub.frontmatter.status !== 'submitted');
+
 // Sort publications by year (descending) and then by title
-const sortedPublications = publications.sort((a, b) => {
+const sortedPublications = publishedPublications.sort((a, b) => {
   if (b.frontmatter.year !== a.frontmatter.year) {
     return b.frontmatter.year - a.frontmatter.year;
   }
   return a.frontmatter.title.localeCompare(b.frontmatter.title);
 });
 
-// Group publications by year
+// Sort submitted publications by title
+const sortedSubmitted = submittedPublications.sort((a, b) => 
+  a.frontmatter.title.localeCompare(b.frontmatter.title)
+);
+
+// Group published publications by year
 const publicationsByYear = sortedPublications.reduce((acc, pub) => {
   const year = pub.frontmatter.year;
   if (!acc[year]) {
@@ -117,6 +126,41 @@ const openAccessCount = publications.filter(pub => pub.frontmatter.openAccess).l
                   )}
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Submitted Publications -->
+      {sortedSubmitted.length > 0 && (
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 heading-subsection">Submitted</h2>
+          
+          <div class="space-y-6 max-w-5xl mx-auto">
+            {sortedSubmitted.map((pub) => (
+              <article class="border-l-2 border-orange-300 pl-6 hover:border-orange-500 transition-colors">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 heading-card">
+                  <a href={pub.url} class="hover:text-blue-600 transition-colors">
+                    {pub.frontmatter.title}
+                  </a>
+                </h3>
+                <p class="text-gray-700 mb-2 text-body">
+                  {pub.frontmatter.authors}
+                </p>
+                <p class="text-gray-600 text-sm mb-3 italic text-body">
+                  <span class="font-medium text-orange-600">Submitted</span>
+                  {pub.frontmatter.preprint && (
+                    <span> (Preprint available)</span>
+                  )}
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                  {pub.frontmatter.preprint && (
+                    <a href={pub.frontmatter.preprint} target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                      Preprint
+                    </a>
+                  )}
+                </div>
+              </article>
             ))}
           </div>
         </section>
