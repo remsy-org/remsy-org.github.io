@@ -18,6 +18,11 @@
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/team" class="nav-link">Team</a>
           <a href="/#contact" class="nav-link">Contact</a>
+          <div class="ml-8 pl-8 border-l border-gray-300">
+            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center">
+              <img src="/images/haifa-university-logo.png" alt="Haifa University" class="h-12 w-auto">
+            </a>
+          </div>
         </div>
         
         <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2">
@@ -36,6 +41,11 @@
           <a href="/#publications" @click="closeMobileMenu" class="nav-link-mobile">Publications</a>
           <a href="/team" @click="closeMobileMenu" class="nav-link-mobile">Team</a>
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center">
+            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center">
+              <img src="/images/haifa-university-logo.png" alt="Haifa University" class="h-10 w-auto">
+            </a>
+          </div>
         </div>
       </div>
     </div>

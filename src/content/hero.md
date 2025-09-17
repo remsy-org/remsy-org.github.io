@@ -1,6 +1,6 @@
 ---
 title: "Remote Sensing of Marine Systems"
-subtitle: "Yoav Lehahn's group"
+subtitle: "Yoav Lehahn's research group \ at the The Leon H. Charney School of Marine Sciences (CSMS) \ University of Haifa"
 tagline: "A bird's eye view on processes and patterns in the marine environment"
 features:
   - icon: "monitor"
