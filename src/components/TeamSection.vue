@@ -41,7 +41,7 @@
         <div v-if="teamData?.phdStudents?.length > 0" class="mb-8">
           <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">PhD Students</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            <a v-for="student in teamData.phdStudents.slice(0, 6)" 
+            <a v-for="student in teamData.phdStudents" 
                :key="student.title" 
                :href="student.url" 
                class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 hover:shadow-md transition-all duration-300 block group">
