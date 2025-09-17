@@ -4,33 +4,14 @@
       <div class="text-center mb-16">
         <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Research Team</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          A diverse group of scientists and students advancing marine remote sensing
         </p>
       </div>
       
       <!-- Team Statistics -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-        <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
-          <div class="text-3xl font-bold text-blue-600 mb-2">{{ teamData?.principals?.length || 0 }}</div>
-          <div class="text-sm text-gray-600">Principal Investigators & Lab Manager</div>
-        </div>
-        <div class="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
-          <div class="text-3xl font-bold text-green-600 mb-2">{{ teamData?.phdStudents?.length || 0 }}</div>
-          <div class="text-sm text-gray-600">PhD Students</div>
-        </div>
-        <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
-          <div class="text-3xl font-bold text-purple-600 mb-2">{{ teamData?.mscStudents?.length || 0 }}</div>
-          <div class="text-sm text-gray-600">M.Sc. Students</div>
-        </div>
-        <div class="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
-          <div class="text-3xl font-bold text-orange-600 mb-2">200+</div>
-          <div class="text-sm text-gray-600">Alumni</div>
-        </div>
-      </div>
 
       <!-- Featured Members Preview -->
       <div class="mb-16" v-if="teamData?.principals?.length > 0">
-        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">Lab Leadership</h3>
+        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center"></h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <a v-for="member in teamData.principals" :key="member.title" :href="member.url" class="card p-6 hover:shadow-xl transition-all duration-300 block group">
             <div class="flex items-start space-x-4">
@@ -49,6 +30,65 @@
               </div>
             </div>
           </a>
+        </div>
+      </div>
+
+      <!-- Students Section -->
+      <div class="mb-16" v-if="(teamData?.phdStudents?.length > 0) || (teamData?.mscStudents?.length > 0)">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">Graduate Students</h3>
+        
+        <!-- PhD Students -->
+        <div v-if="teamData?.phdStudents?.length > 0" class="mb-8">
+          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">PhD Students</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            <a v-for="student in teamData.phdStudents.slice(0, 6)" 
+               :key="student.title" 
+               :href="student.url" 
+               class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-4 hover:shadow-md transition-all duration-300 block group">
+              <div class="flex items-center space-x-3">
+                <img v-if="student.photo" 
+                  :src="student.photo" 
+                  :alt="student.title"
+                  class="w-16 h-16 rounded-full object-cover"
+                />
+                <div v-else class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                  {{ getInitials(student.title) }}
+                </div>
+                <div class="flex-1">
+                  <h5 class="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">{{ student.title }}</h5>
+                  <p class="text-xs text-gray-600">{{ student.position }}</p>
+                  <p v-if="student.research" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <!-- MSc Students -->
+        <div v-if="teamData?.mscStudents?.length > 0">
+          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">M.Sc. Students</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            <a v-for="student in teamData.mscStudents" 
+               :key="student.title" 
+               :href="student.url" 
+               class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 hover:shadow-md transition-all duration-300 block group">
+              <div class="flex items-center space-x-3">
+                <img v-if="student.photo" 
+                  :src="student.photo" 
+                  :alt="student.title"
+                  class="w-16 h-16 rounded-full object-cover"
+                />
+                <div v-else class="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold text-sm">
+                  {{ getInitials(student.title) }}
+                </div>
+                <div class="flex-1">
+                  <h5 class="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">{{ student.title }}</h5>
+                  <p class="text-xs text-gray-600">{{ student.position }}</p>
+                  <p v-if="student.research" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
 
