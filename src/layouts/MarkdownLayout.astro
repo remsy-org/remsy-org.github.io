@@ -25,7 +25,7 @@ const formattedDate = frontmatter.date ? new Date(frontmatter.date).toLocaleDate
 <Layout title={frontmatter.title} description={frontmatter.description}>
   <Navigation client:load />
   
-  <main class="pt-24">
+  <main class="pt-20 md:pt-24">
     <article class="py-16">
       <div class="container-custom">
         {frontmatter.image && (
