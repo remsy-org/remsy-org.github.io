@@ -1,10 +1,10 @@
 <template>
   <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
     <div class="container-custom">
-      <div class="flex justify-between items-center h-20">
+      <div class="flex justify-between items-center h-24">
         <div class="flex items-center">
           <a href="/" class="flex items-center space-x-3">
-            <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-10 h-10">
+            <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-12 h-12">
             <div>
               <h1 class="text-xl font-bold text-gray-900 nav-brand">Remote Sensing of Marine Systems</h1>
               <p class="text-xs text-gray-600 nav-brand" style="font-weight: 400; text-transform: uppercase;">Yoav Lehahn's research group</p>
@@ -19,8 +19,8 @@
           <a href="/team" class="nav-link">Team</a>
           <a href="/#contact" class="nav-link">Contact</a>
           <div class="ml-8 pl-8 border-l border-gray-300">
-            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center bg-gray-700 rounded-lg p-2 hover:bg-gray-600 transition-colors">
-              <img src="/images/haifa-university-logo.png" alt="Haifa University" class="h-10 w-auto">
+            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
+              <img src="/images/haifa-university-logo-header.png" alt="Haifa University" class="h-16 w-auto">
             </a>
           </div>
         </div>
@@ -42,8 +42,8 @@
           <a href="/team" @click="closeMobileMenu" class="nav-link-mobile">Team</a>
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
           <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center">
-            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center bg-gray-700 rounded-lg p-2 hover:bg-gray-600 transition-colors">
-              <img src="/images/haifa-university-logo.png" alt="Haifa University" class="h-10 w-auto">
+            <a href="https://www.haifa.ac.il/" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
+              <img src="/images/haifa-university-logo-header.png" alt="Haifa University" class="h-14 w-auto">
             </a>
           </div>
         </div>
