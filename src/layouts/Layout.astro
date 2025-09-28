@@ -26,25 +26,33 @@ const { title, description = 'Remote Sensing of Marine Systems - Academic Resear
 </html>
 
 <style is:global>
-  /* Import global styles with high priority */
   @import '../styles/global.css';
   
   html {
     scroll-behavior: smooth;
   }
   
-  /* Force font family inheritance */
-  * {
-    font-family: inherit;
+  /* Ensure fonts are properly loaded for Firefox */
+  @supports (-moz-appearance: none) {
+    body {
+      font-family: 'Roboto', sans-serif !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6,
+    .heading-hero, .heading-section, .heading-subsection, 
+    .heading-card, .heading-small, .nav-brand {
+      font-family: 'Orbitron', monospace !important;
+    }
   }
   
-  /* Ensure our fonts take precedence */
-  body, body * {
-    font-family: 'Roboto', sans-serif !important;
+  /* Standard font declarations */
+  body {
+    font-family: 'Roboto', sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6,
-  .heading-hero, .heading-section, .heading-subsection, .heading-card, .heading-small {
-    font-family: 'Orbitron', monospace !important;
+  .heading-hero, .heading-section, .heading-subsection, 
+  .heading-card, .heading-small, .nav-brand {
+    font-family: 'Orbitron', monospace;
   }
 </style>
