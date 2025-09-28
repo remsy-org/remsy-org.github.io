@@ -1,10 +1,9 @@
 <template>
   <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
     <div class="container-custom">
-      <div class="flex justify-between items-center h-20 md:h-24">
+      <div class="flex justify-between items-center h-20 md:h-20">
         <div class="flex items-center">
           <a href="/" class="flex items-center space-x-3">
-            <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-10 h-10 md:w-12 md:h-12">
             <div>
               <h1 class="text-lg md:text-xl font-bold text-gray-900 nav-brand">Remote Sensing of Marine Systems</h1>
               <p class="text-xs text-gray-600 nav-brand hidden md:block" style="font-weight: 400; text-transform: uppercase;">Yoav Lehahn's research group</p>
@@ -20,7 +19,7 @@
           <a href="/#contact" class="nav-link">Contact</a>
           <div class="ml-8 pl-8 border-l border-gray-300">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/images/Haifa_logo_rgb_dark_faculty_marine_sciences_english.png" alt="Haifa University" class="h-16 w-auto">
+              <img src="/images/haifa_university_logo_clean.png" alt="Haifa University" class="h-12 w-auto">
             </a>
           </div>
         </div>

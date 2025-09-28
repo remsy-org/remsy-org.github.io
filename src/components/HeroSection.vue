@@ -12,9 +12,16 @@
         <span class="block text-3xl md:text-4xl mt-4 text-subtitle" style="text-transform: none;">{{ heroData?.subtitle || "Yoav Lehahn's group" }}</span>
       </h1>
       
-      <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto opacity-90 animate-slide-up text-subtitle">
+      <p class="text-xl md:text-2xl mb-12 max-w-5xl mx-auto opacity-90 animate-slide-up text-subtitle">
         {{ heroData?.tagline || "A bird's eye view on processes and patterns in the marine environment" }}
       </p>
+
+      <div id="logos" class="flex justify-center items-center space-x-2">
+        <img src="/images/logo-icon.svg" alt="Marine Sensing Lab Logo" class="w-auto h-80 md:w-auto md:h-80">
+        <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
+          <img src="/images/Haifa_logo_rgb_dark_faculty_marine_sciences_english.png" alt="Haifa University" class="h-80 w-auto">
+        </a>
+      </div>
       
       <div v-if="heroData?.features" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-left">
         <div v-for="feature in heroData.features" :key="feature.title">
