@@ -17,9 +17,9 @@
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/#team" class="nav-link">Team</a>
           <a href="/#contact" class="nav-link">Contact</a>
-          <div class="ml-8 pl-8 border-l border-gray-300">
+          <div class="ml-8 pl-8">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/images/haifa_university_logo_clean.png" alt="Haifa University" class="h-12 w-auto">
+              <img src="/images/Haifa_logo_official_apperence_dark_english.png" alt="Haifa University" class="h-50 w-auto">
             </a>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
           <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/images/Haifa_logo_rgb_dark_faculty_marine_sciences_english.png" alt="Haifa University" class="h-14 w-auto">
+              <img src="/images/Haifa_logo_secondary_logo_dark_english.png" alt="Haifa University" class="h-14 w-auto">
             </a>
           </div>
         </div>
