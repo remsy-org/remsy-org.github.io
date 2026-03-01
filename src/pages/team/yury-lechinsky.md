@@ -4,7 +4,7 @@ title: Yury Lechinsky
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Ecology of inland water bodies
+research: Ecology and dynamics of inland water bodies
 advisor: Jointly supervised with Dr. Gideon Gal
 photo: /images/team/yury-lechinsky.jpg
 author: Remote Sensing of Marine Systems

@@ -4,7 +4,7 @@ title: Yaron Pitkovosky
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Ecology of inland water bodies
+research: Ecology and dynamics of inland water bodies
 advisor: Jointly supervised with Prof. Anna Brook
 email: ypitkovsky@mekorot.co.il
 photo: /images/team/yaron-pitkovsky.jpg

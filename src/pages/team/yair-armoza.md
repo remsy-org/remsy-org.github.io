@@ -4,7 +4,7 @@ title: Yair Armoza
 position: M.Sc. Student
 description: M.Sc. Student
 role: msc-student
-research: Dynamics of inland water bodies
+research: Ecology and dynamics of inland water bodies
 advisor: Jointly supervised with Dr. Yael Amitai
 email: yarmoza97@gmail.com
 photo: /images/team/yair-armoza.jpg
