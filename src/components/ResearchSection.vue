@@ -203,7 +203,7 @@ const OceanCirculationIcon = {
 const researchAreas = [
   {
     id: 1,
-    title: 'Plankton biogeography and spatial patterning',
+    title: 'Plankton dynamics, biogeography and spatial patterning',
     description: '',
     gradient: 'from-blue-500 to-cyan-500',
     icon: PhytoplanktonIcon,
