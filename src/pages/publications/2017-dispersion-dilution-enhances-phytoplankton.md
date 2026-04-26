@@ -11,5 +11,5 @@ pdf: true
 openAccess: true
 abstract: ""
 keywords: ["phytoplankton blooms", "dispersion", "dilution", "nutrient limitation", "ocean dynamics"]
-featured: true
+featured: false
 ---

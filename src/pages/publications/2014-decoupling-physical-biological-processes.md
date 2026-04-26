@@ -11,5 +11,5 @@ pdf: true
 openAccess: false
 abstract: ""
 keywords: ["viruses", "algal bloom", "mesoscale", "physical-biological coupling", "marine ecology"]
-featured: true
+featured: false
 ---

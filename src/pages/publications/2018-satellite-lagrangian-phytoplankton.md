@@ -11,5 +11,5 @@ pdf: true
 openAccess: false
 abstract: ""
 keywords: ["satellite observations", "Lagrangian analysis", "phytoplankton dynamics", "ocean dynamics"]
-featured: true
+featured: false
 ---
