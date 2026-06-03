@@ -6,7 +6,7 @@ description: M.Sc. Student
 role: msc-student
 research: Optical sensing of the sea surface microlayer
 advisor: Jointly supervised with Dr. Aviv Solodoch
-email: jeanp.obeid@gmail.com
+email: moshehuber@gmail.com
 photo: /images/team/moshe-huber.jpg
 author: Marine Remote Sensing Lab
 date: 2026-03-01
