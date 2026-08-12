@@ -1,6 +1,6 @@
 ---
 title: "Evidence for kilometer-scale biophysical features at the Gulf Stream front"
-authors: "Gray P., I. Savelyev, N. Cassar, M. Levy, E. Boss, Y. Lehahn, G. Bourdin, K. A. Smith, A. Windle, J. Gronniger, S. Floge, D. E. Hunt, G. Silsbe, Z. I. Johnson, D. W. Johnston"
+authors: "Gray, P., Savelyev, I., Cassar, N., Levy, M., Boss, E., Lehahn, Y., Bourdin, G., Smith, K. A., Windle, A., Gronniger, J., Floge, S., Hunt, D. E., Silsbe, G., Johnson, Z. I., & Johnston, D. W."
 journal: "Journal of Geophysical Research: Oceans"
 volume: "129"
 pages: "e2023JC020526"

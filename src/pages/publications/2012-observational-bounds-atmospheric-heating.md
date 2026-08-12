@@ -1,6 +1,6 @@
 ---
 title: "Observational bounds on atmospheric heating by aerosol absorption: Radiative signature of transatlantic dust"
-authors: "Davidi, A., I. Koren, A. Kostinsky, Y. Lehahn"
+authors: "Davidi, A., Koren, I., Kostinsky, A., & Lehahn, Y."
 journal: "Geophysical Research Letters"
 volume: "39"
 pages: "L04803"

@@ -1,6 +1,6 @@
 ---
 title: "Segmentation and tracking of marine cellular clouds observed by geostationary satellites"
-authors: "Gufan, A., Y. Lehahn, E. Fredj, C. Price, R. Kurchin, I. Koren"
+authors: "Gufan, A., Lehahn, Y., Fredj, E., Price, C., Kurchin, R., & Koren, I."
 journal: "International Journal of Remote Sensing"
 volume: "37"
 pages: "1055-1068"

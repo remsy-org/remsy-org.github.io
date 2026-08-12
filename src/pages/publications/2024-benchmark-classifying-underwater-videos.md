@@ -1,6 +1,6 @@
 ---
 title: "A benchmark and a multi-stage pipeline for classifying underwater videos at scale"
-authors: "Larsen, S. T., L. E. Rasmussen, D. Jasulaitis, T. Sagi, K. Hose, Y. Lehahn"
+authors: "Larsen, S. T., Rasmussen, L. E., Jasulaitis, D., Sagi, T., Hose, K., & Lehahn, Y."
 journal: "International Journal of Image and Data Fusion"
 volume: ""
 pages: "1-20"

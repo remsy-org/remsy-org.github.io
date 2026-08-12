@@ -1,6 +1,6 @@
 ---
 title: "Global potential of offshore and shallow waters macroalgal biorefineries to provide for food, chemicals and energy: feasibility and sustainability"
-authors: "Lehahn, Y., K. N. Ingle, A. Golberg"
+authors: "Lehahn, Y., Ingle, K. N., & Golberg, A."
 journal: "Algal Research"
 volume: "17"
 pages: "150-160"

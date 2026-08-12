@@ -1,6 +1,6 @@
 ---
 title: "Infection of bloom-forming phytoplankton by aerosolized marine viruses"
-authors: "Sharoni, S., M. Trainic, D. Schatz, Y. Lehahn, J. M. Flores, S. Ben Dor, Y. Rudich, I. Koren, A. Vardi"
+authors: "Sharoni, S., Trainic, M., Schatz, D., Lehahn, Y., Flores, J. M., Ben Dor, S., Rudich, Y., Koren, I., & Vardi, A."
 journal: "Proceedings of the National Academy of Sciences USA"
 volume: "112"
 pages: "6643-6647"

@@ -1,6 +1,6 @@
 ---
 title: "Coccolithovirus facilitation of carbon export in the North Atlantic"
-authors: "Laber C.P., J.E. Hunter, F. Carvalho, J.R. Collins, E.J. Hunter, B.M. Schieler, E. Boss, K. More, M. Frada, K. Thamatrakoln, C.M. Brown, L. Haramaty, J. Ossolinski, H. Fredricks, J.I. Nissimov, R. Vandzura, U. Sheyn, Y. Lehahn, R.J. Chant, A.M. Martins, M.J.L. Coolen, G.R. DiTullio, B.A.S. Van Mooy, K.D. Bidle"
+authors: "Laber, C.P., Hunter, J.E., Carvalho, F., Collins, J.R., Hunter, E.J., Schieler, B.M., Boss, E., More, K., Frada, M., Thamatrakoln, K., Brown, C.M., Haramaty, L., Ossolinski, J., Fredricks, H., Nissimov, J.I., Vandzura, R., Sheyn, U., Lehahn, Y., Chant, R.J., Martins, A.M., Coolen, M.J.L., DiTullio, G.R., Van Mooy, B.A.S., & Bidle, K.D."
 journal: "Nature Microbiology"
 volume: "3"
 pages: "537-547"

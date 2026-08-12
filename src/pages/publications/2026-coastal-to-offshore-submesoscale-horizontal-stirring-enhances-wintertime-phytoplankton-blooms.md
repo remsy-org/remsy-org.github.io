@@ -1,6 +1,6 @@
 ---
 title: "Coastal-to-offshore submesoscale horizontal stirring enhances wintertime phytoplankton blooms in the ultra-oligotrophic Eastern Mediterranean Sea"
-authors: "Fadida, Y., V. Verma, R. Barkan, E. Biton, A. Solodoch, Y. Lehahn"
+authors: "Fadida, Y., Verma, V., Barkan, R., Biton, E., Solodoch, A., & Lehahn, Y."
 journal: "Ocean Science"
 year: "2026"
 doi: "https://doi.org/10.5194/os-22-329-2026"

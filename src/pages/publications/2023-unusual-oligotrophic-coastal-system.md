@@ -1,6 +1,6 @@
 ---
 title: "Nutrient dynamics across the Israeli coastal shelf: An unusual oligotrophic coastal system"
-authors: "Ben-Ezra, T., T. Reich, A. Tsemel, I. Berman-Frank, Y. Lehahn, D. Sher, Y. Suari, M.D. Krom"
+authors: "Ben-Ezra, T., Reich, T., Tsemel, A., Berman-Frank, I., Lehahn, Y., Sher, D., Suari, Y., & Krom, M.D."
 journal: "Continental Shelf Research"
 volume: "266"
 pages: "105103"

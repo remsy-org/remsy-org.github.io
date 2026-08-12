@@ -1,6 +1,6 @@
 ---
 title: "Monitoring jellyfish outbreaks along Israel's Mediterranean coast using digital footprints"
-authors: "Levy, T., A. Ghermandi, Y. Lehahn, D. Edelist, D. L. Angel"
+authors: "Levy, T., Ghermandi, A., Lehahn, Y., Edelist, D., & Angel, D. L."
 journal: "Science of The Total Environment"
 volume: "922"
 pages: ""

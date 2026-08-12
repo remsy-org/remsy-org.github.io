@@ -1,6 +1,6 @@
 ---
 title: "Discernible rhythms in the spatio/temporal distributions of transatlantic dust"
-authors: "Ben-Ami, Y., I. Koren, O. Altaratz, A. B. Kostinsky, Y. Lehahn"
+authors: "Ben-Ami, Y., Koren, I., Altaratz, O., Kostinsky, A. B., & Lehahn, Y."
 journal: "Atmospheric Chemistry and Physics"
 volume: "12"
 pages: "2253-2262"

@@ -1,6 +1,6 @@
 ---
 title: "Metagenomic analysis reveals unusually high incidence of proteorhodopsin genes in the ultraoligotrophic Eastern Mediterranean Sea"
-authors: "Dubinsky V., M. Haber, Y. Lehahn, K. Saurav, I. Burgsdorf, A. Malik, D. Sher, D. Aharonovich, L. Steindler"
+authors: "Dubinsky, V., Haber, M., Lehahn, Y., Saurav, K., Burgsdorf, I., Malik, A., Sher, D., Aharonovich, D., & Steindler, L."
 journal: "Environmental Microbiology"
 volume: "19"
 pages: "1077-1090"

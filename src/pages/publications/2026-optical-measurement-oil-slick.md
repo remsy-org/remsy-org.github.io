@@ -1,6 +1,6 @@
 ---
 title: "Optical Measurement of Oil Slick Thickness Using Active Interferometry"
-authors: "Obeid, J-P., Y. Lehahn, A. Solodoch, E. Rahav, T. Treibitz, A. Shalabney"
+authors: "Obeid, J-P., Lehahn, Y., Solodoch, A., Rahav, E., Treibitz, T., & Shalabney, A."
 journal: "Frontiers in Marine Science"
 year: "2026"
 doi: "https://doi.org/10.3389/fmars.2026.1731085"

@@ -1,6 +1,6 @@
 ---
 title: "Directional swimming patterns in jellyfish aggregations"
-authors: "Malul, D., H. Berman,A. Solodoch,  O. Tal, N. Barak, G. Mizrahi, I. Berenshtein, Y. Toledo, T. Lotan, D. Sher, U. Shavit, Y. Lehahn"
+authors: "Malul, D., Berman, H., Solodoch, A., Tal, O., Barak, N., Mizrahi, G., Berenshtein, I., Toledo, Y., Lotan, T., Sher, D., Shavit, U., & Lehahn, Y."
 journal: "Current Biology"
 volume: "34"
 pages: "4033-4038.e5"

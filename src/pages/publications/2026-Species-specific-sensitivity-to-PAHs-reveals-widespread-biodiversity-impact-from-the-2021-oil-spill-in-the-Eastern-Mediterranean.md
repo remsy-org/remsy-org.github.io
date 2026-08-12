@@ -1,6 +1,6 @@
 ---
 title: "Species-specific sensitivity to PAHs reveals widespread biodiversity impact from the 2021 oil spill in the Eastern Mediterranean"
-authors: "Lapidot O., Perlin N., Biton E., Khain P., Levi Y., Alpert P., Ramon D., Stern N., Rilov G., Guy-Haim T., Lehahn Y., B. Paris C. B., Berenshtein I."
+authors: "Lapidot, O., Perlin, N., Biton, E., Khain, P., Levi, Y., Alpert, P., Ramon, D., Stern, N., Rilov, G., Guy-Haim, T., Lehahn, Y., Paris, C. B., & Berenshtein, I."
 journal: "Marine Pollution Bulletin"
 year: "2026"
 doi: "https://doi.org/10.5194/egusphere-2026-1507"

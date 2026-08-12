@@ -1,6 +1,6 @@
 ---
 title: "Decoupling oceanic and atmospheric factors affecting aerosol loading over a cluster of mesoscale North Atlantic eddies"
-authors: "Lehahn, Y., I. Koren, Y. Rudich, K. D. Bidle, M. Trainic, M. Flores, S. Sharoni, A. Vardi"
+authors: "Lehahn, Y., Koren, I., Rudich, Y., Bidle, K. D., Trainic, M., Flores, M., Sharoni, S., & Vardi, A."
 journal: "Geophysical Research Letters"
 volume: "41"
 pages: "4075-4081"

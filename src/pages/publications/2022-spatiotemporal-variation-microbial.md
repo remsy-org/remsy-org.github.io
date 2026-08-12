@@ -1,6 +1,6 @@
 ---
 title: "Spatiotemporal Variation of Microbial Communities in the Ultra-Oligotrophic Eastern Mediterranean Sea"
-authors: "Haber, M., D. Roth Rosenberg, M. Lalzar, I. Burgsdorf, K. Saurav, R. Lionheart, Y. Lehahn, D. Aharonovich, L. Gómez-Consarnau, D. Sher, M. D. Krom, L. Steindler"
+authors: "Haber, M., Roth Rosenberg, D., Lalzar, M., Burgsdorf, I., Saurav, K., Lionheart, R., Lehahn, Y., Aharonovich, D., Gómez-Consarnau, L., Sher, D., Krom, M. D., & Steindler, L."
 journal: "Frontiers in Microbiology"
 volume: "13"
 pages: "867694"

@@ -1,6 +1,6 @@
 ---
 title: "Emergent patterns of patchiness differ between physical and planktonic properties in the ocean"
-authors: "Gray, P. C.,  E. Boss, G. Bourdin, Tara Pacific Consortium, Mission Microbiomes AtlantECO, Y. Lehahn"
+authors: "Gray, P. C., Boss, E., Bourdin, G., Tara Pacific Consortium, Mission Microbiomes AtlantECO, & Lehahn, Y."
 journal: "Nature Communications"
 volume: "63"
 year: 2025

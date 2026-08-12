@@ -1,6 +1,6 @@
 ---
 title: "Cross-Shelf Material Transport by Boundary-Current Shedding of a Submesoscale Deep-Reaching Cyclone"
-authors: "Solodoch, A., H. Gildor, Y. Toledo, R. Barkan, V. Verma, Y. Fadida, Y. Lehahn"
+authors: "Solodoch, A., Gildor, H., Toledo, Y., Barkan, R., Verma, V., Fadida, Y., & Lehahn, Y."
 journal: "Submitted"
 year: "Submitted"
 doi: ""

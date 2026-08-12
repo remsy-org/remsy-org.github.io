@@ -1,6 +1,6 @@
 ---
 title: "Artificial intelligence for ocean science data integration: current state, gaps, and way forward"
-authors: "Sagi T., Y. Lehahn, K. Bar"
+authors: "Sagi, T., Lehahn, Y., & Bar, K."
 journal: "Elementa: Science of the Anthropocene"
 volume: "8"
 pages: "21"

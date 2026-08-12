@@ -1,6 +1,6 @@
 ---
 title: "Surface waves spectrum measurement from UAV nadir video"
-authors: "Solodoch, A., Y. Toledo, V. Grigorieva, Y. Lehahn"
+authors: "Solodoch, A., Toledo, Y., Grigorieva, V., & Lehahn, Y."
 journal: "IEEE Transactions on Geoscience and Remote Sensing"
 volume: "63"
 year: 2025

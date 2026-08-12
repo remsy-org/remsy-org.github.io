@@ -1,6 +1,6 @@
 ---
 title: "Marine aerosol as a source for endotoxins in the coastal area"
-authors: "Lang-Yona, N., Y. Lehahn, B. Herut, N. Burshtein, Y. Rudich"
+authors: "Lang-Yona, N., Lehahn, Y., Herut, B., Burshtein, N., & Rudich, Y."
 journal: "Science of The Total Environment"
 volume: "499"
 pages: "311-318"

@@ -1,6 +1,6 @@
 ---
 title: "Microbial-mediated recycling constrains the contribution of primary production to export flux in an oligotrophic system"
-authors: "Bar, T., Alkalay, R., Soukhanov, M., Belkin, N., Lehahn, Y., Weinstein, Y., Katz, T., Herut, B., Rahav, E. and Berman-Frank, I."
+authors: "Bar, T., Alkalay, R., Soukhanov, M., Belkin, N., Lehahn, Y., Weinstein, Y., Katz, T., Herut, B., Rahav, E., & Berman-Frank, I."
 journal: "Limnol Oceanogr"
 year: "2026"
 doi: "https://doi.org/10.1002/lno.70309"

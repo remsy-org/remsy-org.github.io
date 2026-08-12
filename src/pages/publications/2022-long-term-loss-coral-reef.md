@@ -1,6 +1,6 @@
 ---
 title: "Long-term loss of coral reef in the Gulf of Aqaba estimated from historical aerial images"
-authors: "Topel E., Y. Lehahn"
+authors: "Topel, E., & Lehahn, Y."
 journal: "Remote Sensing"
 volume: "14"
 pages: "6305"

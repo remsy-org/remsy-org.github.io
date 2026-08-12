@@ -1,6 +1,6 @@
 ---
 title: "Surface circulation of the eastern Mediterranean Levantine basin: Insights from analyzing 14 years of satellite altimetry data"
-authors: "Amitai, Y., Y. Lehahn, A. Lazar, E. Heifetz"
+authors: "Amitai, Y., Lehahn, Y., Lazar, A., & Heifetz, E."
 journal: "Journal of Geophysical Research: Oceans"
 volume: "115"
 pages: "C10058"

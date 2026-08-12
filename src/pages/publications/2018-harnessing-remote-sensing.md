@@ -1,6 +1,6 @@
 ---
 title: "Harnessing remote sensing to address critical science questions on ocean-atmosphere interactions"
-authors: "Neukermans G., T. Harmel, M. Galí, N. Rudorff, J. Chowdhary, O. Dubovik, C. Hostetler, Y. Hu, C. Jamet, K. Knobelspiesse, Y. Lehahn, P. Litvinov, A.M. Sayer, B. Ward, E. Boss, I. Koren, L.A. Miller"
+authors: "Neukermans, G., Harmel, T., Galí, M., Rudorff, N., Chowdhary, J., Dubovik, O., Hostetler, C., Hu, Y., Jamet, C., Knobelspiesse, K., Lehahn, Y., Litvinov, P., Sayer, A.M., Ward, B., Boss, E., Koren, I., & Miller, L.A."
 journal: "Elementa: Science of the Anthropocene"
 volume: "6"
 pages: "46"

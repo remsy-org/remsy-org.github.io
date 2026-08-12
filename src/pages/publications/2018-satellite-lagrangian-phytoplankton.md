@@ -1,6 +1,6 @@
 ---
 title: "A satellite-based Lagrangian view on phytoplankton dynamics"
-authors: "Lehahn Y., F. d'Ovidio, I. Koren"
+authors: "Lehahn, Y., d'Ovidio, F., & Koren, I."
 journal: "Annual Review of Marine Science"
 volume: "10"
 pages: "99-119"

@@ -1,6 +1,6 @@
 ---
 title: "Co-variability of smoke and fire in the Amazon basin"
-authors: "Mishra A., Y. Lehahn, Y. Rudich, I. Koren"
+authors: "Mishra, A., Lehahn, Y., Rudich, Y., & Koren, I."
 journal: "Atmospheric Environment"
 volume: "109"
 pages: "97-104"

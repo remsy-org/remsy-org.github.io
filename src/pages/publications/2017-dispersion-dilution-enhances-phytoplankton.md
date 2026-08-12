@@ -1,6 +1,6 @@
 ---
 title: "Dispersion/dilution enhances phytoplankton blooms in nutrient-limited waters"
-authors: "Lehahn Y., I. Koren, S. Sharoni, F. d'Ovidio, A. Vardi, E. Boss"
+authors: "Lehahn, Y., Koren, I., Sharoni, S., d'Ovidio, F., Vardi, A., & Boss, E."
 journal: "Nature Communications"
 volume: "8"
 pages: "14868"

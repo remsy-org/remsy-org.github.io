@@ -1,6 +1,6 @@
 ---
 title: "Temporal-Scale Analysis of Environmental Controls on Sea Spray Aerosol Production Over the South Pacific Gyre"
-authors: "Dror T., Y. Lehahn, O. Altaratz, I. Koren"
+authors: "Dror, T., Lehahn, Y., Altaratz, O., & Koren, I."
 journal: "Geophysical Research Letters"
 volume: "45"
 pages: "8637-8646"

@@ -1,6 +1,6 @@
 ---
 title: "Estimating the maritime component of aerosol optical depth and its dependency on surface wind speed using satellite data"
-authors: "Lehahn, Y., I. Koren, E. Boss, Y. Ben-Ami, O. Altaratz"
+authors: "Lehahn, Y., Koren, I., Boss, E., Ben-Ami, Y., & Altaratz, O."
 journal: "Atmospheric Chemistry and Physics"
 volume: "10"
 pages: "6711-6720"

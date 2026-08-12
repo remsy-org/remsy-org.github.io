@@ -1,6 +1,6 @@
 ---
 title: "Shallow Convective Cloud Field Lifetime as a Key Factor for Evaluating Aerosol Effects"
-authors: "Dagan G., I. Koren, O. Altaratz, Y. Lehahn"
+authors: "Dagan, G., Koren, I., Altaratz, O., & Lehahn, Y."
 journal: "iScience"
 volume: "10"
 pages: "192-202"

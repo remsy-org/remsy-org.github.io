@@ -1,6 +1,6 @@
 ---
 title: "Patterns of exposure to SARS-CoV-2 carriers manifest multiscale association between urban landscape morphology and human activity"
-authors: "Cotlier, G. I., Y. Lehahn, D. Chelouche"
+authors: "Cotlier, G. I., Lehahn, Y., & Chelouche, D."
 journal: "Scientific Reports"
 volume: "11"
 pages: "22183"

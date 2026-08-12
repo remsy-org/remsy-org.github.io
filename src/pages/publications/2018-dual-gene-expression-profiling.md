@@ -1,6 +1,6 @@
 ---
 title: "Dual gene expression profiling provides insights into the role of virus-induced carbon export during a phytoplankton bloom"
-authors: "Sheyn, U., S. Rosenwasser, Y. Lehahn, N. Barak-Gavish, K. D. Bidle, I. Koren, D. Schatza, A. Vardi"
+authors: "Sheyn, U., Rosenwasser, S., Lehahn, Y., Barak-Gavish, N., Bidle, K. D., Koren, I., Schatza, D., & Vardi, A."
 journal: "The ISME Journal"
 volume: "12"
 pages: "485-499"

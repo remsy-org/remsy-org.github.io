@@ -1,6 +1,6 @@
 ---
 title: "Stirring of the northeast Atlantic spring bloom: A Lagrangian analysis based on multi-satellite data"
-authors: "Lehahn, Y., F. d'Ovidio, M. Lévy, E. Heifetz"
+authors: "Lehahn, Y., d'Ovidio, F., Lévy, M., & Heifetz, E."
 journal: "Journal of Geophysical Research: Oceans"
 volume: "112"
 pages: "C08005"

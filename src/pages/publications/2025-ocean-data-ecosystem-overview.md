@@ -1,6 +1,6 @@
 ---
 title: "An overview of the ocean data ecosystem"
-authors: "Bloch Haimson, M., Y. Lehahn, T. Sagi"
+authors: "Bloch Haimson, M., Lehahn, Y., & Sagi, T."
 journal: "Ocean Science"
 volume: 21
 year: "2025"

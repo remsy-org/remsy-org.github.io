@@ -1,6 +1,6 @@
 ---
 title: "Long-range transport of a quasi-isolated chlorophyll patch by an Agulhas ring"
-authors: "Lehahn, Y., F. d'Ovidio, M. Lévy, Y. Amitai, E. Heifetz"
+authors: "Lehahn, Y., d'Ovidio, F., Lévy, M., Amitai, Y., & Heifetz, E."
 journal: "Geophysical Research Letters"
 volume: "38"
 pages: "L16610"

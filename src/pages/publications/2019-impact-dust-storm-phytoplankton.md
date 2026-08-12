@@ -1,6 +1,6 @@
 ---
 title: "Impact of dust storm on phytoplankton bloom over the Arabian Sea: A case study during March 2012"
-authors: "Bali, K., A. K. Mishra, S. Singh, S. Chandra S, Y. Lehahn"
+authors: "Bali, K., Mishra, A. K., Singh, S., Chandra, S., & Lehahn, Y."
 journal: "Environmental Science and Pollution Research International"
 volume: "26"
 pages: "11940-11950"

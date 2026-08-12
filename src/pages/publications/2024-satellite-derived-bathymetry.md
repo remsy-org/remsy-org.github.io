@@ -1,6 +1,6 @@
 ---
 title: "Satellite derived bathymetry in support of maritime archaeological research - VENμS imagery of Caesarea Maritima as a case study"
-authors: "Diaz, G., Y. Lehahn, E. Nantet"
+authors: "Diaz, G., Lehahn, Y., & Nantet, E."
 journal: "Remote Sensing"
 volume: "16"
 pages: "1218"

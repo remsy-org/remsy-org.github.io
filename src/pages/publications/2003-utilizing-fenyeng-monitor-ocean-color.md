@@ -1,6 +1,6 @@
 ---
 title: "Utilizing FenYeng 1C (FY-1C) to monitor ocean color and water quality: A demonstration experiment in the Eastern Mediterranean"
-authors: "Blumberg, D.G., Y. Lehahn, Y. Z. Yaacobi"
+authors: "Blumberg, D. G., Lehahn, Y., & Yaacobi, Y. Z."
 journal: "International Journal of Remote Sensing"
 volume: "24"
 pages: "1393-1399"

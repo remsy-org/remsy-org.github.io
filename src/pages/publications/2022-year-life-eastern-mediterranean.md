@@ -1,6 +1,6 @@
 ---
 title: "A year in the life of the Eastern Mediterranean: Monthly dynamics of phytoplankton and bacterioplankton in an ultra-oligotrophic sea"
-authors: "Reich, T., T. Ben-Ezra, N. Belkin, A. Tsemel, D. Aharonovich, D. Roth-Rosenberg, S. Givati, O. Bialik, B. Herut, I. Berman-Frank, M. Frada, M. D. Krom, Y. Lehahn, E. Rahav, D. Sher"
+authors: "Reich, T., Ben-Ezra, T., Belkin, N., Tsemel, A., Aharonovich, D., Roth-Rosenberg, D., Givati, S., Bialik, O., Herut, B., Berman-Frank, I., Frada, M., Krom, M. D., Lehahn, Y., Rahav, E., & Sher, D."
 journal: "Deep Sea Research Part I: Oceanographic Research Papers"
 volume: "182"
 pages: "103720"

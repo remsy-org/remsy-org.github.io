@@ -1,6 +1,6 @@
 ---
 title: "Decoupling physical from biological processes to assess the impact of viruses on a mesoscale algal bloom"
-authors: "Lehahn, Y., I. Koren, D. Schatz, M. Frada, U. Sheyn, E. Boss, S. Efrati, Y. Rudich, K. Bidle, A. Vardi"
+authors: "Lehahn, Y., Koren, I., Schatz, D., Frada, M., Sheyn, U., Boss, E., Efrati, S., Rudich, Y., Bidle, K., & Vardi, A."
 journal: "Current Biology"
 volume: "24"
 pages: "2041-2046"

@@ -1,6 +1,6 @@
 ---
 title: "Effect of coarse marine aerosols on stratocumulus clouds"
-authors: "Lehahn, Y., I. Koren, O. Altaratz, A. B. Kostinsky"
+authors: "Lehahn, Y., Koren, I., Altaratz, O., & Kostinsky, A. B."
 journal: "Geophysical Research Letters"
 volume: "38"
 pages: "L20804"

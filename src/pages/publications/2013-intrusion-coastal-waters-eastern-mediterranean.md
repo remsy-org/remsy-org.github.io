@@ -1,6 +1,6 @@
 ---
 title: "Intrusion of coastal waters into the pelagic Eastern Mediterranean: in situ and satellite-based characterization"
-authors: "Efrati, S., Y. Lehahn, E. Rahav, N. Kress, B. Herut, I. Gertman, R. Goldman, T. Ozer, M. Lazar, E. Heifetz"
+authors: "Efrati, S., Lehahn, Y., Rahav, E., Kress, N., Herut, B., Gertman, I., Goldman, R., Ozer, T., Lazar, M., & Heifetz, E."
 journal: "Biogeosciences"
 volume: "10"
 pages: "3349-3357"

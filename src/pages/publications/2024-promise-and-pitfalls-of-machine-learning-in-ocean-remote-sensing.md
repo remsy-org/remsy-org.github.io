@@ -1,6 +1,6 @@
 ---
 title: "The Promise and Pitfalls of Machine Learning in Ocean Remote Sensing"
-authors: "Gray, P. C.,  E. Boss, J. X. Prochaska, H. Kerner, C. Begouen Demeaux, Y. Lehahn"
+authors: "Gray, P. C., Boss, E., Prochaska, J. X., Kerner, H., Begouen Demeaux, C., & Lehahn, Y."
 journal: "Oceanography"
 volume: "37"
 pages: 52-63
