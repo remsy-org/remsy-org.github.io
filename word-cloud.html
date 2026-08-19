@@ -221,22 +221,23 @@
     position: relative;
   }
 
-  .cloud-svg-wrap {
-    width: 100%;
-    aspect-ratio: 1200 / 660;
-    position: relative;
+  .cloud-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.3em 1em;
+    padding: 32px 24px;
+    overflow-x: hidden;
   }
-
-  svg.cloud { width: 100%; height: 100%; display: block; }
 
   .word {
     cursor: default;
-    paint-order: stroke fill;
-    stroke: var(--halo);
-    stroke-width: 5px;
-    stroke-linejoin: round;
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 1.15;
+    font-family: "Archivo", sans-serif;
     transition: opacity 0.2s ease, transform 0.2s ease;
-    transform-box: fill-box;
     transform-origin: center;
   }
   .word:hover, .word.is-focused { transform: scale(1.045); }
@@ -367,10 +368,8 @@
     <div class="legend" id="legend" role="group" aria-label="Filter"></div>
 
     <div class="cloud-card">
-      <div class="cloud-svg-wrap">
-        <svg class="cloud" id="cloud-svg" viewBox="0 0 1200 660" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Word cloud"></svg>
-        <div class="tooltip" id="tooltip"></div>
-      </div>
+      <div class="cloud-flow" id="cloud-flow" role="img" aria-label="Word cloud"></div>
+      <div class="tooltip" id="tooltip"></div>
     </div>
 
     <details class="table-wrap">
@@ -569,107 +568,69 @@
   }
 
   // ---------- layout ----------
-  const SVG_W = 1200, SVG_H = 660;
-  const svg = document.getElementById("cloud-svg");
+  // Words flow like text (flex-wrap) instead of being placed at absolute
+  // coordinates — every word is guaranteed to appear, however many there
+  // are or however long their labels get, with no collision search needed.
+  const cloudEl = document.getElementById("cloud-flow");
   const tooltip = document.getElementById("tooltip");
-  const wrap = document.querySelector(".cloud-svg-wrap");
+  const wrap = document.querySelector(".cloud-card");
 
-  function rectOverlap(a, b) {
-    return !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y);
+  const MIN_SIZE = 13, MAX_SIZE = 68;
+  const measureCanvas = document.createElement("canvas");
+  const measureCtx = measureCanvas.getContext("2d");
+
+  function sizeFor(count, minC, maxC) {
+    if (maxC === minC) return (MIN_SIZE + MAX_SIZE) / 2;
+    const safeC = Math.max(count, 1);
+    const t = (Math.log(safeC) - Math.log(Math.max(minC, 1))) / (Math.log(maxC) - Math.log(Math.max(minC, 1)));
+    return MIN_SIZE + Math.max(0, Math.min(1, t)) * (MAX_SIZE - MIN_SIZE);
+  }
+  function weightFor(size) {
+    return 400 + Math.round(500 * (size - MIN_SIZE) / (MAX_SIZE - MIN_SIZE));
   }
 
-  function layout(words) {
-    const sorted = [...words].sort((a, b) => b.count - a.count);
-    const counts = sorted.map(w => w.count);
-    const minC = Math.min(...counts), maxC = Math.max(...counts);
-    const minSize = 14, maxSize = 108;
-    const sizeFor = c => {
-      if (maxC === minC) return (minSize + maxSize) / 2;
-      const safeC = Math.max(c, 1);
-      const t = (Math.log(safeC) - Math.log(Math.max(minC, 1))) / (Math.log(maxC) - Math.log(Math.max(minC, 1)));
-      return minSize + Math.max(0, Math.min(1, t)) * (maxSize - minSize);
-    };
-    const weightFor = size => 400 + Math.round(500 * (size - minSize) / (maxSize - minSize));
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    const cx = SVG_W / 2, cy = SVG_H / 2;
-    const placed = [];
-
-    const minFontSize = 6;
-
-    sorted.forEach((w, i) => {
-      let fontSize = sizeFor(w.count);
-      let weight, boxW, boxH, ok = false, x = 0, y = 0;
-
-      // A word that can't find a non-overlapping spot at its "ideal" size
-      // shrinks and retries rather than silently vanishing from the cloud —
-      // long multi-word labels (institution names) hit this far more than
-      // short single-word topic/author terms.
-      while (true) {
-        weight = weightFor(fontSize);
-        ctx.font = `${weight} ${fontSize}px Archivo, sans-serif`;
-        const metrics = ctx.measureText(w.text);
-        const pad = 7;
-        boxW = metrics.width + pad * 2;
-        boxH = fontSize * 1.05 + pad;
-
-        let angle = (i * 0.61803398875) * Math.PI * 2;
-        let radius = 0;
-        const angleStep = 0.32;
-        const radiusStep = 2.6;
-        let attempts = 0;
-
-        while (!ok && attempts < 3000) {
-          x = cx + radius * Math.cos(angle) - boxW / 2;
-          y = cy + radius * Math.sin(angle) * 0.72 - boxH / 2;
-          const rect = { x, y, w: boxW, h: boxH };
-          if (x >= 4 && y >= 4 && x + boxW <= SVG_W - 4 && y + boxH <= SVG_H - 4 &&
-              !placed.some(p => rectOverlap(p, rect))) {
-            ok = true;
-          } else {
-            angle += angleStep;
-            radius += radiusStep;
-            attempts++;
-          }
-        }
-
-        if (ok || fontSize <= minFontSize) break;
-        fontSize = Math.max(minFontSize, fontSize * 0.85);
-      }
-
-      if (ok) {
-        placed.push({ x, y, w: boxW, h: boxH, word: w, fontSize, weight });
-      }
-    });
-    return placed;
+  // A long multi-word label (an institution name) at a large font size can
+  // be wider than the whole cloud — shrink it down to fit rather than let
+  // it overflow the card (and drag the page into horizontal scroll).
+  function fitToWidth(text, fontSize, weight, maxWidth) {
+    const floor = 9;
+    let size = fontSize;
+    while (size > floor) {
+      measureCtx.font = `${weight} ${size}px Archivo, sans-serif`;
+      if (measureCtx.measureText(text).width <= maxWidth) break;
+      size -= 1;
+    }
+    return size;
   }
 
-  function render(placed) {
+  function render(words) {
     const view = currentView();
-    svg.innerHTML = "";
-    placed.forEach((p) => {
-      const cat = catOf(view, p.word.category);
-      const el = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      el.textContent = p.word.text;
-      el.setAttribute("x", p.x + p.w / 2);
-      el.setAttribute("y", p.y + p.h / 2 + p.fontSize * 0.36);
-      el.setAttribute("text-anchor", "middle");
-      el.setAttribute("font-size", p.fontSize.toFixed(1));
-      el.setAttribute("font-weight", p.weight);
-      el.setAttribute("font-family", "Archivo, sans-serif");
-      el.setAttribute("fill", catColor(cat));
-      el.setAttribute("tabindex", "0");
+    const counts = words.map(w => w.count);
+    const minC = Math.min(...counts), maxC = Math.max(...counts);
+    const sorted = [...words].sort((a, b) => a.text.localeCompare(b.text));
+    const maxWidth = Math.max(160, cloudEl.clientWidth - 48);
+
+    cloudEl.innerHTML = "";
+    sorted.forEach((w) => {
+      const cat = catOf(view, w.category);
+      let fontSize = sizeFor(w.count, minC, maxC);
+      let weight = weightFor(fontSize);
+      fontSize = fitToWidth(w.text, fontSize, weight, maxWidth);
+      weight = weightFor(fontSize);
+
+      const el = document.createElement("span");
+      el.textContent = w.text;
+      el.style.fontSize = fontSize.toFixed(1) + "px";
+      el.style.fontWeight = weight;
+      el.style.color = catColor(cat);
+      el.tabIndex = 0;
       el.classList.add("word", "enter");
       el.style.animationDelay = (Math.random() * 0.35) + "s";
-      el.dataset.category = p.word.category;
-
-      const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
-      titleEl.textContent = view.a11yLabel(p.word);
-      el.appendChild(titleEl);
+      el.dataset.category = w.category;
+      el.setAttribute("aria-label", view.a11yLabel(w));
 
       const show = () => {
-        tooltip.innerHTML = view.tooltip(p.word, cat);
+        tooltip.innerHTML = view.tooltip(w, cat);
         const wrapRect = wrap.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
         tooltip.style.left = (elRect.left - wrapRect.left + elRect.width / 2) + "px";
@@ -684,7 +645,7 @@
       el.addEventListener("focus", show);
       el.addEventListener("blur", hide);
 
-      svg.appendChild(el);
+      cloudEl.appendChild(el);
     });
   }
 
@@ -702,8 +663,7 @@
 
   function renderCloud() {
     const view = currentView();
-    const placed = layout(view.data);
-    render(placed);
+    render(view.data);
     buildTable(view.data);
   }
 
@@ -745,6 +705,8 @@
     init();
   }
 
+  // Re-fit long labels to the container width when it changes (e.g. viewport
+  // resize) — short words already reflow for free via flex-wrap.
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
