@@ -1,0 +1,40 @@
+name: Update publication word clouds
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/pages/publications/**'
+      - 'src/pages/team/**'
+      - 'scripts/generate-word-cloud.mjs'
+  workflow_dispatch:
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.20.8'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Regenerate word cloud data
+        run: npm run word-cloud
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update publication word clouds'
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+          file_pattern: public/word-cloud.html

@@ -1,0 +1,700 @@
+<title>Remsy Word Cloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    color-scheme: light;
+    --surface-0: #eef2ef;
+    --surface-1: #f6f8f6;
+    --surface-2: #ffffff;
+    --border: #d6ddd8;
+    --text-primary: #0e1a1c;
+    --text-secondary: #52625f;
+    --text-muted: #8b9793;
+    --accent-blue: #2a78d6;
+    --accent-orange: #eb6834;
+    --accent-aqua: #1baf7a;
+    --halo: #f6f8f6;
+    --shadow: 0 1px 2px rgba(14, 26, 28, 0.06), 0 8px 24px rgba(14, 26, 28, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-0: #0a1113;
+      --surface-1: #0e1719;
+      --surface-2: #131e21;
+      --border: #223032;
+      --text-primary: #eef4f1;
+      --text-secondary: #9fb0ac;
+      --text-muted: #6d7d79;
+      --accent-blue: #3987e5;
+      --accent-orange: #d95926;
+      --accent-aqua: #199e70;
+      --halo: #0e1719;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-0: #0a1113;
+    --surface-1: #0e1719;
+    --surface-2: #131e21;
+    --border: #223032;
+    --text-primary: #eef4f1;
+    --text-secondary: #9fb0ac;
+    --text-muted: #6d7d79;
+    --accent-blue: #3987e5;
+    --accent-orange: #d95926;
+    --accent-aqua: #199e70;
+    --halo: #0e1719;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--surface-0);
+    color: var(--text-primary);
+    font-family: "Archivo", -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 28px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* header */
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow a:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.06;
+    margin: 0;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+
+  .subtitle {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  /* stat row */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .stat {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 13px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* tab switcher */
+  .tabs {
+    display: inline-flex;
+    gap: 3px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3px;
+    width: fit-content;
+  }
+  .tab {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .tab[aria-selected="true"] {
+    background: var(--surface-0);
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .tab:hover { color: var(--text-primary); }
+  .tab:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+  /* legend / filter */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .legend-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+
+  .chip {
+    font-family: "Archivo", sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 14px 7px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+  }
+  .chip:hover { border-color: var(--text-secondary); }
+  .chip[aria-pressed="false"].is-inactive { opacity: 0.45; }
+  .chip:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* cloud card */
+  .cloud-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 8px;
+    position: relative;
+  }
+
+  .cloud-svg-wrap {
+    width: 100%;
+    aspect-ratio: 1200 / 660;
+    position: relative;
+  }
+
+  svg.cloud { width: 100%; height: 100%; display: block; }
+
+  .word {
+    cursor: default;
+    paint-order: stroke fill;
+    stroke: var(--halo);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .word:hover, .word.is-focused { transform: scale(1.045); }
+  .word.is-dimmed { opacity: 0.16; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .word { transition: none; }
+    .word.enter { animation: none !important; opacity: 1 !important; }
+  }
+
+  @keyframes wordIn {
+    from { opacity: 0; transform: translateY(4px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .word.enter { animation: wordIn 0.5s cubic-bezier(.2,.7,.3,1) both; }
+
+  /* tooltip */
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--text-primary);
+    color: var(--surface-1);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 8px 11px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translate(-50%, -100%);
+    transition: opacity 0.12s ease;
+    white-space: nowrap;
+    z-index: 5;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .tt-title { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 13px; }
+  .tooltip .tt-cat { display: flex; align-items: center; gap: 6px; margin-top: 2px; color: var(--surface-2, #eee); opacity: 0.85; }
+  .tooltip .tt-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* table */
+  details.table-wrap {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 4px 4px 0;
+  }
+  details.table-wrap[open] { padding-bottom: 4px; }
+
+  summary.table-summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+  }
+  summary.table-summary::-webkit-details-marker { display: none; }
+  summary.table-summary::after {
+    content: "+";
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+  }
+  details[open] summary.table-summary::after { content: "\2212"; }
+  summary.table-summary:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: -2px; }
+
+  .table-scroll { overflow-x: auto; padding: 0 12px 16px; }
+
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+    font-size: 13.5px;
+  }
+  table.data th, table.data td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  table.data td.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  table.data td.word-cell { font-weight: 600; }
+  table.data .cat-cell { display: inline-flex; align-items: center; gap: 7px; color: var(--text-secondary); font-size: 13px; }
+
+  /* footer */
+  footer {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    max-width: 74ch;
+  }
+  footer a { color: var(--text-secondary); }
+  footer strong { color: var(--text-secondary); font-weight: 600; }
+  footer p { margin: 0 0 10px; }
+  footer p:last-child { margin-bottom: 0; }
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow"><a href="https://remsy.org" target="_blank" rel="noopener">remsy.org</a> · Marine Remote Sensing Lab</div>
+    <h1 id="view-title"></h1>
+    <p class="subtitle" id="view-subtitle"></p>
+    <div class="stats" id="view-stats"></div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Choose word cloud">
+    <button type="button" class="tab" role="tab" id="tab-topics" aria-controls="view-panel" aria-selected="true" data-view="topics">Topics</button>
+    <button type="button" class="tab" role="tab" id="tab-authors" aria-controls="view-panel" aria-selected="false" data-view="authors">Authors</button>
+  </div>
+
+  <div id="view-panel" role="tabpanel" style="display:contents;">
+
+    <div class="legend" id="legend" role="group" aria-label="Filter"></div>
+
+    <div class="cloud-card">
+      <div class="cloud-svg-wrap">
+        <svg class="cloud" id="cloud-svg" viewBox="0 0 1200 660" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Word cloud"></svg>
+        <div class="tooltip" id="tooltip"></div>
+      </div>
+    </div>
+
+    <details class="table-wrap">
+      <summary class="table-summary">
+        <span id="table-summary-label">View full list as a table</span>
+      </summary>
+      <div class="table-scroll">
+        <table class="data" id="data-table">
+          <thead id="table-head"></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </details>
+
+  </div>
+
+  <footer id="footer-topics">
+    <p id="methodology-topics"></p>
+    <p id="methodology-authors"></p>
+  </footer>
+
+</div>
+
+<script>
+  // GENERATED:DATA:START — produced by scripts/generate-word-cloud.mjs, do not hand-edit
+  const TOPIC_WORDS = [{"text":"sea","count":71,"category":"Ocean Physics & Atmosphere","docFreq":25},{"text":"ocean","count":62,"category":"Ocean Physics & Atmosphere","docFreq":24},{"text":"aerosol","count":61,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"marine","count":59,"category":"Ocean Physics & Atmosphere","docFreq":21},{"text":"bloom","count":54,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"mediterranean","count":52,"category":"Ocean Physics & Atmosphere","docFreq":17},{"text":"phytoplankton","count":52,"category":"Biology, Ecology & Environment","docFreq":14},{"text":"surface","count":44,"category":"Ocean Physics & Atmosphere","docFreq":20},{"text":"satellite","count":42,"category":"Remote Sensing & AI Methods","docFreq":22},{"text":"water","count":41,"category":"Ocean Physics & Atmosphere","docFreq":17},{"text":"eastern","count":41,"category":"Ocean Physics & Atmosphere","docFreq":13},{"text":"depth","count":39,"category":"Ocean Physics & Atmosphere","docFreq":19},{"text":"nutrient","count":37,"category":"Biology, Ecology & Environment","docFreq":11},{"text":"dust","count":36,"category":"Ocean Physics & Atmosphere","docFreq":3},{"text":"coastal","count":35,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"process","count":32,"category":"Ocean Physics & Atmosphere","docFreq":20},{"text":"chlorophyll","count":31,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"measurement","count":31,"category":"Remote Sensing & AI Methods","docFreq":14},{"text":"concentration","count":30,"category":"Biology, Ecology & Environment","docFreq":13},{"text":"production","count":30,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"cloud","count":30,"category":"Ocean Physics & Atmosphere","docFreq":3},{"text":"transport","count":27,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"community","count":26,"category":"Biology, Ecology & Environment","docFreq":6},{"text":"jellyfish","count":26,"category":"Biology, Ecology & Environment","docFreq":2},{"text":"atlantic","count":25,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"eddy","count":25,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"region","count":24,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"optical","count":24,"category":"Remote Sensing & AI Methods","docFreq":10},{"text":"basin","count":24,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"model","count":23,"category":"Remote Sensing & AI Methods","docFreq":13},{"text":"carbon","count":22,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"pattern","count":22,"category":"Remote Sensing & AI Methods","docFreq":11},{"text":"wind","count":22,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"spatial","count":22,"category":"Ocean Physics & Atmosphere","docFreq":14},{"text":"ultra-oligotrophic","count":22,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"biological","count":21,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"seasonal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"winter","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"horizontal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":7},{"text":"oligotrophic","count":20,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"north","count":18,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"submesoscale","count":18,"category":"Ocean Physics & Atmosphere","docFreq":4},{"text":"summer","count":18,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"offshore","count":18,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"oil","count":18,"category":"Biology, Ecology & Environment","docFreq":2},{"text":"factor","count":17,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"patch","count":17,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"environmental","count":17,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"primary","count":17,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"export","count":17,"category":"Biology, Ecology & Environment","docFreq":7},{"text":"stirring","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"levantine","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"mesoscale","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"observation","count":16,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"ems","count":16,"category":"Ocean Physics & Atmosphere","docFreq":5},{"text":"layer","count":15,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"physical","count":15,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"remote","count":15,"category":"Remote Sensing & AI Methods","docFreq":8},{"text":"situ","count":14,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"ecosystem","count":14,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"infection","count":14,"category":"Biology, Ecology & Environment","docFreq":4},{"text":"fire","count":14,"category":"Ocean Physics & Atmosphere","docFreq":1},{"text":"video","count":14,"category":"Remote Sensing & AI Methods","docFreq":3},{"text":"flux","count":13,"category":"Biology, Ecology & Environment","docFreq":7},{"text":"storm","count":13,"category":"Ocean Physics & Atmosphere","docFreq":2},{"text":"atmospheric","count":12,"category":"Ocean Physics & Atmosphere","docFreq":4},{"text":"lagrangian","count":12,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"vertical","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"oceanic","count":12,"category":"Ocean Physics & Atmosphere","docFreq":7},{"text":"temporal","count":12,"category":"Ocean Physics & Atmosphere","docFreq":9}];
+
+  const AUTHOR_WORDS = [{"text":"Lehahn, Y.","count":50,"category":"Current lab team"},{"text":"Koren, I.","count":15,"category":"Collaborator"},{"text":"Boss, E.","count":8,"category":"Collaborator"},{"text":"Sher, D.","count":7,"category":"Collaborator"},{"text":"Krom, M. D.","count":7,"category":"Collaborator"},{"text":"Heifetz, E.","count":5,"category":"Collaborator"},{"text":"Altaratz, O.","count":5,"category":"Collaborator"},{"text":"Rahav, E.","count":5,"category":"Collaborator"},{"text":"Herut, B.","count":5,"category":"Collaborator"},{"text":"Rudich, Y.","count":5,"category":"Collaborator"},{"text":"Vardi, A.","count":5,"category":"Collaborator"},{"text":"Ben-Ezra, T.","count":5,"category":"Collaborator"},{"text":"Tsemel, A.","count":5,"category":"Collaborator"},{"text":"Berman-Frank, I.","count":5,"category":"Collaborator"},{"text":"Solodoch, A.","count":5,"category":"Collaborator"},{"text":"d'Ovidio, F.","count":4,"category":"Collaborator"},{"text":"Aharonovich, D.","count":4,"category":"Collaborator"},{"text":"Toledo, Y.","count":4,"category":"Collaborator"},{"text":"Fadida, Y.","count":4,"category":"Current lab team"},{"text":"Lévy, M.","count":3,"category":"Collaborator"},{"text":"Sharoni, S.","count":3,"category":"Collaborator"},{"text":"Frada, M.","count":3,"category":"Collaborator"},{"text":"Sheyn, U.","count":3,"category":"Collaborator"},{"text":"Haber, M.","count":3,"category":"Collaborator"},{"text":"Steindler, L.","count":3,"category":"Collaborator"},{"text":"Sagi, T.","count":3,"category":"Collaborator"},{"text":"Roth-Rosenberg, D.","count":3,"category":"Collaborator"},{"text":"Reich, T.","count":3,"category":"Collaborator"},{"text":"Biton, E.","count":3,"category":"Collaborator"},{"text":"Ben-Ami, Y.","count":2,"category":"Collaborator"},{"text":"Amitai, Y.","count":2,"category":"Collaborator"},{"text":"Kostinsky, A. B.","count":2,"category":"Collaborator"},{"text":"Efrati, S.","count":2,"category":"Current lab team"},{"text":"Ozer, T.","count":2,"category":"Collaborator"},{"text":"Bidle, K. D.","count":2,"category":"Collaborator"},{"text":"Trainic, M.","count":2,"category":"Collaborator"},{"text":"Schatz, D.","count":2,"category":"Collaborator"},{"text":"Saurav, K.","count":2,"category":"Collaborator"},{"text":"Burgsdorf, I.","count":2,"category":"Collaborator"},{"text":"Lalzar, M.","count":2,"category":"Collaborator"},{"text":"Belkin, N.","count":2,"category":"Collaborator"},{"text":"Berenshtein, I.","count":2,"category":"Collaborator"},{"text":"Bourdin, G.","count":2,"category":"Collaborator"},{"text":"Gray, P. C.","count":2,"category":"Collaborator"},{"text":"Verma, V.","count":2,"category":"Collaborator"},{"text":"Barkan, R.","count":2,"category":"Collaborator"},{"text":"Bar, K.","count":1,"category":"Current lab team"},{"text":"Bloch Haimson, M.","count":1,"category":"Current lab team"},{"text":"Lapidot, O.","count":1,"category":"Current lab team"}];
+
+  const N_PUBS = 50;
+  const TOTAL_AUTHORS = 185;
+  const ABSTRACT_COUNT = 50;
+  const YEAR_MIN = 2003;
+  const YEAR_MAX = 2026;
+  // GENERATED:DATA:END
+
+  const VIEWS = {
+    topics: {
+      data: TOPIC_WORDS,
+      categories: [
+        { key: "Ocean Physics & Atmosphere", label: "Ocean physics & atmosphere", varName: "--accent-blue" },
+        { key: "Remote Sensing & AI Methods", label: "Remote sensing & AI methods", varName: "--accent-orange" },
+        { key: "Biology, Ecology & Environment", label: "Biology, ecology & environment", varName: "--accent-aqua" }
+      ],
+      title: `What ${N_PUBS} papers keep talking about`,
+      subtitle: `A word cloud built from the titles and full abstracts of every publication listed by the Marine Remote Sensing Lab (Prof. Yoav Lehahn's group), from ${YEAR_MIN} through work still in submission. Author keywords are left out. Word size reflects a weighted mention score — hover any word for the exact count.`,
+      legendLabel: "Filter by theme",
+      stats: () => [
+        [String(N_PUBS), "publications"],
+        [`${YEAR_MIN}–${YEAR_MAX}`, "span"],
+        [String(TOPIC_WORDS.length), "distinct terms"],
+        [`${ABSTRACT_COUNT} / ${N_PUBS}`, "with full abstracts"]
+      ],
+      tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
+        `<div>weighted score ${w.count} · in ${w.docFreq}/${N_PUBS} papers</div>` +
+        `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
+      a11yLabel: w => `${w.text} — appears in ${w.docFreq} of ${N_PUBS} publications`,
+      tableSummary: "View full word list as a table",
+      tableHead: ["Term", "Theme", "Weighted score", "In publications"],
+      tableRow: (w, cat) => [
+        `<td class="word-cell">${w.text}</td>`,
+        `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
+        `<td class="num">${w.count}</td>`,
+        `<td class="num">${w.docFreq} / ${N_PUBS}</td>`
+      ]
+    },
+    authors: {
+      data: AUTHOR_WORDS,
+      categories: [
+        { key: "Current lab team", label: "Current lab team", varName: "--accent-orange" },
+        { key: "Collaborator", label: "Collaborator", varName: "--text-secondary" }
+      ],
+      title: "Who's behind the papers",
+      subtitle: `Every co-author across the lab's ${N_PUBS} publications, sized by how many of them they appear on. The lab's current roster, per remsy.org/team, is highlighted; everyone else is an outside collaborator.`,
+      legendLabel: "Filter by role",
+      stats: () => {
+        const currentTeamCount = AUTHOR_WORDS.filter(w => w.category === "Current lab team").length;
+        const top = AUTHOR_WORDS.reduce((a, b) => (b.count > a.count ? b : a), AUTHOR_WORDS[0]);
+        return [
+          [String(TOTAL_AUTHORS), "distinct co-authors"],
+          [String(AUTHOR_WORDS.length), "shown (2+ papers, or current team)"],
+          [String(currentTeamCount), "current lab team"],
+          [`${top.count} / ${N_PUBS}`, `papers include ${top.text}`]
+        ];
+      },
+      tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
+        `<div>co-authored ${w.count} of ${N_PUBS} publications</div>` +
+        `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
+      a11yLabel: w => `${w.text} — co-authored ${w.count} of ${N_PUBS} publications`,
+      tableSummary: "View full author list as a table",
+      tableHead: ["Author", "Role", "Publications"],
+      tableRow: (w, cat) => [
+        `<td class="word-cell">${w.text}</td>`,
+        `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
+        `<td class="num">${w.count} / ${N_PUBS}</td>`
+      ]
+    }
+  };
+
+  let currentViewKey = "topics";
+  const activeCats = new Set();
+
+  function currentView() { return VIEWS[currentViewKey]; }
+
+  function catColor(cat) {
+    return getComputedStyle(document.documentElement).getPropertyValue(cat.varName).trim();
+  }
+  function catOf(view, key) { return view.categories.find(c => c.key === key); }
+
+  // ---------- chrome (masthead + legend) ----------
+  function renderChrome() {
+    const view = currentView();
+    document.getElementById("view-title").textContent = view.title;
+    document.getElementById("view-subtitle").textContent = view.subtitle;
+
+    const statsEl = document.getElementById("view-stats");
+    statsEl.innerHTML = view.stats().map(([v, l]) =>
+      `<span class="stat"><strong>${v}</strong>&nbsp;${l}</span>`
+    ).join("");
+
+    const legendEl = document.getElementById("legend");
+    legendEl.setAttribute("aria-label", view.legendLabel);
+    legendEl.innerHTML = "";
+    const label = document.createElement("span");
+    label.className = "legend-label";
+    label.textContent = "Filter";
+    legendEl.appendChild(label);
+    view.categories.forEach(cat => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.dataset.key = cat.key;
+      chip.setAttribute("aria-pressed", "false");
+      chip.innerHTML = `<span class="dot" style="background:${catColor(cat)}"></span>${cat.label}`;
+      chip.addEventListener("click", () => {
+        if (activeCats.has(cat.key)) activeCats.delete(cat.key);
+        else activeCats.add(cat.key);
+        applyFilter();
+      });
+      legendEl.appendChild(chip);
+    });
+
+    document.getElementById("table-summary-label").textContent = view.tableSummary;
+    document.getElementById("table-head").innerHTML =
+      "<tr>" + view.tableHead.map((h, i) => `<th${i > 1 ? ' class="num"' : ''}>${h}</th>`).join("") + "</tr>";
+  }
+
+  function applyFilter() {
+    const anyActive = activeCats.size > 0;
+    document.querySelectorAll(".chip").forEach(chip => {
+      const on = activeCats.has(chip.dataset.key);
+      chip.setAttribute("aria-pressed", String(on));
+      chip.classList.toggle("is-inactive", anyActive && !on);
+    });
+    document.querySelectorAll(".word").forEach(el => {
+      const key = el.dataset.category;
+      const dim = anyActive && !activeCats.has(key);
+      el.classList.toggle("is-dimmed", dim);
+    });
+  }
+
+  // ---------- layout ----------
+  const SVG_W = 1200, SVG_H = 660;
+  const svg = document.getElementById("cloud-svg");
+  const tooltip = document.getElementById("tooltip");
+  const wrap = document.querySelector(".cloud-svg-wrap");
+
+  function rectOverlap(a, b) {
+    return !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y);
+  }
+
+  function layout(words) {
+    const sorted = [...words].sort((a, b) => b.count - a.count);
+    const counts = sorted.map(w => w.count);
+    const minC = Math.min(...counts), maxC = Math.max(...counts);
+    const minSize = 14, maxSize = 108;
+    const sizeFor = c => {
+      if (maxC === minC) return (minSize + maxSize) / 2;
+      const safeC = Math.max(c, 1);
+      const t = (Math.log(safeC) - Math.log(Math.max(minC, 1))) / (Math.log(maxC) - Math.log(Math.max(minC, 1)));
+      return minSize + Math.max(0, Math.min(1, t)) * (maxSize - minSize);
+    };
+    const weightFor = size => 400 + Math.round(500 * (size - minSize) / (maxSize - minSize));
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const cx = SVG_W / 2, cy = SVG_H / 2;
+    const placed = [];
+
+    sorted.forEach((w, i) => {
+      const fontSize = sizeFor(w.count);
+      const weight = weightFor(fontSize);
+      ctx.font = `${weight} ${fontSize}px Archivo, sans-serif`;
+      const metrics = ctx.measureText(w.text);
+      const pad = 7;
+      const boxW = metrics.width + pad * 2;
+      const boxH = fontSize * 1.05 + pad;
+
+      let angle = (i * 0.61803398875) * Math.PI * 2;
+      let radius = 0;
+      const angleStep = 0.32;
+      const radiusStep = 2.6;
+      let ok = false, x = 0, y = 0, attempts = 0;
+
+      while (!ok && attempts < 3000) {
+        x = cx + radius * Math.cos(angle) - boxW / 2;
+        y = cy + radius * Math.sin(angle) * 0.72 - boxH / 2;
+        const rect = { x, y, w: boxW, h: boxH };
+        if (x >= 4 && y >= 4 && x + boxW <= SVG_W - 4 && y + boxH <= SVG_H - 4 &&
+            !placed.some(p => rectOverlap(p, rect))) {
+          ok = true;
+        } else {
+          angle += angleStep;
+          radius += radiusStep;
+          attempts++;
+        }
+      }
+      if (ok) {
+        placed.push({ x, y, w: boxW, h: boxH, word: w, fontSize, weight });
+      }
+    });
+    return placed;
+  }
+
+  function render(placed) {
+    const view = currentView();
+    svg.innerHTML = "";
+    placed.forEach((p) => {
+      const cat = catOf(view, p.word.category);
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      el.textContent = p.word.text;
+      el.setAttribute("x", p.x + p.w / 2);
+      el.setAttribute("y", p.y + p.h / 2 + p.fontSize * 0.36);
+      el.setAttribute("text-anchor", "middle");
+      el.setAttribute("font-size", p.fontSize.toFixed(1));
+      el.setAttribute("font-weight", p.weight);
+      el.setAttribute("font-family", "Archivo, sans-serif");
+      el.setAttribute("fill", catColor(cat));
+      el.setAttribute("tabindex", "0");
+      el.classList.add("word", "enter");
+      el.style.animationDelay = (Math.random() * 0.35) + "s";
+      el.dataset.category = p.word.category;
+
+      const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      titleEl.textContent = view.a11yLabel(p.word);
+      el.appendChild(titleEl);
+
+      const show = () => {
+        tooltip.innerHTML = view.tooltip(p.word, cat);
+        const wrapRect = wrap.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        tooltip.style.left = (elRect.left - wrapRect.left + elRect.width / 2) + "px";
+        tooltip.style.top = (elRect.top - wrapRect.top - 8) + "px";
+        tooltip.classList.add("visible");
+        el.classList.add("is-focused");
+      };
+      const hide = () => { tooltip.classList.remove("visible"); el.classList.remove("is-focused"); };
+
+      el.addEventListener("mouseenter", show);
+      el.addEventListener("mouseleave", hide);
+      el.addEventListener("focus", show);
+      el.addEventListener("blur", hide);
+
+      svg.appendChild(el);
+    });
+  }
+
+  function buildTable(words) {
+    const view = currentView();
+    const body = document.getElementById("table-body");
+    body.innerHTML = "";
+    [...words].sort((a, b) => b.count - a.count).forEach(w => {
+      const cat = catOf(view, w.category);
+      const tr = document.createElement("tr");
+      tr.innerHTML = view.tableRow(w, cat).join("");
+      body.appendChild(tr);
+    });
+  }
+
+  function renderCloud() {
+    const view = currentView();
+    const placed = layout(view.data);
+    render(placed);
+    buildTable(view.data);
+  }
+
+  function switchView(key) {
+    if (key === currentViewKey) return;
+    currentViewKey = key;
+    activeCats.clear();
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === key)));
+    renderChrome();
+    renderCloud();
+  }
+
+  document.querySelectorAll(".tab").forEach(t => {
+    t.addEventListener("click", () => switchView(t.dataset.view));
+  });
+
+  function renderFooter() {
+    document.getElementById("methodology-topics").innerHTML =
+      `<strong>Methodology — topics.</strong> Text pulled from remsy.org's publications page and the underlying markdown records in the <a href="https://github.com/remsy-org/remsy-org.github.io" target="_blank" rel="noopener">remsy-org/remsy-org.github.io</a> GitHub repo: titles weighted ×3, abstract text ×1 — ${ABSTRACT_COUNT} of ${N_PUBS} entries carry a full abstract. Author-supplied keywords are excluded (their accuracy hasn't been verified). Common stopwords and generic terms removed, plurals merged to their singular form. Terms are grouped into three themes and colored accordingly; size reflects the weighted score, not raw word count.`;
+    document.getElementById("methodology-authors").innerHTML =
+      `<strong>Methodology — authors.</strong> Author strings (e.g. "Lehahn, Y., Koren, I., &amp; Boss, E.") were parsed per publication and normalized for spelling/formatting variants (accents, hyphenation, initials). ${TOTAL_AUTHORS} distinct co-authors appear across the ${N_PUBS} publications; the cloud shows the ${AUTHOR_WORDS.length} who appear on 2+ papers, plus every current lab member (per remsy.org/team) regardless of count. Size reflects number of co-authored publications.`;
+  }
+
+  function init() {
+    renderChrome();
+    renderCloud();
+    renderFooter();
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    Promise.all([
+      document.fonts.load("700 40px Archivo"),
+      document.fonts.load("900 40px Archivo"),
+      document.fonts.load("400 40px Archivo")
+    ]).then(() => document.fonts.ready).then(init).catch(init);
+  } else {
+    init();
+  }
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(renderCloud, 250);
+  });
+</script>
