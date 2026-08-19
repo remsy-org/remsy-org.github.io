@@ -5,10 +5,11 @@ journal: "Oceanography"
 volume: "37"
 pages: 52-63
 year: 2024
-url: https://www.jstor.org/stable/27333923
+doi: "10.5670/oceanog.2024.511"
+url: "https://doi.org/10.5670/oceanog.2024.511"
 pdf: false
 openAccess: true
-abstract: "While a rich history of patchiness research has explored spatial structure in theocean, there is no consensus over the controls on biological patchiness andhow physical-ecological-biogeochemical processes and patchiness relate.The prevailing thought is that physics structures biology, but this has not beentested at basin scale with consistent in situ measurements. Here we use theslope of the relationship between variance vs spatial scale to quantify patchi-ness and ~650,000 nearly continuous (dx ~ 200 m) measurements - repre-senting the Atlantic, Pacific, and Southern Oceans - and find that patchiness ofbiological parameters and physical parameters are uncorrelated. We showvariance slope is an emergent property with unique patterns in biogeochem-ical properties distinct from physical tracers, yet correlated with other biolo-gical tracers. These results provide context for decades of observations withdifferent interpretations, suggest the use of spatial tests of biogeochemicalmodel parameterizations, and open the way for studies into processes reg-ulating the observed patterns."
+abstract: "The proliferation of easily accessible machine learning algorithms and their apparent successes at inference and classification in computer vision and the sciences has motivated their increased adoption in ocean remote sensing. Our field, however, runs the risk of developing these models on limited training datasets—with sparse geographical and temporal sampling or ignoring the real data dimensionality—thereby constructing over-fitted or non-generalized algorithms. These models may perform poorly in new regimes or on new, anomalous phenomena that emerge in a changing climate. We highlight these issues and strategies for mitigating them, share a few heuristics to help users develop intuition for machine learning methods, and provide a vision for areas we believe are underexplored at the intersection of machine learning and ocean remote sensing. The ocean is a complex physical-biogeochemical system that we cannot mechanistically model well despite our best efforts. Machine learning has the potential to play an important role in improved process understanding, but we must always ask what we are learning after the model has learned."
 keywords: ["transformers", "ocean eddies", "SAR", "deep learning"]
 featured: false
 ---

@@ -3,7 +3,7 @@ title: "Species-specific sensitivity to PAHs reveals widespread biodiversity imp
 authors: "Lapidot, O., Perlin, N., Biton, E., Khain, P., Levi, Y., Alpert, P., Ramon, D., Stern, N., Rilov, G., Guy-Haim, T., Lehahn, Y., Paris, C. B., & Berenshtein, I."
 journal: "Marine Pollution Bulletin"
 year: "2026"
-doi: "https://doi.org/10.5194/egusphere-2026-1507"
+doi: "10.1016/j.marpolbul.2026.120090"
 url: "https://www.sciencedirect.com/science/article/pii/S0025326X26008775"
 preprint: ""
 pdf: false
