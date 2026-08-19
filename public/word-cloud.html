@@ -146,12 +146,14 @@
   /* tab switcher */
   .tabs {
     display: inline-flex;
+    flex-wrap: wrap;
     gap: 3px;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 3px;
     width: fit-content;
+    max-width: 100%;
   }
   .tab {
     font-family: "IBM Plex Mono", monospace;
@@ -211,6 +213,151 @@
   .chip:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
 
   .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* year filter */
+  #cloud-panel, #trends-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .year-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 16px;
+  }
+  @media (max-width: 520px) {
+    .year-filter { border-radius: 16px; }
+  }
+
+  .year-filter-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .dual-range {
+    position: relative;
+    flex: 1 1 140px;
+    min-width: 100px;
+    height: 24px;
+  }
+  .range-track-bg, .range-track-fill {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .range-track-bg { left: 0; right: 0; background: var(--border); }
+  .range-track-fill { background: var(--accent-blue); }
+
+  .dual-range input[type="range"] {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    pointer-events: none;
+  }
+  .dual-range input[type="range"]::-webkit-slider-runnable-track { -webkit-appearance: none; height: 4px; background: transparent; }
+  .dual-range input[type="range"]::-moz-range-track { height: 4px; background: transparent; border: none; }
+  .dual-range input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: auto;
+    width: 16px; height: 16px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    border: 2px solid var(--surface-2);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+  .dual-range input[type="range"]::-moz-range-thumb {
+    pointer-events: auto;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    border: 2px solid var(--surface-2);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+  .dual-range input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+  .dual-range input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+  .year-filter-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .year-filter-reset {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .year-filter-reset:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+  .year-filter-reset:disabled { opacity: 0.4; cursor: default; }
+
+  /* trends view */
+  .trend-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .trend-controls select {
+    font-family: "Archivo", sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+  }
+  .trend-controls select:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+  .trend-chart-wrap {
+    width: 100%;
+    aspect-ratio: 1100 / 340;
+    position: relative;
+  }
+  svg#trend-chart { width: 100%; height: 100%; display: block; }
+
+  .trend-bar { transition: opacity 0.15s ease; cursor: default; }
+  .trend-bar:hover, .trend-bar.is-focused { opacity: 0.72; }
+  .trend-axis-label {
+    font-family: "IBM Plex Mono", monospace;
+    fill: var(--text-muted);
+  }
+  .trend-gridline { stroke: var(--border); stroke-width: 1; }
+  .trend-empty {
+    font-family: "Archivo", sans-serif;
+    fill: var(--text-muted);
+  }
 
   /* cloud card */
   .cloud-card {
@@ -362,28 +509,65 @@
     <button type="button" class="tab" role="tab" id="tab-topics" aria-controls="view-panel" aria-selected="true" data-view="topics">Topics</button>
     <button type="button" class="tab" role="tab" id="tab-authors" aria-controls="view-panel" aria-selected="false" data-view="authors">Authors</button>
     <button type="button" class="tab" role="tab" id="tab-institutions" aria-controls="view-panel" aria-selected="false" data-view="institutions">Institutions</button>
+    <button type="button" class="tab" role="tab" id="tab-trends" aria-controls="view-panel" aria-selected="false" data-view="trends">Trends</button>
   </div>
 
   <div id="view-panel" role="tabpanel" style="display:contents;">
 
-    <div class="legend" id="legend" role="group" aria-label="Filter"></div>
+    <div id="cloud-panel">
 
-    <div class="cloud-card">
-      <div class="cloud-flow" id="cloud-flow" role="img" aria-label="Word cloud"></div>
-      <div class="tooltip" id="tooltip"></div>
+      <div class="year-filter" id="year-filter">
+        <span class="year-filter-label">Years</span>
+        <div class="dual-range" id="dual-range">
+          <div class="range-track-bg"></div>
+          <div class="range-track-fill" id="range-track-fill"></div>
+          <input type="range" id="range-start" aria-label="From year">
+          <input type="range" id="range-end" aria-label="To year">
+        </div>
+        <span class="year-filter-value" id="year-filter-value"></span>
+        <button type="button" class="year-filter-reset" id="year-filter-reset">All years</button>
+      </div>
+
+      <div class="legend" id="legend" role="group" aria-label="Filter"></div>
+
+      <div class="cloud-card">
+        <div class="cloud-flow" id="cloud-flow" role="img" aria-label="Word cloud"></div>
+        <div class="tooltip" id="tooltip"></div>
+      </div>
+
+      <details class="table-wrap">
+        <summary class="table-summary">
+          <span id="table-summary-label">View full list as a table</span>
+        </summary>
+        <div class="table-scroll">
+          <table class="data" id="data-table">
+            <thead id="table-head"></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </details>
+
     </div>
 
-    <details class="table-wrap">
-      <summary class="table-summary">
-        <span id="table-summary-label">View full list as a table</span>
-      </summary>
-      <div class="table-scroll">
-        <table class="data" id="data-table">
-          <thead id="table-head"></thead>
-          <tbody id="table-body"></tbody>
-        </table>
+    <div id="trends-panel" style="display:none;">
+
+      <div class="trend-controls">
+        <select id="trend-category" aria-label="Category">
+          <option value="topics">Topic</option>
+          <option value="authors">Author</option>
+          <option value="institutions">Institution</option>
+        </select>
+        <select id="trend-item" aria-label="Select item"></select>
       </div>
-    </details>
+
+      <div class="cloud-card">
+        <div class="trend-chart-wrap">
+          <svg id="trend-chart" viewBox="0 0 1100 340" preserveAspectRatio="xMidYMid meet" role="img"></svg>
+          <div class="tooltip" id="trend-tooltip"></div>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 
@@ -391,31 +575,35 @@
     <p id="methodology-topics"></p>
     <p id="methodology-authors"></p>
     <p id="methodology-institutions"></p>
+    <p id="methodology-trends"></p>
   </footer>
 
 </div>
 
 <script>
   // GENERATED:DATA:START — produced by scripts/generate-word-cloud.mjs, do not hand-edit
-  const TOPIC_WORDS = [{"text":"sea","count":71,"category":"Ocean Physics & Atmosphere","docFreq":25},{"text":"ocean","count":62,"category":"Ocean Physics & Atmosphere","docFreq":24},{"text":"aerosol","count":61,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"marine","count":59,"category":"Ocean Physics & Atmosphere","docFreq":21},{"text":"bloom","count":54,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"mediterranean","count":52,"category":"Ocean Physics & Atmosphere","docFreq":17},{"text":"phytoplankton","count":52,"category":"Biology, Ecology & Environment","docFreq":14},{"text":"surface","count":44,"category":"Ocean Physics & Atmosphere","docFreq":20},{"text":"satellite","count":42,"category":"Remote Sensing & AI Methods","docFreq":22},{"text":"water","count":41,"category":"Ocean Physics & Atmosphere","docFreq":17},{"text":"eastern","count":41,"category":"Ocean Physics & Atmosphere","docFreq":13},{"text":"depth","count":39,"category":"Ocean Physics & Atmosphere","docFreq":19},{"text":"nutrient","count":37,"category":"Biology, Ecology & Environment","docFreq":11},{"text":"dust","count":36,"category":"Ocean Physics & Atmosphere","docFreq":3},{"text":"coastal","count":35,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"process","count":32,"category":"Ocean Physics & Atmosphere","docFreq":20},{"text":"chlorophyll","count":31,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"measurement","count":31,"category":"Remote Sensing & AI Methods","docFreq":14},{"text":"concentration","count":30,"category":"Biology, Ecology & Environment","docFreq":13},{"text":"production","count":30,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"cloud","count":30,"category":"Ocean Physics & Atmosphere","docFreq":3},{"text":"transport","count":27,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"community","count":26,"category":"Biology, Ecology & Environment","docFreq":6},{"text":"jellyfish","count":26,"category":"Biology, Ecology & Environment","docFreq":2},{"text":"atlantic","count":25,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"eddy","count":25,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"region","count":24,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"optical","count":24,"category":"Remote Sensing & AI Methods","docFreq":10},{"text":"basin","count":24,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"model","count":23,"category":"Remote Sensing & AI Methods","docFreq":13},{"text":"carbon","count":22,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"pattern","count":22,"category":"Remote Sensing & AI Methods","docFreq":11},{"text":"wind","count":22,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"spatial","count":22,"category":"Ocean Physics & Atmosphere","docFreq":14},{"text":"ultra-oligotrophic","count":22,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"biological","count":21,"category":"Biology, Ecology & Environment","docFreq":12},{"text":"seasonal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"winter","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11},{"text":"horizontal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":7},{"text":"oligotrophic","count":20,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"north","count":18,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"submesoscale","count":18,"category":"Ocean Physics & Atmosphere","docFreq":4},{"text":"summer","count":18,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"offshore","count":18,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"oil","count":18,"category":"Biology, Ecology & Environment","docFreq":2},{"text":"factor","count":17,"category":"Biology, Ecology & Environment","docFreq":9},{"text":"patch","count":17,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"environmental","count":17,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"primary","count":17,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"export","count":17,"category":"Biology, Ecology & Environment","docFreq":7},{"text":"stirring","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"levantine","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"mesoscale","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"observation","count":16,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"ems","count":16,"category":"Ocean Physics & Atmosphere","docFreq":5},{"text":"layer","count":15,"category":"Ocean Physics & Atmosphere","docFreq":10},{"text":"physical","count":15,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"remote","count":15,"category":"Remote Sensing & AI Methods","docFreq":8},{"text":"situ","count":14,"category":"Ocean Physics & Atmosphere","docFreq":9},{"text":"ecosystem","count":14,"category":"Biology, Ecology & Environment","docFreq":8},{"text":"infection","count":14,"category":"Biology, Ecology & Environment","docFreq":4},{"text":"fire","count":14,"category":"Ocean Physics & Atmosphere","docFreq":1},{"text":"video","count":14,"category":"Remote Sensing & AI Methods","docFreq":3},{"text":"flux","count":13,"category":"Biology, Ecology & Environment","docFreq":7},{"text":"storm","count":13,"category":"Ocean Physics & Atmosphere","docFreq":2},{"text":"atmospheric","count":12,"category":"Ocean Physics & Atmosphere","docFreq":4},{"text":"lagrangian","count":12,"category":"Ocean Physics & Atmosphere","docFreq":6},{"text":"vertical","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8},{"text":"oceanic","count":12,"category":"Ocean Physics & Atmosphere","docFreq":7},{"text":"temporal","count":12,"category":"Ocean Physics & Atmosphere","docFreq":9}];
+  const TOPIC_WORDS = [{"text":"sea","count":71,"category":"Ocean Physics & Atmosphere","docFreq":25,"byYear":{"2003":2,"2005":1,"2007":3,"2010":1,"2011":2,"2013":2,"2014":2,"2017":5,"2018":4,"2019":6,"2021":9,"2022":12,"2023":1,"2024":5,"2025":4,"2026":11}},{"text":"ocean","count":62,"category":"Ocean Physics & Atmosphere","docFreq":24,"byYear":{"2003":3,"2005":2,"2011":1,"2012":3,"2014":3,"2015":1,"2017":2,"2018":5,"2019":2,"2020":8,"2021":2,"2022":1,"2024":10,"2025":17,"2026":2}},{"text":"aerosol","count":61,"category":"Ocean Physics & Atmosphere","docFreq":11,"byYear":{"2010":16,"2011":8,"2012":7,"2014":13,"2015":3,"2018":13,"2019":1}},{"text":"marine","count":59,"category":"Ocean Physics & Atmosphere","docFreq":21,"byYear":{"2010":7,"2011":7,"2014":9,"2015":7,"2016":6,"2018":4,"2022":3,"2024":2,"2025":1,"2026":13}},{"text":"bloom","count":54,"category":"Biology, Ecology & Environment","docFreq":12,"byYear":{"2005":10,"2007":4,"2014":11,"2015":2,"2017":6,"2018":10,"2019":3,"2021":1,"2026":7}},{"text":"mediterranean","count":52,"category":"Ocean Physics & Atmosphere","docFreq":17,"byYear":{"2003":4,"2010":4,"2013":4,"2017":4,"2021":5,"2022":10,"2023":1,"2024":9,"2026":10}},{"text":"phytoplankton","count":52,"category":"Biology, Ecology & Environment","docFreq":14,"byYear":{"2007":2,"2014":2,"2015":5,"2017":5,"2018":11,"2019":5,"2021":4,"2022":5,"2024":8,"2026":5}},{"text":"surface","count":44,"category":"Ocean Physics & Atmosphere","docFreq":20,"byYear":{"2007":4,"2010":10,"2011":4,"2013":1,"2014":1,"2016":1,"2017":2,"2018":2,"2019":3,"2021":1,"2024":1,"2025":7,"2026":6}},{"text":"satellite","count":42,"category":"Remote Sensing & AI Methods","docFreq":22,"byYear":{"2007":1,"2010":12,"2011":2,"2012":2,"2014":4,"2015":1,"2016":4,"2017":1,"2018":5,"2022":1,"2024":7,"2026":1}},{"text":"water","count":41,"category":"Ocean Physics & Atmosphere","docFreq":17,"byYear":{"2003":3,"2005":2,"2011":1,"2013":5,"2016":4,"2017":9,"2018":4,"2021":1,"2022":1,"2023":1,"2024":3,"2026":7}},{"text":"eastern","count":41,"category":"Ocean Physics & Atmosphere","docFreq":13,"byYear":{"2003":3,"2010":4,"2013":4,"2017":4,"2021":5,"2022":8,"2023":1,"2024":5,"2026":7}},{"text":"depth","count":39,"category":"Ocean Physics & Atmosphere","docFreq":19,"byYear":{"2005":6,"2010":11,"2011":1,"2012":2,"2013":1,"2015":1,"2016":1,"2018":3,"2019":1,"2021":4,"2022":2,"2023":1,"2024":4,"2025":1}},{"text":"nutrient","count":37,"category":"Biology, Ecology & Environment","docFreq":11,"byYear":{"2007":2,"2013":1,"2015":1,"2017":1,"2018":2,"2019":2,"2021":10,"2023":8,"2024":8,"2026":2}},{"text":"dust","count":36,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2012":26,"2019":10}},{"text":"coastal","count":35,"category":"Ocean Physics & Atmosphere","docFreq":10,"byYear":{"2013":3,"2014":5,"2017":1,"2022":3,"2023":9,"2024":3,"2026":11}},{"text":"process","count":32,"category":"Ocean Physics & Atmosphere","docFreq":20,"byYear":{"2010":1,"2011":3,"2014":8,"2015":1,"2016":1,"2017":1,"2018":1,"2019":1,"2020":3,"2023":1,"2024":4,"2025":3,"2026":4}},{"text":"chlorophyll","count":31,"category":"Biology, Ecology & Environment","docFreq":12,"byYear":{"2003":1,"2005":3,"2007":7,"2011":7,"2013":1,"2018":2,"2021":1,"2022":1,"2023":2,"2024":1,"2026":5}},{"text":"measurement","count":31,"category":"Remote Sensing & AI Methods","docFreq":14,"byYear":{"2010":3,"2012":1,"2013":1,"2014":2,"2015":2,"2020":1,"2024":2,"2025":10,"2026":8}},{"text":"concentration","count":30,"category":"Biology, Ecology & Environment","docFreq":13,"byYear":{"2003":3,"2012":1,"2013":1,"2014":6,"2018":2,"2019":3,"2021":4,"2023":4,"2024":2,"2026":3}},{"text":"production","count":30,"category":"Biology, Ecology & Environment","docFreq":12,"byYear":{"2005":5,"2007":1,"2011":2,"2014":1,"2016":2,"2018":9,"2019":2,"2021":1,"2022":1,"2026":6}},{"text":"cloud","count":30,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":10,"2016":10,"2018":10}},{"text":"transport","count":27,"category":"Ocean Physics & Atmosphere","docFreq":11,"byYear":{"2007":3,"2011":5,"2012":5,"2013":2,"2017":2,"2026":6}},{"text":"community","count":26,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2014":1,"2017":1,"2021":10,"2022":11,"2024":2,"2026":1}},{"text":"jellyfish","count":26,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2024":26}},{"text":"atlantic","count":25,"category":"Ocean Physics & Atmosphere","docFreq":10,"byYear":{"2005":6,"2007":5,"2012":2,"2014":5,"2018":5,"2022":1,"2025":1}},{"text":"eddy","count":25,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2007":1,"2010":3,"2011":5,"2014":5,"2017":2,"2026":8}},{"text":"region","count":24,"category":"Ocean Physics & Atmosphere","docFreq":11,"byYear":{"2005":5,"2010":5,"2012":1,"2019":1,"2022":2,"2024":6,"2026":4}},{"text":"optical","count":24,"category":"Remote Sensing & AI Methods","docFreq":10,"byYear":{"2010":11,"2011":1,"2012":2,"2015":1,"2018":2,"2019":1,"2025":2,"2026":4}},{"text":"basin","count":24,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2010":7,"2013":2,"2015":8,"2021":1,"2024":1,"2025":1,"2026":4}},{"text":"model","count":23,"category":"Remote Sensing & AI Methods","docFreq":13,"byYear":{"2005":1,"2011":1,"2015":2,"2016":1,"2017":1,"2019":1,"2024":8,"2025":2,"2026":6}},{"text":"carbon","count":22,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2005":1,"2014":4,"2018":11,"2024":1,"2026":5}},{"text":"pattern","count":22,"category":"Remote Sensing & AI Methods","docFreq":11,"byYear":{"2007":2,"2012":2,"2015":1,"2018":1,"2021":3,"2022":1,"2024":7,"2025":5}},{"text":"wind","count":22,"category":"Ocean Physics & Atmosphere","docFreq":9,"byYear":{"2010":13,"2011":3,"2014":1,"2015":3,"2016":1,"2018":1}},{"text":"spatial","count":22,"category":"Ocean Physics & Atmosphere","docFreq":14,"byYear":{"2012":2,"2013":1,"2015":2,"2017":1,"2018":2,"2021":5,"2022":3,"2024":1,"2025":4,"2026":1}},{"text":"ultra-oligotrophic","count":22,"category":"Biology, Ecology & Environment","docFreq":9,"byYear":{"2013":1,"2017":1,"2021":2,"2022":11,"2023":1,"2026":6}},{"text":"biological","count":21,"category":"Biology, Ecology & Environment","docFreq":12,"byYear":{"2005":1,"2011":2,"2014":9,"2018":3,"2019":2,"2021":1,"2024":1,"2025":1,"2026":1}},{"text":"seasonal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11,"byYear":{"2005":1,"2010":2,"2015":1,"2018":3,"2021":6,"2022":1,"2023":2,"2024":1,"2026":3}},{"text":"winter","count":20,"category":"Ocean Physics & Atmosphere","docFreq":11,"byYear":{"2005":3,"2012":1,"2014":1,"2021":5,"2022":3,"2023":1,"2024":2,"2026":4}},{"text":"horizontal","count":20,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2007":2,"2010":1,"2011":4,"2012":1,"2013":2,"2017":4,"2026":6}},{"text":"oligotrophic","count":20,"category":"Biology, Ecology & Environment","docFreq":9,"byYear":{"2017":3,"2021":3,"2022":3,"2023":3,"2026":7}},{"text":"north","count":18,"category":"Ocean Physics & Atmosphere","docFreq":9,"byYear":{"2005":2,"2012":3,"2014":5,"2017":1,"2018":5,"2022":1,"2024":1}},{"text":"submesoscale","count":18,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2007":1,"2024":3,"2026":8}},{"text":"summer","count":18,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2010":1,"2012":1,"2021":7,"2022":1,"2023":1,"2024":1,"2026":5}},{"text":"offshore","count":18,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2016":10,"2017":1,"2022":4,"2026":2}},{"text":"oil","count":18,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2026":18}},{"text":"factor","count":17,"category":"Biology, Ecology & Environment","docFreq":9,"byYear":{"2003":1,"2014":4,"2017":1,"2018":5,"2021":5,"2022":1}},{"text":"patch","count":17,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2011":6,"2013":5,"2014":2,"2017":3,"2026":1}},{"text":"environmental","count":17,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2014":3,"2015":2,"2016":1,"2018":4,"2021":5,"2022":1,"2026":1}},{"text":"primary","count":17,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2014":1,"2018":3,"2019":2,"2022":2,"2023":1,"2024":1,"2026":7}},{"text":"export","count":17,"category":"Biology, Ecology & Environment","docFreq":7,"byYear":{"2018":8,"2021":1,"2024":1,"2026":7}},{"text":"stirring","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2007":4,"2011":1,"2013":2,"2017":2,"2026":7}},{"text":"levantine","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2010":5,"2013":2,"2021":1,"2024":1,"2026":7}},{"text":"mesoscale","count":16,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2010":1,"2011":1,"2014":10,"2018":1,"2026":3}},{"text":"observation","count":16,"category":"Ocean Physics & Atmosphere","docFreq":10,"byYear":{"2013":2,"2015":4,"2017":1,"2018":2,"2022":1,"2024":2,"2025":1,"2026":2}},{"text":"ems","count":16,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2021":3,"2022":5,"2023":3,"2024":5}},{"text":"layer","count":15,"category":"Ocean Physics & Atmosphere","docFreq":10,"byYear":{"2005":3,"2012":1,"2013":1,"2016":1,"2018":4,"2019":3}},{"text":"physical","count":15,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2014":5,"2018":1,"2022":2,"2024":2,"2025":5}},{"text":"remote","count":15,"category":"Remote Sensing & AI Methods","docFreq":8,"byYear":{"2015":1,"2018":5,"2019":1,"2023":1,"2024":5,"2026":1}},{"text":"situ","count":14,"category":"Ocean Physics & Atmosphere","docFreq":9,"byYear":{"2007":2,"2013":4,"2014":3,"2018":1,"2024":2,"2025":1,"2026":1}},{"text":"ecosystem","count":14,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2013":1,"2015":1,"2017":2,"2018":1,"2024":2,"2025":6,"2026":1}},{"text":"infection","count":14,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2014":1,"2015":4,"2018":9}},{"text":"fire","count":14,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2015":14}},{"text":"video","count":14,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2024":10,"2025":4}},{"text":"flux","count":13,"category":"Biology, Ecology & Environment","docFreq":7,"byYear":{"2013":1,"2014":1,"2018":4,"2024":1,"2026":6}},{"text":"storm","count":13,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2019":8,"2024":5}},{"text":"atmospheric","count":12,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2005":2,"2012":5,"2014":4,"2019":1}},{"text":"lagrangian","count":12,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2007":3,"2011":1,"2014":1,"2016":1,"2018":5,"2024":1}},{"text":"vertical","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2007":3,"2011":2,"2012":2,"2018":2,"2024":1,"2026":2}},{"text":"oceanic","count":12,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2010":1,"2014":6,"2017":2,"2018":1,"2022":1,"2026":1}},{"text":"temporal","count":12,"category":"Ocean Physics & Atmosphere","docFreq":9,"byYear":{"2012":4,"2015":1,"2018":1,"2021":2,"2022":2,"2024":1,"2026":1}},{"text":"global","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2012":1,"2015":3,"2016":3,"2018":3,"2024":2}},{"text":"open","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2013":2,"2014":1,"2016":3,"2018":2,"2021":1,"2024":1,"2025":1,"2026":1}},{"text":"environment","count":12,"category":"Biology, Ecology & Environment","docFreq":11,"byYear":{"2014":1,"2017":1,"2018":3,"2021":1,"2022":1,"2024":2,"2026":3}},{"text":"viruse","count":12,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2014":4,"2015":6,"2018":2}},{"text":"productivity","count":12,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2014":1,"2018":1,"2019":2,"2021":1,"2022":3,"2023":1,"2024":2,"2026":1}},{"text":"limited","count":12,"category":"Biology, Ecology & Environment","docFreq":10,"byYear":{"2014":1,"2016":1,"2018":1,"2021":1,"2024":7,"2026":1}},{"text":"biomass","count":12,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2015":1,"2016":4,"2017":1,"2022":2,"2024":2,"2026":2}},{"text":"gene","count":12,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2017":4,"2018":7,"2022":1}},{"text":"microbial","count":12,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2017":2,"2022":8,"2026":2}},{"text":"sensing","count":12,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2018":4,"2023":1,"2024":5,"2026":1}},{"text":"research","count":12,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2020":1,"2022":1,"2024":5,"2025":4}},{"text":"increase","count":11,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2003":1,"2011":3,"2019":2,"2021":2,"2026":3}},{"text":"mixing","count":11,"category":"Ocean Physics & Atmosphere","docFreq":10,"byYear":{"2005":1,"2011":2,"2012":1,"2014":1,"2021":1,"2022":1,"2024":1,"2026":3}},{"text":"active","count":11,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2005":1,"2018":2,"2024":2,"2026":6}},{"text":"contribution","count":11,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2010":3,"2014":2,"2016":1,"2018":1,"2026":4}},{"text":"coarse","count":11,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2010":3,"2011":6,"2018":1,"2024":1}},{"text":"gyre","count":11,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2011":1,"2017":1,"2018":4,"2021":1,"2022":2,"2023":1,"2024":1}},{"text":"distribution","count":11,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2012":4,"2015":1,"2018":2,"2021":2,"2026":2}},{"text":"endotoxin","count":11,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2014":11}},{"text":"station","count":11,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2015":1,"2022":4,"2023":2,"2024":4}},{"text":"bacterial","count":11,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2017":1,"2021":5,"2022":4,"2026":1}},{"text":"imagery","count":11,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2018":1,"2024":7,"2025":2,"2026":1}},{"text":"monitoring","count":11,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2018":1,"2022":1,"2024":9}},{"text":"outbreak","count":11,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2021":2,"2024":9}},{"text":"coral","count":11,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2022":6,"2024":5}},{"text":"large","count":10,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2005":1,"2011":1,"2018":2,"2020":1,"2021":1,"2024":2,"2025":1,"2026":1}},{"text":"variability","count":10,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2005":3,"2007":1,"2010":1,"2014":1,"2015":2,"2021":1,"2022":1}},{"text":"mechanism","count":10,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2007":3,"2015":2,"2018":2,"2019":1,"2026":2}},{"text":"speed","count":10,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2010":7,"2013":1,"2014":1,"2018":1}},{"text":"circulation","count":10,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2010":6,"2021":1,"2023":1,"2026":2}},{"text":"along","count":10,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2011":1,"2018":1,"2022":2,"2024":5,"2026":1}},{"text":"loading","count":10,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2012":6,"2014":3,"2015":1}},{"text":"coast","count":10,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2013":2,"2018":1,"2023":1,"2024":6}},{"text":"address","count":10,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2014":1,"2018":5,"2020":1,"2022":1,"2025":1,"2026":1}},{"text":"way","count":10,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2014":1,"2016":1,"2018":2,"2020":3,"2024":1,"2025":1,"2026":1}},{"text":"host","count":10,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2015":2,"2018":7,"2025":1}},{"text":"understanding","count":10,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2016":1,"2018":2,"2024":5,"2025":1,"2026":1}},{"text":"tool","count":10,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2018":1,"2020":7,"2024":1,"2025":1}},{"text":"benchmark","count":10,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2020":3,"2024":7}},{"text":"reef","count":10,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2022":10}},{"text":"gulf","count":10,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2022":4,"2024":6}},{"text":"learning","count":10,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2024":10}},{"text":"wave","count":10,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2024":1,"2025":9}},{"text":"digital","count":10,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2024":10}},{"text":"northeast","count":9,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2005":4,"2007":5}},{"text":"image","count":9,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2005":1,"2014":1,"2016":2,"2022":5}},{"text":"cell","count":9,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2007":1,"2013":1,"2014":1,"2016":4,"2018":2}},{"text":"maritime","count":9,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2010":3,"2024":6}},{"text":"parameter","count":9,"category":"Remote Sensing & AI Methods","docFreq":7,"byYear":{"2010":1,"2018":2,"2021":3,"2025":3}},{"text":"modis","count":9,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2010":1,"2011":1,"2012":1,"2015":5,"2018":1}},{"text":"major","count":9,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2010":1,"2012":1,"2015":2,"2016":1,"2024":4}},{"text":"enhance","count":9,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2017":3,"2019":1,"2025":1,"2026":3}},{"text":"pacific","count":9,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2017":1,"2018":4,"2022":2,"2025":1}},{"text":"satellite-based","count":9,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2013":4,"2014":1,"2018":3,"2024":1}},{"text":"significantly","count":9,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2013":1,"2014":1,"2015":1,"2018":1,"2021":1,"2022":2,"2025":1}},{"text":"sensitivity","count":9,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":1,"2021":1,"2026":7}},{"text":"assess","count":9,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2014":3,"2018":2,"2024":3,"2026":1}},{"text":"resulting","count":9,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2015":1,"2017":1,"2021":1,"2024":4,"2025":2}},{"text":"aod","count":9,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2015":7,"2019":2}},{"text":"patchiness","count":9,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2017":1,"2021":1,"2025":7}},{"text":"biogeochemical","count":9,"category":"Biology, Ecology & Environment","docFreq":8,"byYear":{"2017":2,"2018":1,"2022":1,"2023":1,"2024":1,"2025":1,"2026":1}},{"text":"organism","count":9,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2017":1,"2018":3,"2024":2,"2026":3}},{"text":"biodiversity","count":9,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2018":2,"2025":1,"2026":6}},{"text":"integration","count":9,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2018":1,"2020":7,"2024":1}},{"text":"machine","count":9,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2024":9}},{"text":"swimming","count":9,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2024":9}},{"text":"footprint","count":9,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2024":9}},{"text":"thickness","count":9,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2026":9}},{"text":"mixed","count":8,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2005":1,"2013":1,"2018":1,"2019":1,"2022":1,"2026":1}},{"text":"subtropical","count":8,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2005":3,"2010":1,"2011":1,"2012":1,"2017":1,"2024":1}},{"text":"critical","count":8,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2005":1,"2017":1,"2018":3,"2024":2,"2026":1}},{"text":"derived","count":8,"category":"Remote Sensing & AI Methods","docFreq":6,"byYear":{"2007":1,"2010":2,"2013":1,"2014":1,"2024":3}},{"text":"temperature","count":8,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2007":1,"2012":4,"2013":1,"2019":1,"2026":1}},{"text":"front","count":8,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2007":1,"2024":7}},{"text":"resolution","count":8,"category":"Remote Sensing & AI Methods","docFreq":8,"byYear":{"2010":2,"2012":1,"2015":1,"2018":1,"2020":1,"2024":1,"2026":1}},{"text":"dominated","count":8,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2010":1,"2021":1,"2022":4,"2024":1,"2026":1}},{"text":"activity","count":8,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2010":1,"2018":1,"2021":4,"2022":2}},{"text":"highly","count":8,"category":"Ocean Physics & Atmosphere","docFreq":8,"byYear":{"2010":1,"2014":1,"2016":1,"2018":2,"2022":1,"2024":1,"2026":1}},{"text":"evidence","count":8,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2015":1,"2018":1,"2024":5}},{"text":"transatlantic","count":8,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":8}},{"text":"radiative","count":8,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2012":4,"2015":1,"2016":2,"2018":1}},{"text":"importance","count":8,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2014":2,"2017":1,"2018":1,"2024":4}},{"text":"limitation","count":8,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":1,"2020":1,"2021":6}},{"text":"cycle","count":8,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2014":1,"2018":4,"2021":1,"2022":1,"2023":1}},{"text":"cyanobacteria","count":8,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2014":6,"2024":2}},{"text":"bacteria","count":8,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2014":2,"2017":3,"2021":2,"2023":1}},{"text":"smoke","count":8,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2015":8}},{"text":"location","count":8,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2015":1,"2021":1,"2022":5,"2023":1}},{"text":"state","count":8,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2018":2,"2020":3,"2022":1,"2024":1,"2025":1}},{"text":"climate","count":8,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2024":6,"2025":1}},{"text":"need","count":8,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2020":1,"2021":1,"2024":2,"2025":2,"2026":2}},{"text":"landscape","count":8,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2021":7,"2025":1}},{"text":"dip","count":8,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2021":4,"2023":4}},{"text":"shelf","count":8,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2023":6,"2024":1}},{"text":"spill","count":8,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2026":8}},{"text":"sensor","count":7,"category":"Remote Sensing & AI Methods","docFreq":7,"byYear":{"2003":1,"2005":1,"2010":1,"2018":2,"2019":1,"2025":1}},{"text":"characterized","count":7,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2005":1,"2012":2,"2013":1,"2021":2,"2022":1}},{"text":"spring","count":7,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2005":3,"2007":4}},{"text":"intensity","count":7,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2005":1,"2010":3,"2021":1,"2026":2}},{"text":"studied","count":7,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2007":1,"2015":1,"2019":1,"2022":3,"2023":1}},{"text":"structure","count":7,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2007":1,"2021":2,"2022":1,"2024":1,"2025":2}},{"text":"moderate","count":7,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2010":1,"2012":2,"2015":1,"2018":1,"2023":1,"2024":1}},{"text":"insight","count":7,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":3,"2018":4}},{"text":"long-term","count":7,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":2,"2018":1,"2022":4}},{"text":"pelagic","count":7,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2013":3,"2021":1,"2023":2,"2026":1}},{"text":"food","count":7,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":1,"2016":5,"2018":1}},{"text":"viral","count":7,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":1,"2018":6}},{"text":"possible","count":7,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2014":3,"2018":2,"2019":1,"2024":1}},{"text":"human","count":7,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":1,"2015":1,"2021":5}},{"text":"product","count":7,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2015":3,"2021":1,"2025":2,"2026":1}},{"text":"shallow","count":7,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2016":4,"2018":3}},{"text":"chemical","count":7,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2016":5,"2018":1,"2022":1}},{"text":"question","count":7,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2018":6,"2025":1}},{"text":"information","count":7,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2018":3,"2020":2,"2022":2}},{"text":"affect","count":7,"category":"Ocean Physics & Atmosphere","docFreq":7,"byYear":{"2018":3,"2019":1,"2021":1,"2024":2}},{"text":"aodc","count":7,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2018":7}},{"text":"gap","count":7,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2020":3,"2022":1,"2024":1,"2025":1,"2026":1}},{"text":"development","count":7,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2020":5,"2022":1,"2025":1}},{"text":"urban","count":7,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2021":7}},{"text":"depleted","count":7,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2021":4,"2023":1,"2024":1,"2026":1}},{"text":"israeli","count":7,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2023":4,"2024":2,"2026":1}},{"text":"pah","count":7,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2026":7}},{"text":"slick","count":7,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2026":7}},{"text":"color","count":6,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2003":3,"2005":1,"2014":1,"2026":1}},{"text":"experiment","count":6,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2003":3,"2005":2,"2026":1}},{"text":"estimated","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2003":1,"2018":1,"2022":4}},{"text":"interannual","count":6,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2005":1,"2018":2,"2024":3}},{"text":"identify","count":6,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2007":1,"2010":1,"2014":2,"2020":1,"2024":1}},{"text":"link","count":6,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2010":1,"2011":1,"2015":1,"2018":2,"2024":1}},{"text":"behavior","count":6,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2010":1,"2018":1,"2021":1,"2024":3}},{"text":"stratocumulus","count":6,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2011":5,"2016":1}},{"text":"contrast","count":6,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2011":1,"2012":1,"2017":1,"2022":1,"2023":1,"2025":1}},{"text":"amount","count":6,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2011":1,"2014":1,"2015":1,"2020":1,"2024":1,"2026":1}},{"text":"changing","count":6,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2011":1,"2012":1,"2021":1,"2022":1,"2024":2}},{"text":"lifetime","count":6,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":2,"2018":4}},{"text":"support","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2022":1,"2024":3,"2026":1}},{"text":"better","count":6,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2012":1,"2015":2,"2018":1,"2020":1,"2021":1}},{"text":"relatively","count":6,"category":"Ocean Physics & Atmosphere","docFreq":6,"byYear":{"2012":1,"2014":1,"2021":1,"2024":1,"2026":1}},{"text":"southern","count":6,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":5,"2025":1}},{"text":"heating","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2012":6}},{"text":"high-resolution","count":6,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2013":2,"2024":2,"2026":2}},{"text":"abundance","count":6,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2013":1,"2017":2,"2018":1,"2022":1,"2024":1}},{"text":"decoupling","count":6,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2014":6}},{"text":"affected","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":1,"2021":3,"2022":1,"2026":1}},{"text":"population","count":6,"category":"Biology, Ecology & Environment","docFreq":6,"byYear":{"2014":1,"2017":1,"2018":1,"2021":1,"2022":1,"2024":1}},{"text":"deep","count":6,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2014":1,"2018":2,"2026":2}},{"text":"life","count":6,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2014":1,"2018":1,"2022":3,"2026":1}},{"text":"organic","count":6,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2014":1,"2018":3,"2026":2}},{"text":"sampled","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":3,"2022":1,"2024":1,"2026":1}},{"text":"amazon","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2015":6}},{"text":"ecological","count":6,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2015":1,"2017":2,"2018":1,"2022":1,"2026":1}},{"text":"virus","count":6,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2015":1,"2018":5}},{"text":"energy","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2016":3,"2018":3}},{"text":"predicted","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2016":1,"2021":2,"2024":1,"2026":2}},{"text":"risk","count":6,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2016":1,"2024":2,"2026":3}},{"text":"segmentation","count":6,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2016":6}},{"text":"msc","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2016":6}},{"text":"earth","count":6,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2016":2,"2018":2,"2022":1,"2025":1}},{"text":"ability","count":6,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2017":1,"2018":2,"2024":3}},{"text":"huxleyi","count":6,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2018":6}},{"text":"interaction","count":6,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2018":5,"2024":1}},{"text":"march","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2019":6}},{"text":"artificial","count":6,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2020":6}},{"text":"multiple","count":6,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2021":1,"2024":5}},{"text":"exposure","count":6,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2021":4,"2026":2}},{"text":"loss","count":6,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2021":1,"2022":5}},{"text":"aerial","count":6,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2022":5,"2025":1}},{"text":"feature","count":6,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2024":4,"2026":2}},{"text":"stream","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":6}},{"text":"uav","count":6,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2025":6}},{"text":"connectivity","count":6,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2026":6}},{"text":"cyclone","count":6,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{}},{"text":"utilizing","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2003":3,"2020":2}},{"text":"fy-1c","count":5,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2003":5}},{"text":"southeastern","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2003":1,"2011":1,"2022":1,"2024":1,"2026":1}},{"text":"sery","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2005":1,"2011":1,"2024":1,"2026":2}},{"text":"subpolar","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2005":5}},{"text":"ratio","count":5,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2005":1,"2021":2,"2024":1,"2026":1}},{"text":"boundary","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2005":1,"2016":1,"2018":1,"2024":1}},{"text":"addition","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2005":1,"2013":1,"2014":1,"2016":1,"2020":1}},{"text":"multi-satellite","count":5,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2007":3,"2013":1,"2021":1}},{"text":"geostrophic","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2007":3,"2010":1,"2011":1}},{"text":"analyzing","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2007":1,"2010":3,"2018":1}},{"text":"produced","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2007":1,"2010":1,"2014":2,"2016":1}},{"text":"component","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":3,"2025":1,"2026":1}},{"text":"imaging","count":5,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2010":1,"2012":2,"2015":1,"2018":1}},{"text":"allow","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2010":1,"2014":1,"2024":2,"2026":1}},{"text":"retrieval","count":5,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2010":1,"2011":1,"2015":1,"2025":1,"2026":1}},{"text":"altimetry","count":5,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2010":5}},{"text":"spatiotemporal","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":1,"2016":1,"2022":3}},{"text":"signature","count":5,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2010":1,"2012":3,"2026":1}},{"text":"anthropogenic","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2021":3,"2022":1}},{"text":"particle","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2014":2,"2018":2}},{"text":"reduce","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2016":1,"2024":2,"2026":1}},{"text":"simulation","count":5,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2011":1,"2018":2,"2024":1,"2026":1}},{"text":"observational","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2012":3,"2024":1}},{"text":"size","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2014":2,"2021":2}},{"text":"approximately","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2015":1,"2018":2,"2025":1}},{"text":"play","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2011":1,"2015":1,"2024":2,"2025":1}},{"text":"event","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2012":2,"2014":1,"2019":1}},{"text":"rhythm","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2012":5}},{"text":"robust","count":5,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2012":2,"2015":1,"2016":1,"2025":1}},{"text":"annual","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2012":2,"2021":2,"2022":1}},{"text":"proposed","count":5,"category":"Remote Sensing & AI Methods","docFreq":5,"byYear":{"2012":1,"2024":1,"2025":1,"2026":2}},{"text":"higher","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2012":2,"2013":1,"2018":1,"2026":1}},{"text":"less","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2012":1,"2018":1,"2021":1,"2022":1,"2023":1}},{"text":"signal","count":5,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2012":4,"2023":1}},{"text":"characterization","count":5,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2013":3,"2016":1,"2024":1}},{"text":"material","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2013":1}},{"text":"spray","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2014":1,"2018":4}},{"text":"quantification","count":5,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2014":4,"2018":1}},{"text":"consequence","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":1,"2017":1,"2024":3}},{"text":"challenge","count":5,"category":"Ocean Physics & Atmosphere","docFreq":5,"byYear":{"2014":1,"2016":1,"2020":1,"2024":1,"2025":1}},{"text":"quantify","count":5,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2014":1,"2018":2,"2022":1,"2025":1}},{"text":"coccolithophore","count":5,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2014":2,"2015":2,"2018":1}},{"text":"city","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":1,"2021":2,"2022":2}},{"text":"influence","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":1,"2018":2,"2024":2}},{"text":"site","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":2,"2016":1,"2022":2}},{"text":"content","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":2,"2016":1,"2024":2}},{"text":"highest","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":2,"2017":1,"2018":1,"2024":1}},{"text":"season","count":5,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2015":1,"2021":2,"2022":2}},{"text":"metabolism","count":5,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2016":1,"2018":3,"2021":1}},{"text":"dispersion","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2017":3,"2024":2}},{"text":"dilution","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2017":5}},{"text":"aggregation","count":5,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2018":1,"2024":4}},{"text":"particulate","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2018":2,"2026":3}},{"text":"expression","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2018":5}},{"text":"ocean-atmosphere","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2018":4,"2026":1}},{"text":"composition","count":5,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2018":1,"2022":2,"2024":2}},{"text":"view","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2018":4,"2024":1}},{"text":"convective","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2018":5}},{"text":"control","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2018":4,"2025":1}},{"text":"south","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2018":4,"2022":1}},{"text":"arabian","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2019":5}},{"text":"association","count":5,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2019":1,"2021":4}},{"text":"forward","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2019":1,"2020":3,"2021":1}},{"text":"availability","count":5,"category":"Biology, Ecology & Environment","docFreq":5,"byYear":{"2019":1,"2021":1,"2024":2,"2025":1}},{"text":"ontology","count":5,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2020":4,"2025":1}},{"text":"coverage","count":5,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2020":1,"2022":1,"2024":2,"2025":1}},{"text":"mapping","count":5,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2020":2,"2024":2,"2025":1}},{"text":"particle-associated","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2021":5}},{"text":"sars-cov-2","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2021":5}},{"text":"carrier","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2021":5}},{"text":"unusual","count":5,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2021":1,"2023":4}},{"text":"monthly","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2021":1,"2022":3,"2023":1}},{"text":"photic","count":5,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2021":1,"2022":1,"2024":3}},{"text":"zone","count":5,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2021":1,"2024":3,"2026":1}},{"text":"aqaba","count":5,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2022":5}},{"text":"historical","count":5,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2022":5}},{"text":"bacterioplankton","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2022":5}},{"text":"pipeline","count":5,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2024":5}},{"text":"directional","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2024":5}},{"text":"movement","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2024":5}},{"text":"spectrum","count":5,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2025":5}},{"text":"species-specific","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2026":5}},{"text":"recycling","count":5,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2026":5}},{"text":"fenyeng","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2003":4}},{"text":"monitor","count":4,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2003":3,"2024":1}},{"text":"quality","count":4,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2003":3,"2020":1}},{"text":"seawif","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2005":4}},{"text":"mld","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2005":4}},{"text":"done","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2005":1,"2018":1,"2025":1,"2026":1}},{"text":"midlatitude","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2005":4}},{"text":"deeper","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2005":1,"2018":2,"2026":1}},{"text":"pump","count":4,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2005":1,"2014":1,"2018":1,"2026":1}},{"text":"appear","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2005":1,"2010":2,"2012":1}},{"text":"driven","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2005":1,"2010":1,"2011":1,"2024":1}},{"text":"velocity","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2007":4}},{"text":"filament","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2007":1,"2011":1,"2024":2}},{"text":"shape","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2007":1,"2011":2,"2026":1}},{"text":"estimating","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2010":4}},{"text":"spectroradiometer","count":4,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2010":1,"2012":1,"2015":1,"2018":1}},{"text":"perspective","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":1,"2018":3}},{"text":"systematic","count":4,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2010":1,"2016":2,"2021":1}},{"text":"induced","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2010":1,"2011":1,"2013":1,"2026":1}},{"text":"multiscale","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2010":1,"2021":3}},{"text":"turbulence","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2010":1,"2017":2,"2018":1}},{"text":"variance","count":4,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2010":1,"2012":2,"2025":1}},{"text":"thought","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2018":1,"2024":1,"2025":1}},{"text":"growth","count":4,"category":"Biology, Ecology & Environment","docFreq":4,"byYear":{"2011":1,"2014":1,"2016":1,"2026":1}},{"text":"atmosphere","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2018":2,"2026":1}},{"text":"agulha","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2011":4}},{"text":"ring","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2011":4}},{"text":"throughout","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2022":1,"2023":2}},{"text":"month","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2011":1,"2012":2,"2019":1}},{"text":"variable","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2012":1,"2018":1,"2022":1}},{"text":"rapid","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2012":1,"2014":1,"2024":1}},{"text":"emphasize","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2011":1,"2024":1,"2026":2}},{"text":"discernible","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2012":4}},{"text":"unusually","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":1,"2017":3}},{"text":"frequency","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":3,"2015":1}},{"text":"value","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2012":1,"2014":1,"2021":1,"2025":1}},{"text":"northern","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":3,"2022":1}},{"text":"half","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2012":1,"2018":2,"2022":1}},{"text":"air","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2012":3,"2014":1}},{"text":"differ","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2013":1,"2025":3}},{"text":"lower","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2013":1,"2014":1,"2022":1,"2024":1}},{"text":"estimate","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2013":1,"2014":1,"2021":1,"2026":1}},{"text":"framework","count":4,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2013":1,"2016":1,"2018":1,"2026":1}},{"text":"sampling","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2013":1,"2021":1,"2022":1,"2024":1}},{"text":"strategy","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2013":1,"2017":2,"2024":1}},{"text":"interface","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2013":1,"2018":2,"2026":1}},{"text":"affecting","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2014":4}},{"text":"cluster","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2014":4}},{"text":"distance","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":1,"2015":1,"2016":2}},{"text":"highlight","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":1,"2022":1,"2024":2}},{"text":"algal","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2014":4}},{"text":"large-scale","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2014":1,"2016":1,"2017":1,"2020":1}},{"text":"fraction","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":1,"2021":2,"2026":1}},{"text":"genome","count":4,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2014":3,"2017":1}},{"text":"presence","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2014":1,"2022":1,"2024":2}},{"text":"regional","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2015":4}},{"text":"strong","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2015":2,"2019":1,"2026":1}},{"text":"improve","count":4,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2015":1,"2016":1,"2017":1,"2026":1}},{"text":"assessment","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2015":1,"2024":1,"2026":2}},{"text":"planktonic","count":4,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2015":1,"2025":3}},{"text":"macroalgal","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2016":4}},{"text":"biorefinery","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2016":4}},{"text":"fuel","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2016":4}},{"text":"rate","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2016":1,"2017":2,"2019":1}},{"text":"tracking","count":4,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2016":3,"2024":1}},{"text":"geostationary","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2016":4}},{"text":"require","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2016":1,"2018":1,"2024":1,"2025":1}},{"text":"methodology","count":4,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2016":2,"2020":1,"2025":1}},{"text":"enriched","count":4,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2017":1,"2018":1,"2021":2}},{"text":"metagenomic","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2017":4}},{"text":"proteorhodopsin","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2017":4}},{"text":"summary","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2017":1,"2018":1,"2021":1,"2025":1}},{"text":"poorly","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2017":1,"2022":1,"2024":2}},{"text":"coccolithovirus","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2018":4}},{"text":"upper","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2018":3,"2024":1}},{"text":"early","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2021":2,"2022":1}},{"text":"profiling","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2018":4}},{"text":"column","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2021":1,"2022":1,"2023":1}},{"text":"providing","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2019":1,"2020":1,"2024":1}},{"text":"novel","count":4,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2018":2,"2026":1}},{"text":"scientific","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2020":1,"2024":1,"2025":1}},{"text":"part","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2021":2,"2026":1}},{"text":"platform","count":4,"category":"Remote Sensing & AI Methods","docFreq":2,"byYear":{"2018":1,"2024":3}},{"text":"numerical","count":4,"category":"Remote Sensing & AI Methods","docFreq":3,"byYear":{"2018":2,"2024":1,"2026":1}},{"text":"daily","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2018":2,"2019":1,"2026":1}},{"text":"seasonality","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2018":1,"2022":1,"2023":1,"2024":1}},{"text":"increased","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2019":1,"2024":3}},{"text":"intelligence","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2020":4}},{"text":"effort","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2020":1,"2024":1,"2025":1,"2026":1}},{"text":"free-living","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2021":4}},{"text":"hydrocarbon","count":4,"category":"Biology, Ecology & Environment","docFreq":3,"byYear":{"2021":1,"2026":3}},{"text":"manifest","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2021":3,"2026":1}},{"text":"morphology","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2021":4}},{"text":"israel","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2021":1,"2024":3}},{"text":"determined","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2021":2,"2023":1,"2024":1}},{"text":"nox","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2021":4}},{"text":"decreased","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2021":2,"2023":1,"2024":1}},{"text":"specy","count":4,"category":"Biology, Ecology & Environment","docFreq":2,"byYear":{"2021":1,"2026":3}},{"text":"many","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2021":1,"2023":2,"2026":1}},{"text":"infrastructure","count":4,"category":"Remote Sensing & AI Methods","docFreq":4,"byYear":{"2022":1,"2024":1,"2025":2}},{"text":"transect","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2022":1,"2023":1,"2024":1,"2026":1}},{"text":"stratified","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2022":1,"2026":3}},{"text":"ics","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2023":4}},{"text":"sample","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2023":4}},{"text":"standard","count":4,"category":"Ocean Physics & Atmosphere","docFreq":3,"byYear":{"2024":1,"2025":3}},{"text":"contributing","count":4,"category":"Ocean Physics & Atmosphere","docFreq":4,"byYear":{"2024":2,"2025":1,"2026":1}},{"text":"predict","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2024":4}},{"text":"time-sery","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"biophysical","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"citizen","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2024":4}},{"text":"bathymetry","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2024":4}},{"text":"archaeological","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"ven","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"caesarea","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"maritima","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2024":4}},{"text":"emergent","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2025":4}},{"text":"nadir","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2025":4}},{"text":"widespread","count":4,"category":"Biology, Ecology & Environment","docFreq":1,"byYear":{"2026":4}},{"text":"enhanced","count":4,"category":"Ocean Physics & Atmosphere","docFreq":2,"byYear":{"2026":4}},{"text":"wintertime","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2026":4}},{"text":"constrain","count":4,"category":"Ocean Physics & Atmosphere","docFreq":1,"byYear":{"2026":4}},{"text":"interferometry","count":4,"category":"Remote Sensing & AI Methods","docFreq":1,"byYear":{"2026":4}}];
 
-  const AUTHOR_WORDS = [{"text":"Lehahn, Y.","count":50,"category":"Current lab team"},{"text":"Koren, I.","count":15,"category":"Collaborator"},{"text":"Boss, E.","count":8,"category":"Collaborator"},{"text":"Sher, D.","count":7,"category":"Collaborator"},{"text":"Krom, M. D.","count":7,"category":"Collaborator"},{"text":"Heifetz, E.","count":5,"category":"Collaborator"},{"text":"Altaratz, O.","count":5,"category":"Collaborator"},{"text":"Rahav, E.","count":5,"category":"Collaborator"},{"text":"Herut, B.","count":5,"category":"Collaborator"},{"text":"Rudich, Y.","count":5,"category":"Collaborator"},{"text":"Vardi, A.","count":5,"category":"Collaborator"},{"text":"Ben-Ezra, T.","count":5,"category":"Collaborator"},{"text":"Tsemel, A.","count":5,"category":"Collaborator"},{"text":"Berman-Frank, I.","count":5,"category":"Collaborator"},{"text":"Solodoch, A.","count":5,"category":"Collaborator"},{"text":"d'Ovidio, F.","count":4,"category":"Collaborator"},{"text":"Aharonovich, D.","count":4,"category":"Collaborator"},{"text":"Toledo, Y.","count":4,"category":"Collaborator"},{"text":"Fadida, Y.","count":4,"category":"Current lab team"},{"text":"Lévy, M.","count":3,"category":"Collaborator"},{"text":"Sharoni, S.","count":3,"category":"Collaborator"},{"text":"Frada, M.","count":3,"category":"Collaborator"},{"text":"Sheyn, U.","count":3,"category":"Collaborator"},{"text":"Haber, M.","count":3,"category":"Collaborator"},{"text":"Steindler, L.","count":3,"category":"Collaborator"},{"text":"Sagi, T.","count":3,"category":"Collaborator"},{"text":"Roth-Rosenberg, D.","count":3,"category":"Collaborator"},{"text":"Reich, T.","count":3,"category":"Collaborator"},{"text":"Biton, E.","count":3,"category":"Collaborator"},{"text":"Ben-Ami, Y.","count":2,"category":"Collaborator"},{"text":"Amitai, Y.","count":2,"category":"Collaborator"},{"text":"Kostinsky, A. B.","count":2,"category":"Collaborator"},{"text":"Efrati, S.","count":2,"category":"Current lab team"},{"text":"Ozer, T.","count":2,"category":"Collaborator"},{"text":"Bidle, K. D.","count":2,"category":"Collaborator"},{"text":"Trainic, M.","count":2,"category":"Collaborator"},{"text":"Schatz, D.","count":2,"category":"Collaborator"},{"text":"Saurav, K.","count":2,"category":"Collaborator"},{"text":"Burgsdorf, I.","count":2,"category":"Collaborator"},{"text":"Lalzar, M.","count":2,"category":"Collaborator"},{"text":"Belkin, N.","count":2,"category":"Collaborator"},{"text":"Berenshtein, I.","count":2,"category":"Collaborator"},{"text":"Bourdin, G.","count":2,"category":"Collaborator"},{"text":"Gray, P. C.","count":2,"category":"Collaborator"},{"text":"Verma, V.","count":2,"category":"Collaborator"},{"text":"Barkan, R.","count":2,"category":"Collaborator"},{"text":"Bar, K.","count":1,"category":"Current lab team"},{"text":"Bloch Haimson, M.","count":1,"category":"Current lab team"},{"text":"Lapidot, O.","count":1,"category":"Current lab team"}];
+  const AUTHOR_WORDS = [{"text":"Lehahn, Y.","count":50,"category":"Current lab team","byYear":{"2003":1,"2005":1,"2007":1,"2010":2,"2011":2,"2012":2,"2013":1,"2014":3,"2015":2,"2016":2,"2017":2,"2018":6,"2019":1,"2020":1,"2021":3,"2022":3,"2023":1,"2024":7,"2025":3,"2026":5}},{"text":"Koren, I.","count":15,"category":"Collaborator","byYear":{"2010":1,"2011":1,"2012":2,"2014":2,"2015":2,"2016":1,"2017":1,"2018":5}},{"text":"Boss, E.","count":8,"category":"Collaborator","byYear":{"2010":1,"2014":1,"2017":1,"2018":2,"2024":2,"2025":1}},{"text":"Sher, D.","count":7,"category":"Collaborator","byYear":{"2017":1,"2021":2,"2022":2,"2023":1,"2024":1}},{"text":"Krom, M. D.","count":7,"category":"Collaborator","byYear":{"2021":2,"2022":2,"2023":1,"2024":1,"2026":1}},{"text":"Heifetz, E.","count":5,"category":"Collaborator","byYear":{"2005":1,"2007":1,"2010":1,"2011":1,"2013":1}},{"text":"Altaratz, O.","count":5,"category":"Collaborator","byYear":{"2010":1,"2011":1,"2012":1,"2018":2}},{"text":"Rahav, E.","count":5,"category":"Collaborator","byYear":{"2013":1,"2021":1,"2022":1,"2026":2}},{"text":"Herut, B.","count":5,"category":"Collaborator","byYear":{"2013":1,"2014":1,"2021":1,"2022":1,"2026":1}},{"text":"Rudich, Y.","count":5,"category":"Collaborator","byYear":{"2014":3,"2015":2}},{"text":"Vardi, A.","count":5,"category":"Collaborator","byYear":{"2014":2,"2015":1,"2017":1,"2018":1}},{"text":"Ben-Ezra, T.","count":5,"category":"Collaborator","byYear":{"2021":1,"2022":1,"2023":1,"2024":1,"2026":1}},{"text":"Tsemel, A.","count":5,"category":"Collaborator","byYear":{"2021":1,"2022":1,"2023":1,"2024":1,"2026":1}},{"text":"Berman-Frank, I.","count":5,"category":"Collaborator","byYear":{"2021":1,"2022":1,"2023":1,"2024":1,"2026":1}},{"text":"Solodoch, A.","count":5,"category":"Collaborator","byYear":{"2024":1,"2025":1,"2026":2}},{"text":"d'Ovidio, F.","count":4,"category":"Collaborator","byYear":{"2007":1,"2011":1,"2017":1,"2018":1}},{"text":"Aharonovich, D.","count":4,"category":"Collaborator","byYear":{"2017":1,"2021":1,"2022":2}},{"text":"Toledo, Y.","count":4,"category":"Collaborator","byYear":{"2024":1,"2025":1,"2026":1}},{"text":"Fadida, Y.","count":4,"category":"Current lab team","byYear":{"2024":1,"2026":2}},{"text":"Lévy, M.","count":3,"category":"Collaborator","byYear":{"2005":1,"2007":1,"2011":1}},{"text":"Sharoni, S.","count":3,"category":"Collaborator","byYear":{"2014":1,"2015":1,"2017":1}},{"text":"Frada, M.","count":3,"category":"Collaborator","byYear":{"2014":1,"2018":1,"2022":1}},{"text":"Sheyn, U.","count":3,"category":"Collaborator","byYear":{"2014":1,"2018":2}},{"text":"Haber, M.","count":3,"category":"Collaborator","byYear":{"2017":1,"2021":1,"2022":1}},{"text":"Steindler, L.","count":3,"category":"Collaborator","byYear":{"2017":1,"2021":1,"2022":1}},{"text":"Sagi, T.","count":3,"category":"Collaborator","byYear":{"2020":1,"2024":1,"2025":1}},{"text":"Roth-Rosenberg, D.","count":3,"category":"Collaborator","byYear":{"2021":1,"2022":2}},{"text":"Reich, T.","count":3,"category":"Collaborator","byYear":{"2021":1,"2022":1,"2023":1}},{"text":"Biton, E.","count":3,"category":"Collaborator","byYear":{"2026":3}},{"text":"Ben-Ami, Y.","count":2,"category":"Collaborator","byYear":{"2010":1,"2012":1}},{"text":"Amitai, Y.","count":2,"category":"Collaborator","byYear":{"2010":1,"2011":1}},{"text":"Kostinsky, A. B.","count":2,"category":"Collaborator","byYear":{"2011":1,"2012":1}},{"text":"Efrati, S.","count":2,"category":"Current lab team","byYear":{"2013":1,"2014":1}},{"text":"Ozer, T.","count":2,"category":"Collaborator","byYear":{"2013":1,"2026":1}},{"text":"Bidle, K. D.","count":2,"category":"Collaborator","byYear":{"2014":1,"2018":1}},{"text":"Trainic, M.","count":2,"category":"Collaborator","byYear":{"2014":1,"2015":1}},{"text":"Schatz, D.","count":2,"category":"Collaborator","byYear":{"2014":1,"2015":1}},{"text":"Saurav, K.","count":2,"category":"Collaborator","byYear":{"2017":1,"2022":1}},{"text":"Burgsdorf, I.","count":2,"category":"Collaborator","byYear":{"2017":1,"2022":1}},{"text":"Lalzar, M.","count":2,"category":"Collaborator","byYear":{"2021":1,"2022":1}},{"text":"Belkin, N.","count":2,"category":"Collaborator","byYear":{"2022":1,"2026":1}},{"text":"Berenshtein, I.","count":2,"category":"Collaborator","byYear":{"2024":1,"2026":1}},{"text":"Bourdin, G.","count":2,"category":"Collaborator","byYear":{"2024":1,"2025":1}},{"text":"Gray, P. C.","count":2,"category":"Collaborator","byYear":{"2024":1,"2025":1}},{"text":"Verma, V.","count":2,"category":"Collaborator","byYear":{"2026":1}},{"text":"Barkan, R.","count":2,"category":"Collaborator","byYear":{"2026":1}},{"text":"Blumberg, D. G.","count":1,"category":"Collaborator","byYear":{"2003":1}},{"text":"Yaacobi, Y. Z.","count":1,"category":"Collaborator","byYear":{"2003":1}},{"text":"Mémery, L.","count":1,"category":"Collaborator","byYear":{"2005":1}},{"text":"Loisel, H.","count":1,"category":"Collaborator","byYear":{"2005":1}},{"text":"Lazar, A.","count":1,"category":"Collaborator","byYear":{"2010":1}},{"text":"Davidi, A.","count":1,"category":"Collaborator","byYear":{"2012":1}},{"text":"Kostinsky, A.","count":1,"category":"Collaborator","byYear":{"2012":1}},{"text":"Kress, N.","count":1,"category":"Collaborator","byYear":{"2013":1}},{"text":"Gertman, I.","count":1,"category":"Collaborator","byYear":{"2013":1}},{"text":"Goldman, R.","count":1,"category":"Collaborator","byYear":{"2013":1}},{"text":"Lazar, M.","count":1,"category":"Collaborator","byYear":{"2013":1}},{"text":"Flores, M.","count":1,"category":"Collaborator","byYear":{"2014":1}},{"text":"Bidle, K.","count":1,"category":"Collaborator","byYear":{"2014":1}},{"text":"Lang-Yona, N.","count":1,"category":"Collaborator","byYear":{"2014":1}},{"text":"Burshtein, N.","count":1,"category":"Collaborator","byYear":{"2014":1}},{"text":"Mishra, A.","count":1,"category":"Collaborator","byYear":{"2015":1}},{"text":"Flores, J. M.","count":1,"category":"Collaborator","byYear":{"2015":1}},{"text":"Ben Dor, S.","count":1,"category":"Collaborator","byYear":{"2015":1}},{"text":"Ingle, K. N.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Golberg, A.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Gufan, A.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Fredj, E.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Price, C.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Kurchin, R.","count":1,"category":"Collaborator","byYear":{"2016":1}},{"text":"Dubinsky, V.","count":1,"category":"Collaborator","byYear":{"2017":1}},{"text":"Malik, A.","count":1,"category":"Collaborator","byYear":{"2017":1}},{"text":"Laber, C.P.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Hunter, J.E.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Carvalho, F.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Collins, J.R.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Hunter, E.J.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Schieler, B.M.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"More, K.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Thamatrakoln, K.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Brown, C.M.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Haramaty, L.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Ossolinski, J.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Fredricks, H.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Nissimov, J.I.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Vandzura, R.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Chant, R.J.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Martins, A.M.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Coolen, M.J.L.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"DiTullio, G.R.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Van Mooy, B.A.S.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Bidle, K.D.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Rosenwasser, S.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Barak-Gavish, N.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Schatza, D.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Neukermans, G.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Harmel, T.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Galí, M.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Rudorff, N.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Chowdhary, J.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Dubovik, O.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Hostetler, C.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Hu, Y.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Jamet, C.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Knobelspiesse, K.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Litvinov, P.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Sayer, A.M.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Ward, B.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Miller, L.A.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Dagan, G.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Dror, T.","count":1,"category":"Collaborator","byYear":{"2018":1}},{"text":"Bali, K.","count":1,"category":"Collaborator","byYear":{"2019":1}},{"text":"Mishra, A. K.","count":1,"category":"Collaborator","byYear":{"2019":1}},{"text":"Singh, S.","count":1,"category":"Collaborator","byYear":{"2019":1}},{"text":"Chandra, S.","count":1,"category":"Collaborator","byYear":{"2019":1}},{"text":"Bar, K.","count":1,"category":"Current lab team","byYear":{"2020":1}},{"text":"Goldford, J.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Al-Ashhab, A.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Segrè, D.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Cotlier, G. I.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Chelouche, D.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Thingstad, T.F.","count":1,"category":"Collaborator","byYear":{"2021":1}},{"text":"Topel, E.","count":1,"category":"Collaborator","byYear":{"2022":1}},{"text":"Lionheart, R.","count":1,"category":"Collaborator","byYear":{"2022":1}},{"text":"Gómez-Consarnau, L.","count":1,"category":"Collaborator","byYear":{"2022":1}},{"text":"Givati, S.","count":1,"category":"Collaborator","byYear":{"2022":1}},{"text":"Bialik, O.","count":1,"category":"Collaborator","byYear":{"2022":1}},{"text":"Suari, Y.","count":1,"category":"Collaborator","byYear":{"2023":1}},{"text":"Larsen, S. T.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Rasmussen, L. E.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Jasulaitis, D.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Hose, K.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Malul, D.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Berman, H.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Tal, O.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Barak, N.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Mizrahi, G.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Lotan, T.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Shavit, U.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Blachinsky, A.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Gozali, S.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Tchernov, D.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Tsagaraki, T.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Gray, P.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Savelyev, I.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Cassar, N.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Levy, M.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Smith, K. A.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Windle, A.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Gronniger, J.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Floge, S.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Hunt, D. E.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Silsbe, G.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Johnson, Z. I.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Johnston, D. W.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Levy, T.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Ghermandi, A.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Edelist, D.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Angel, D. L.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Prochaska, J. X.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Kerner, H.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Begouen Demeaux, C.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Diaz, G.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Nantet, E.","count":1,"category":"Collaborator","byYear":{"2024":1}},{"text":"Bloch Haimson, M.","count":1,"category":"Current lab team","byYear":{"2025":1}},{"text":"Grigorieva, V.","count":1,"category":"Collaborator","byYear":{"2025":1}},{"text":"Lapidot, O.","count":1,"category":"Current lab team","byYear":{"2026":1}},{"text":"Perlin, N.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Khain, P.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Levi, Y.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Alpert, P.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Ramon, D.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Stern, N.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Rilov, G.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Guy-Haim, T.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Paris, C. B.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Tsagaraki, T. M.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Bar, T.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Alkalay, R.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Soukhanov, M.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Weinstein, Y.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Katz, T.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Treibitz, T.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Shalabney, A.","count":1,"category":"Collaborator","byYear":{"2026":1}},{"text":"Gildor, H.","count":1,"category":"Collaborator","byYear":{}}];
 
-  const INSTITUTE_WORDS = [{"text":"University of Haifa","count":29,"category":"Home institution"},{"text":"Weizmann Institute of Science","count":21,"category":"Partner institution"},{"text":"Tel Aviv University","count":19,"category":"Partner institution"},{"text":"Israel Oceanographic and Limnological Research","count":10,"category":"Partner institution"},{"text":"University of Maine","count":7,"category":"Partner institution"},{"text":"Hebrew University of Jerusalem","count":7,"category":"Partner institution"},{"text":"Centre National de la Recherche Scientifique","count":6,"category":"Partner institution"},{"text":"Laboratoire d'Océanographie et du Climat : Expérimentations et Approches Numériques","count":6,"category":"Partner institution"},{"text":"Sorbonne Université","count":6,"category":"Partner institution"},{"text":"Rutgers, The State University of New Jersey","count":6,"category":"Partner institution"},{"text":"Institut Pierre-Simon Laplace","count":4,"category":"Partner institution"},{"text":"Institut de Recherche pour le Développement","count":4,"category":"Partner institution"},{"text":"University of Leeds","count":4,"category":"Partner institution"},{"text":"Michigan Technological University","count":3,"category":"Partner institution"},{"text":"Woods Hole Oceanographic Institution","count":3,"category":"Partner institution"},{"text":"Interuniversity Institute for Marine Sciences in Eilat","count":3,"category":"Partner institution"},{"text":"Aalborg University","count":3,"category":"Partner institution"},{"text":"University of Bergen","count":3,"category":"Partner institution"},{"text":"Ruppin Academic Center","count":3,"category":"Partner institution"},{"text":"Ben-Gurion University of the Negev","count":2,"category":"Partner institution"},{"text":"Institut Universitaire Européen de la Mer","count":2,"category":"Partner institution"},{"text":"Laboratoire des Sciences de l'Environnement Marin","count":2,"category":"Partner institution"},{"text":"Laboratoire d'Optique Atmosphérique","count":2,"category":"Partner institution"},{"text":"Bar-Ilan University","count":2,"category":"Partner institution"},{"text":"College of Charleston","count":2,"category":"Partner institution"},{"text":"Universidade dos Açores","count":2,"category":"Partner institution"},{"text":"Laboratoire d’Océanographie de Villefranche","count":2,"category":"Partner institution"},{"text":"Goddard Space Flight Center","count":2,"category":"Partner institution"},{"text":"Ollscoil na Gaillimhe – University of Galway","count":2,"category":"Partner institution"},{"text":"University of Southern California","count":2,"category":"Partner institution"},{"text":"Duke University","count":2,"category":"Partner institution"}];
+  const INSTITUTE_WORDS = [{"text":"University of Haifa","count":29,"category":"Home institution","byYear":{"2013":1,"2017":1,"2018":3,"2019":1,"2020":1,"2021":3,"2022":3,"2023":1,"2024":6,"2025":3,"2026":5}},{"text":"Weizmann Institute of Science","count":21,"category":"Partner institution","byYear":{"2010":1,"2011":2,"2012":2,"2013":1,"2014":3,"2015":2,"2016":2,"2017":2,"2018":5,"2025":1}},{"text":"Tel Aviv University","count":19,"category":"Partner institution","byYear":{"2003":1,"2005":1,"2007":1,"2010":2,"2011":2,"2012":2,"2013":1,"2014":1,"2016":2,"2024":1,"2025":1,"2026":3}},{"text":"Israel Oceanographic and Limnological Research","count":10,"category":"Partner institution","byYear":{"2003":1,"2013":1,"2014":1,"2021":1,"2022":1,"2025":1,"2026":4}},{"text":"University of Maine","count":7,"category":"Partner institution","byYear":{"2010":1,"2014":1,"2017":1,"2018":2,"2024":1,"2025":1}},{"text":"Hebrew University of Jerusalem","count":7,"category":"Partner institution","byYear":{"2011":1,"2018":1,"2022":1,"2024":1,"2025":1,"2026":2}},{"text":"Centre National de la Recherche Scientifique","count":6,"category":"Partner institution","byYear":{"2007":1,"2017":1,"2018":2,"2024":1,"2025":1}},{"text":"Laboratoire d'Océanographie et du Climat : Expérimentations et Approches Numériques","count":6,"category":"Partner institution","byYear":{"2007":1,"2011":1,"2017":1,"2018":1,"2024":1,"2025":1}},{"text":"Sorbonne Université","count":6,"category":"Partner institution","byYear":{"2011":1,"2017":1,"2018":2,"2024":1,"2025":1}},{"text":"Rutgers, The State University of New Jersey","count":6,"category":"Partner institution","byYear":{"2014":2,"2015":1,"2016":1,"2018":2}},{"text":"Institut Pierre-Simon Laplace","count":4,"category":"Partner institution","byYear":{"2005":1,"2007":1,"2024":1,"2025":1}},{"text":"Institut de Recherche pour le Développement","count":4,"category":"Partner institution","byYear":{"2017":1,"2018":1,"2024":1,"2025":1}},{"text":"University of Leeds","count":4,"category":"Partner institution","byYear":{"2021":1,"2023":1,"2024":1,"2026":1}},{"text":"Michigan Technological University","count":3,"category":"Partner institution","byYear":{"2011":1,"2012":2}},{"text":"Woods Hole Oceanographic Institution","count":3,"category":"Partner institution","byYear":{"2014":1,"2018":1,"2025":1}},{"text":"Interuniversity Institute for Marine Sciences in Eilat","count":3,"category":"Partner institution","byYear":{"2018":1,"2022":1,"2024":1}},{"text":"Aalborg University","count":3,"category":"Partner institution","byYear":{"2020":1,"2024":1,"2025":1}},{"text":"University of Bergen","count":3,"category":"Partner institution","byYear":{"2021":1,"2024":1,"2026":1}},{"text":"Ruppin Academic Center","count":3,"category":"Partner institution","byYear":{"2023":1,"2024":1,"2026":1}},{"text":"Ben-Gurion University of the Negev","count":2,"category":"Partner institution","byYear":{"2003":1,"2026":1}},{"text":"Institut Universitaire Européen de la Mer","count":2,"category":"Partner institution","byYear":{"2005":1,"2025":1}},{"text":"Laboratoire des Sciences de l'Environnement Marin","count":2,"category":"Partner institution","byYear":{"2005":1,"2025":1}},{"text":"Laboratoire d'Optique Atmosphérique","count":2,"category":"Partner institution","byYear":{"2005":1,"2018":1}},{"text":"Bar-Ilan University","count":2,"category":"Partner institution","byYear":{"2013":1,"2026":1}},{"text":"College of Charleston","count":2,"category":"Partner institution","byYear":{"2014":1,"2018":1}},{"text":"Universidade dos Açores","count":2,"category":"Partner institution","byYear":{"2014":1,"2018":1}},{"text":"Laboratoire d’Océanographie de Villefranche","count":2,"category":"Partner institution","byYear":{"2018":1,"2025":1}},{"text":"Goddard Space Flight Center","count":2,"category":"Partner institution","byYear":{"2018":1,"2024":1}},{"text":"Ollscoil na Gaillimhe – University of Galway","count":2,"category":"Partner institution","byYear":{"2018":1,"2025":1}},{"text":"University of Southern California","count":2,"category":"Partner institution","byYear":{"2022":1,"2025":1}},{"text":"Duke University","count":2,"category":"Partner institution","byYear":{"2024":1,"2025":1}},{"text":"Laboratoire de Météorologie Dynamique","count":1,"category":"Partner institution","byYear":{"2007":1}},{"text":"Stockholm University","count":1,"category":"Partner institution","byYear":{"2013":1}},{"text":"NCCOS Hollings Marine Laboratory","count":1,"category":"Partner institution","byYear":{"2014":1}},{"text":"National Institute of Oceanography","count":1,"category":"Partner institution","byYear":{"2014":1}},{"text":"Jerusalem College of Technology","count":1,"category":"Partner institution","byYear":{"2016":1}},{"text":"Massachusetts Institute of Technology","count":1,"category":"Partner institution","byYear":{"2016":1}},{"text":"College of Marin","count":1,"category":"Partner institution","byYear":{"2017":1}},{"text":"National Oceanography Centre","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Curtin University","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"University of Delaware","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Centre National pour la Recherche Scientifique et Technique (CNRST)","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Institut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Barcelona Supercomputing Center","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Universitat Politècnica de Catalunya","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Instituto Nacional de Pesquisas Espaciais","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Columbia University","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Langley Research Center","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"National Aeronautics and Space Administration","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Laboratoire d’Océanologie et de Géosciences","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Universities Space Research Association","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Fisheries and Oceans Canada","count":1,"category":"Partner institution","byYear":{"2018":1}},{"text":"Indian Institute of Technology Delhi","count":1,"category":"Partner institution","byYear":{"2019":1}},{"text":"CSIR National Physical Laboratory of India","count":1,"category":"Partner institution","byYear":{"2019":1}},{"text":"Jawaharlal Nehru University","count":1,"category":"Partner institution","byYear":{"2019":1}},{"text":"Academy of Scientific and Innovative Research","count":1,"category":"Partner institution","byYear":{"2019":1}},{"text":"Boston University","count":1,"category":"Partner institution","byYear":{"2021":1}},{"text":"University of Massachusetts Boston","count":1,"category":"Partner institution","byYear":{"2021":1}},{"text":"Dead Sea and Arava Science Center","count":1,"category":"Partner institution","byYear":{"2021":1}},{"text":"Institute of Hydrobiology, Biology Centre, Academy of Sciences of the Czech Republic","count":1,"category":"Partner institution","byYear":{"2022":1}},{"text":"Centro de Investigación Científica y de Educación Superior de Ensenada","count":1,"category":"Partner institution","byYear":{"2022":1}},{"text":"TU Wien","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"Technion – Israel Institute of Technology","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"United States Naval Research Laboratory","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"Wake Forest University","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"Science Systems and Applications (United States)","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"Marine Conservation Institute","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"University of Maryland Center for Environmental Science","count":1,"category":"Partner institution","byYear":{"2024":1}},{"text":"Stazione Zoologica Anton Dohrn","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Commissariat à l'Énergie Atomique et aux Énergies Alternatives","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Institut de la Mer de Villefranche","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université Paris-Saclay","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Genoscope","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"CEA Paris-Saclay","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Laboratoire de Géologie de l’École Normale Supérieure","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"University of Bremen","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"European Molecular Biology Laboratory","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université de Perpignan","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"École Pratique des Hautes Études","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université Paris Sciences et Lettres","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Centre de Recherches Insulaires et Observatoire de l'Environnement","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Scientific Centre of Monaco","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Inserm","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université Côte d'Azur","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Institut de Recherche sur le Cancer et le Vieillissement de Nice","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"University of Konstanz","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"University of Derby","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Justus-Liebig-Universität Gießen","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"SIB Swiss Institute of Bioinformatics","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"ETH Zurich","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Observatoire Océanologique de Banyuls-sur-Mer","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Laboratoire d'Océanographie Microbienne","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Laboratoire d'Ecogéochimie des Environnements Benthiques","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université de Versailles Saint-Quentin-en-Yvelines","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Laboratoire des Sciences du Climat et de l'Environnement","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"University of Tsukuba","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"The Ohio State University","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Oregon State University","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Station Biologique de Roscoff","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Adaptation et Diversité en Milieu Marin","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Ifremer","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Université de Bretagne Occidentale","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"Évolution, Génomes, Comportement, Écologie","count":1,"category":"Partner institution","byYear":{"2025":1}},{"text":"University of Miami","count":1,"category":"Partner institution","byYear":{"2026":1}},{"text":"Israel Water Authority","count":1,"category":"Partner institution","byYear":{"2026":1}},{"text":"Academic College of Tel Aviv-Yafo","count":1,"category":"Partner institution","byYear":{"2026":1}},{"text":"University of California, Los Angeles","count":1,"category":"Partner institution","byYear":{"2026":1}}];
 
   const N_PUBS = 50;
   const TOTAL_AUTHORS = 185;
-  const TOTAL_INSTITUTIONS = 112;
+  const TOTAL_INSTITUTIONS = 107;
   const MAX_AUTHORS_PER_PAPER = {"count":127,"title":"Emergent patterns of patchiness differ between physical and planktonic properties in the ocean"};
   const MAX_INSTITUTIONS_PER_PAPER = {"count":50,"title":"Emergent patterns of patchiness differ between physical and planktonic properties in the ocean"};
   const HOME_INSTITUTION = "University of Haifa";
   const ABSTRACT_COUNT = 50;
   const YEAR_MIN = 2003;
   const YEAR_MAX = 2026;
+  const PUBS_BY_YEAR = {"2003":1,"2005":1,"2007":1,"2010":2,"2011":2,"2012":2,"2013":1,"2014":3,"2015":2,"2016":2,"2017":2,"2018":6,"2019":1,"2020":1,"2021":3,"2022":3,"2023":1,"2024":7,"2025":3,"2026":5};
   // GENERATED:DATA:END
 
   const VIEWS = {
     topics: {
+      selectionMode: "topN",
+      topN: 70,
       data: TOPIC_WORDS,
       categories: [
         { key: "Ocean Physics & Atmosphere", label: "Ocean physics & atmosphere", varName: "--accent-blue" },
@@ -423,18 +611,22 @@
         { key: "Biology, Ecology & Environment", label: "Biology, ecology & environment", varName: "--accent-aqua" }
       ],
       title: `What ${N_PUBS} papers keep talking about`,
-      subtitle: `A word cloud built from the titles and full abstracts of every publication listed by the Marine Remote Sensing Lab (Prof. Yoav Lehahn's group), from ${YEAR_MIN} through work still in submission. Author keywords are left out. Word size reflects a weighted mention score — hover any word for the exact count.`,
+      subtitle: `A word cloud built from the titles and full abstracts of every publication listed by the Marine Remote Sensing Lab (Prof. Yoav Lehahn's group), from ${YEAR_MIN} through work still in submission. Author keywords are left out. Word size reflects a weighted mention score — hover any word for the exact count, or narrow the years below.`,
       legendLabel: "Filter by theme",
-      stats: () => [
+      stats: (words) => [
         [String(N_PUBS), "publications"],
         [`${YEAR_MIN}–${YEAR_MAX}`, "span"],
-        [String(TOPIC_WORDS.length), "distinct terms"],
+        [String(words.length), isRangeFiltered() ? "terms in this range" : "distinct terms"],
         [`${ABSTRACT_COUNT} / ${N_PUBS}`, "with full abstracts"]
       ],
       tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
-        `<div>weighted score ${w.count} · in ${w.docFreq}/${N_PUBS} papers</div>` +
+        `<div>${isRangeFiltered()
+          ? `weighted score ${w.count} · ${yearRangeLabel()}`
+          : `weighted score ${w.count} · in ${w.docFreq}/${N_PUBS} papers`}</div>` +
         `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
-      a11yLabel: w => `${w.text} — appears in ${w.docFreq} of ${N_PUBS} publications`,
+      a11yLabel: w => isRangeFiltered()
+        ? `${w.text} — weighted score ${w.count} in ${yearRangeLabel()}`
+        : `${w.text} — appears in ${w.docFreq} of ${N_PUBS} publications`,
       tableSummary: "View full word list as a table",
       tableHead: ["Term", "Theme", "Weighted score", "In publications"],
       tableRow: (w, cat) => [
@@ -445,67 +637,79 @@
       ]
     },
     authors: {
+      alwaysShowCategory: "Current lab team",
       data: AUTHOR_WORDS,
       categories: [
         { key: "Current lab team", label: "Current lab team", varName: "--accent-orange" },
         { key: "Collaborator", label: "Collaborator", varName: "--text-secondary" }
       ],
       title: "Who's behind the papers",
-      subtitle: `Every co-author across the lab's ${N_PUBS} publications, sized by how many of them they appear on. The lab's current roster, per remsy.org/team, is highlighted; everyone else is an outside collaborator.`,
+      subtitle: `Every co-author across the lab's ${N_PUBS} publications, sized by how many of them they appear on. The lab's current roster, per remsy.org/team, is highlighted; everyone else is an outside collaborator. Narrow the years below to see who was active when.`,
       legendLabel: "Filter by role",
-      stats: () => {
-        const currentTeamCount = AUTHOR_WORDS.filter(w => w.category === "Current lab team").length;
-        const top = AUTHOR_WORDS.reduce((a, b) => (b.count > a.count ? b : a), AUTHOR_WORDS[0]);
+      stats: (words) => {
+        const currentTeamCount = words.filter(w => w.category === "Current lab team").length;
+        const top = words.reduce((a, b) => (b.count > a.count ? b : a), words[0] || { text: "—", count: 0 });
+        const denom = isRangeFiltered() ? rangePubCount() : N_PUBS;
         return [
           [String(TOTAL_AUTHORS), "distinct co-authors"],
-          [String(AUTHOR_WORDS.length), "shown (2+ papers, or current team)"],
+          [String(words.length), isRangeFiltered() ? "shown in this range" : "shown (2+ papers, or current team)"],
           [String(currentTeamCount), "current lab team"],
-          [`${top.count} / ${N_PUBS}`, `papers include ${top.text}`],
+          [`${top.count} / ${denom}`, `papers include ${top.text}`],
           [String(MAX_AUTHORS_PER_PAPER.count), "authors on one paper", MAX_AUTHORS_PER_PAPER.title]
         ];
       },
       tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
-        `<div>co-authored ${w.count} of ${N_PUBS} publications</div>` +
+        `<div>${isRangeFiltered()
+          ? `co-authored ${w.count} publication${w.count === 1 ? "" : "s"} · ${yearRangeLabel()}`
+          : `co-authored ${w.count} of ${N_PUBS} publications`}</div>` +
         `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
-      a11yLabel: w => `${w.text} — co-authored ${w.count} of ${N_PUBS} publications`,
+      a11yLabel: w => isRangeFiltered()
+        ? `${w.text} — co-authored ${w.count} publications in ${yearRangeLabel()}`
+        : `${w.text} — co-authored ${w.count} of ${N_PUBS} publications`,
       tableSummary: "View full author list as a table",
       tableHead: ["Author", "Role", "Publications"],
       tableRow: (w, cat) => [
         `<td class="word-cell">${w.text}</td>`,
         `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
-        `<td class="num">${w.count} / ${N_PUBS}</td>`
+        `<td class="num">${w.count} / ${isRangeFiltered() ? rangePubCount() : N_PUBS}</td>`
       ]
     },
     institutions: {
+      alwaysShowCategory: "Home institution",
       data: INSTITUTE_WORDS,
       categories: [
         { key: "Home institution", label: "Home institution", varName: "--accent-aqua" },
         { key: "Partner institution", label: "Partner institution", varName: "--text-secondary" }
       ],
       title: "Where the collaborators are",
-      subtitle: `Every author institution across the lab's ${N_PUBS} publications, sized by how many of them it's affiliated with — sourced from OpenAlex, not every record has complete affiliation data. ${HOME_INSTITUTION} is highlighted; everyone else is a partner institution.`,
+      subtitle: `Every author institution across the lab's ${N_PUBS} publications, sized by how many of them it's affiliated with — sourced from OpenAlex, not every record has complete affiliation data. ${HOME_INSTITUTION} is highlighted; everyone else is a partner institution. Narrow the years below to see which partners were active when.`,
       legendLabel: "Filter by role",
-      stats: () => {
-        const homeCount = INSTITUTE_WORDS.filter(w => w.category === "Home institution").length;
-        const top = INSTITUTE_WORDS.reduce((a, b) => (b.count > a.count ? b : a), INSTITUTE_WORDS[0]);
+      stats: (words) => {
+        const homeCount = words.filter(w => w.category === "Home institution").length;
+        const top = words.reduce((a, b) => (b.count > a.count ? b : a), words[0] || { text: "—", count: 0 });
+        const denom = isRangeFiltered() ? rangePubCount() : N_PUBS;
         return [
           [String(TOTAL_INSTITUTIONS), "distinct institutions"],
-          [String(INSTITUTE_WORDS.length), "shown (2+ papers, or home institution)"],
+          [String(words.length), isRangeFiltered() ? "shown in this range" : "shown (2+ papers, or home institution)"],
           [String(homeCount), "home institution"],
-          [`${top.count} / ${N_PUBS}`, `papers involve ${top.text}`],
+          [`${top.count} / ${denom}`, `papers involve ${top.text}`],
           [String(MAX_INSTITUTIONS_PER_PAPER.count), "institutions on one paper", MAX_INSTITUTIONS_PER_PAPER.title]
         ];
       },
       tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
-        `<div>affiliated with ${w.count} of ${N_PUBS} publications</div>` +
+        `<div>${isRangeFiltered()
+          ? `affiliated with ${w.count} publication${w.count === 1 ? "" : "s"} · ${yearRangeLabel()}`
+          : `affiliated with ${w.count} of ${N_PUBS} publications`}</div>` +
         `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
-      a11yLabel: w => `${w.text} — affiliated with ${w.count} of ${N_PUBS} publications`,
+      a11yLabel: w => isRangeFiltered()
+        ? `${w.text} — affiliated with ${w.count} publications in ${yearRangeLabel()}`
+        : `${w.text} — affiliated with ${w.count} of ${N_PUBS} publications`,
       tableSummary: "View full institution list as a table",
       tableHead: ["Institution", "Role", "Publications"],
       tableRow: (w, cat) => [
         `<td class="word-cell">${w.text}</td>`,
         `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
-        `<td class="num">${w.count} / ${N_PUBS}</td>`
+        `<td class="num">${w.count} / ${isRangeFiltered() ? rangePubCount() : N_PUBS}</td>`
       ]
     }
   };
@@ -514,6 +718,66 @@
   const activeCats = new Set();
 
   function currentView() { return VIEWS[currentViewKey]; }
+
+  // ---------- year range ----------
+  let yearRange = [YEAR_MIN, YEAR_MAX];
+
+  function isRangeFiltered() { return yearRange[0] !== YEAR_MIN || yearRange[1] !== YEAR_MAX; }
+  function yearRangeLabel() { return yearRange[0] === yearRange[1] ? String(yearRange[0]) : `${yearRange[0]}–${yearRange[1]}`; }
+
+  function rangePubCount() {
+    if (!isRangeFiltered()) return N_PUBS;
+    let total = 0;
+    for (const y in PUBS_BY_YEAR) {
+      const yr = Number(y);
+      if (yr >= yearRange[0] && yr <= yearRange[1]) total += PUBS_BY_YEAR[y];
+    }
+    return total;
+  }
+
+  // view.data holds the FULL candidate pool (every term/author/institution
+  // above the noise floor — not just the all-time top pick), so a single
+  // paper's own vocabulary or one-off collaborator can still surface when
+  // its year is selected, even if it never became prominent across all 50
+  // papers. This recomputes each word's `count` from its per-year
+  // breakdown for the active range, then re-applies the same kind of
+  // selection the generator used to bake in once, all-time.
+  function effectiveWords(view) {
+    const filtered = isRangeFiltered();
+    const withCount = !filtered ? view.data : view.data.map(w => {
+      const byYear = w.byYear || {};
+      let count = 0;
+      for (const y in byYear) {
+        const yr = Number(y);
+        if (yr >= yearRange[0] && yr <= yearRange[1]) count += byYear[y];
+      }
+      return Object.assign({}, w, { count });
+    });
+
+    if (view.selectionMode === "topN") {
+      // The >=4 floor filters cross-corpus noise in the all-time view (~50
+      // papers' worth of incidental mentions). Applied to a narrow range —
+      // sometimes a single paper — it's far too strict: a term needs to be
+      // in the title AND recur in the abstract just to clear 4. A narrower
+      // range gets a lower floor since there's nothing left to filter out.
+      const floor = filtered ? 1 : 4;
+      return withCount
+        .filter(w => w.count >= floor)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, view.topN);
+    }
+
+    // Threshold mode (authors/institutions): the "2+ papers" cut exists so
+    // the all-time view isn't cluttered with ~150 one-off names. A narrower
+    // range already yields far fewer people on its own, so within an active
+    // range even a single paper's worth of involvement is enough to show —
+    // that's the whole point of being able to ask "who was around in 2013".
+    // The "always show" bypass (current team / home institution) only makes
+    // sense for the all-time view — showing someone with zero activity in a
+    // selected range would falsely imply they were involved that period.
+    const minCount = filtered ? 1 : 2;
+    return withCount.filter(w => w.count >= minCount || (!filtered && w.category === view.alwaysShowCategory));
+  }
 
   function catColor(cat) {
     return getComputedStyle(document.documentElement).getPropertyValue(cat.varName).trim();
@@ -525,15 +789,20 @@
   }
 
   // ---------- chrome (masthead + legend) ----------
+  function updateStats() {
+    const view = currentView();
+    const statsEl = document.getElementById("view-stats");
+    statsEl.innerHTML = view.stats(effectiveWords(view)).map(([v, l, note]) =>
+      `<span class="stat"${note ? ` title="${escapeAttr(note)}"` : ""}><strong>${v}</strong>&nbsp;${l}</span>`
+    ).join("");
+  }
+
   function renderChrome() {
     const view = currentView();
     document.getElementById("view-title").textContent = view.title;
     document.getElementById("view-subtitle").textContent = view.subtitle;
 
-    const statsEl = document.getElementById("view-stats");
-    statsEl.innerHTML = view.stats().map(([v, l, note]) =>
-      `<span class="stat"${note ? ` title="${escapeAttr(note)}"` : ""}><strong>${v}</strong>&nbsp;${l}</span>`
-    ).join("");
+    updateStats();
 
     const legendEl = document.getElementById("legend");
     legendEl.setAttribute("aria-label", view.legendLabel);
@@ -672,8 +941,10 @@
 
   function renderCloud() {
     const view = currentView();
-    render(view.data);
-    buildTable(view.data);
+    const words = effectiveWords(view);
+    render(words);
+    buildTable(words);
+    applyFilter(); // re-apply any active theme/role filter to the freshly-rendered words
   }
 
   function switchView(key) {
@@ -681,21 +952,228 @@
     currentViewKey = key;
     activeCats.clear();
     document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === key)));
-    renderChrome();
-    renderCloud();
+
+    const isTrends = key === "trends";
+    document.getElementById("cloud-panel").style.display = isTrends ? "none" : "";
+    document.getElementById("trends-panel").style.display = isTrends ? "" : "none";
+
+    if (isTrends) {
+      renderTrendsChrome();
+      renderTrendsChart();
+    } else {
+      renderChrome();
+      renderCloud();
+    }
   }
 
   document.querySelectorAll(".tab").forEach(t => {
     t.addEventListener("click", () => switchView(t.dataset.view));
   });
 
+  // ---------- year-range slider ----------
+  const rangeStartEl = document.getElementById("range-start");
+  const rangeEndEl = document.getElementById("range-end");
+  const rangeFillEl = document.getElementById("range-track-fill");
+  const rangeValueEl = document.getElementById("year-filter-value");
+  const rangeResetEl = document.getElementById("year-filter-reset");
+
+  [rangeStartEl, rangeEndEl].forEach(el => {
+    el.min = YEAR_MIN;
+    el.max = YEAR_MAX;
+    el.step = 1;
+  });
+  rangeStartEl.value = YEAR_MIN;
+  rangeEndEl.value = YEAR_MAX;
+
+  function updateRangeUI() {
+    const [start, end] = yearRange;
+    const pct = v => YEAR_MAX === YEAR_MIN ? 0 : ((v - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100;
+    rangeFillEl.style.left = pct(start) + "%";
+    rangeFillEl.style.width = Math.max(0, pct(end) - pct(start)) + "%";
+    rangeValueEl.textContent = yearRangeLabel();
+    rangeResetEl.disabled = !isRangeFiltered();
+    // Keep whichever thumb is closer to the max on top, so dragging near a
+    // shared point grabs the one you'd expect.
+    rangeStartEl.style.zIndex = start >= end ? 3 : 2;
+    rangeEndEl.style.zIndex = 3;
+  }
+
+  let rangeDebounce;
+  function onRangeInput() {
+    let start = Number(rangeStartEl.value);
+    let end = Number(rangeEndEl.value);
+    if (start > end) {
+      if (document.activeElement === rangeEndEl) { start = end; rangeStartEl.value = String(start); }
+      else { end = start; rangeEndEl.value = String(end); }
+    }
+    yearRange = [start, end];
+    updateRangeUI();
+    clearTimeout(rangeDebounce);
+    rangeDebounce = setTimeout(() => {
+      updateStats();
+      renderCloud();
+    }, 120);
+  }
+
+  rangeStartEl.addEventListener("input", onRangeInput);
+  rangeEndEl.addEventListener("input", onRangeInput);
+  rangeResetEl.addEventListener("click", () => {
+    yearRange = [YEAR_MIN, YEAR_MAX];
+    rangeStartEl.value = String(YEAR_MIN);
+    rangeEndEl.value = String(YEAR_MAX);
+    updateRangeUI();
+    updateStats();
+    renderCloud();
+  });
+  updateRangeUI();
+
+  // ---------- trends ----------
+  function trendCategoryData(key) {
+    return key === "topics" ? TOPIC_WORDS : key === "authors" ? AUTHOR_WORDS : INSTITUTE_WORDS;
+  }
+  function trendUnitLabel(key, n) {
+    if (key === "topics") return "weighted mentions";
+    return n === 1 ? "publication" : "publications";
+  }
+
+  const trendCategoryEl = document.getElementById("trend-category");
+  const trendItemEl = document.getElementById("trend-item");
+
+  function populateTrendItems(preferredText) {
+    const data = [...trendCategoryData(trendCategoryEl.value)].sort((a, b) => a.text.localeCompare(b.text));
+    trendItemEl.innerHTML = data.map(w => `<option value="${escapeAttr(w.text)}">${escapeAttr(w.text)}</option>`).join("");
+    const top = data.reduce((a, b) => (b.count > a.count ? b : a), data[0]);
+    const want = preferredText && data.some(w => w.text === preferredText) ? preferredText : (top ? top.text : "");
+    trendItemEl.value = want;
+  }
+
+  function renderTrendsChrome() {
+    document.getElementById("view-title").textContent = "How it's changed over time";
+    document.getElementById("view-subtitle").textContent =
+      "Pick a topic, co-author, or institution to see its publication history year by year.";
+    document.getElementById("view-stats").innerHTML = "";
+  }
+
+  function renderTrendsChart() {
+    const catKey = trendCategoryEl.value;
+    const data = trendCategoryData(catKey);
+    const w = data.find(d => d.text === trendItemEl.value);
+    const svg = document.getElementById("trend-chart");
+    const trendTooltip = document.getElementById("trend-tooltip");
+    svg.innerHTML = "";
+    trendTooltip.classList.remove("visible");
+    if (!w) return;
+
+    const view = VIEWS[catKey];
+    const cat = catOf(view, w.category);
+    const color = catColor(cat);
+    svg.setAttribute("aria-label", `${w.text} — publications per year, ${YEAR_MIN} to ${YEAR_MAX}`);
+
+    const years = [];
+    for (let y = YEAR_MIN; y <= YEAR_MAX; y++) years.push(y);
+    const values = years.map(y => (w.byYear && w.byYear[y]) || 0);
+    const maxVal = Math.max(1, ...values);
+
+    const svgW = 1100, svgH = 340;
+    const marginLeft = 30, marginRight = 12, marginTop = 20, marginBottom = 38;
+    const plotW = svgW - marginLeft - marginRight;
+    const plotH = svgH - marginTop - marginBottom;
+    const slot = plotW / years.length;
+    const barW = Math.max(5, Math.min(30, slot - 6));
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    const gridSteps = Math.min(maxVal, 4);
+    for (let i = 0; i <= gridSteps; i++) {
+      const val = Math.round((maxVal / gridSteps) * i);
+      const y = marginTop + plotH - (maxVal ? (val / maxVal) * plotH : 0);
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", marginLeft); line.setAttribute("x2", svgW - marginRight);
+      line.setAttribute("y1", y.toFixed(1)); line.setAttribute("y2", y.toFixed(1));
+      line.classList.add("trend-gridline");
+      svg.appendChild(line);
+
+      const label = document.createElementNS(svgNS, "text");
+      label.textContent = String(val);
+      label.setAttribute("x", marginLeft - 8);
+      label.setAttribute("y", (y + 3).toFixed(1));
+      label.setAttribute("text-anchor", "end");
+      label.setAttribute("font-size", "10.5");
+      label.classList.add("trend-axis-label");
+      svg.appendChild(label);
+    }
+
+    const labelEvery = years.length > 16 ? 2 : 1;
+    years.forEach((year, i) => {
+      const val = values[i];
+      const x = marginLeft + i * slot + (slot - barW) / 2;
+      const barH = maxVal ? (val / maxVal) * plotH : 0;
+      const y = marginTop + plotH - barH;
+
+      const rect = document.createElementNS(svgNS, "rect");
+      rect.setAttribute("x", x.toFixed(1));
+      rect.setAttribute("y", y.toFixed(1));
+      rect.setAttribute("width", barW.toFixed(1));
+      rect.setAttribute("height", Math.max(val > 0 ? 3 : 0, barH).toFixed(1));
+      rect.setAttribute("rx", "4");
+      rect.setAttribute("fill", val > 0 ? color : "transparent");
+      rect.classList.add("trend-bar");
+
+      if (val > 0) {
+        rect.tabIndex = 0;
+        rect.setAttribute("aria-label", `${year}: ${val} ${trendUnitLabel(catKey, val)}`);
+        const show = () => {
+          trendTooltip.innerHTML = `<div class="tt-title">${year}</div><div>${val} ${trendUnitLabel(catKey, val)}</div>`;
+          const wrapRect = svg.parentElement.getBoundingClientRect();
+          const barRect = rect.getBoundingClientRect();
+          trendTooltip.style.left = (barRect.left - wrapRect.left + barRect.width / 2) + "px";
+          trendTooltip.style.top = (barRect.top - wrapRect.top - 8) + "px";
+          trendTooltip.classList.add("visible");
+          rect.classList.add("is-focused");
+        };
+        const hide = () => { trendTooltip.classList.remove("visible"); rect.classList.remove("is-focused"); };
+        rect.addEventListener("mouseenter", show);
+        rect.addEventListener("mouseleave", hide);
+        rect.addEventListener("focus", show);
+        rect.addEventListener("blur", hide);
+      }
+
+      svg.appendChild(rect);
+
+      if (i % labelEvery === 0) {
+        const label = document.createElementNS(svgNS, "text");
+        label.textContent = String(year);
+        label.setAttribute("x", (x + barW / 2).toFixed(1));
+        label.setAttribute("y", (marginTop + plotH + 18).toFixed(1));
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("font-size", "10.5");
+        label.classList.add("trend-axis-label");
+        svg.appendChild(label);
+      }
+    });
+
+    const baseline = document.createElementNS(svgNS, "line");
+    baseline.setAttribute("x1", marginLeft); baseline.setAttribute("x2", svgW - marginRight);
+    baseline.setAttribute("y1", (marginTop + plotH).toFixed(1)); baseline.setAttribute("y2", (marginTop + plotH).toFixed(1));
+    baseline.classList.add("trend-gridline");
+    svg.appendChild(baseline);
+  }
+
+  trendCategoryEl.addEventListener("change", () => {
+    populateTrendItems();
+    renderTrendsChart();
+  });
+  trendItemEl.addEventListener("change", renderTrendsChart);
+  populateTrendItems();
+
   function renderFooter() {
     document.getElementById("methodology-topics").innerHTML =
       `<strong>Methodology — topics.</strong> Text pulled from remsy.org's publications page and the underlying markdown records in the <a href="https://github.com/remsy-org/remsy-org.github.io" target="_blank" rel="noopener">remsy-org/remsy-org.github.io</a> GitHub repo: titles weighted ×3, abstract text ×1 — ${ABSTRACT_COUNT} of ${N_PUBS} entries carry a full abstract. Author-supplied keywords are excluded (their accuracy hasn't been verified). Common stopwords and generic terms removed, plurals merged to their singular form. Terms are grouped into three themes and colored accordingly; size reflects the weighted score, not raw word count.`;
     document.getElementById("methodology-authors").innerHTML =
-      `<strong>Methodology — authors.</strong> Author strings (e.g. "Lehahn, Y., Koren, I., &amp; Boss, E.") were parsed per publication and normalized for spelling/formatting variants (accents, hyphenation, initials). ${TOTAL_AUTHORS} distinct co-authors appear across the ${N_PUBS} publications; the cloud shows the ${AUTHOR_WORDS.length} who appear on 2+ papers, plus every current lab member (per remsy.org/team) regardless of count. Size reflects number of co-authored publications.`;
+      `<strong>Methodology — authors.</strong> Author strings (e.g. "Lehahn, Y., Koren, I., &amp; Boss, E.") were parsed per publication and normalized for spelling/formatting variants (accents, hyphenation, initials). ${TOTAL_AUTHORS} distinct co-authors appear across the ${N_PUBS} publications; at full range the cloud shows the ${effectiveWords(VIEWS.authors).length} who appear on 2+ papers, plus every current lab member (per remsy.org/team) regardless of count — narrowing the years relaxes that to anyone active in the selected range. Size reflects number of co-authored publications.`;
     document.getElementById("methodology-institutions").innerHTML =
-      `<strong>Methodology — institutions.</strong> Author institutions were looked up per publication DOI via the <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a> API, using each author's affiliation as recorded at time of publication (so the same person can show up under different institutions across papers). ${TOTAL_INSTITUTIONS} distinct institutions were found; the cloud shows the ${INSTITUTE_WORDS.length} affiliated with 2+ papers, plus ${HOME_INSTITUTION} regardless of count. Coverage depends on what OpenAlex has on file, so this undercounts rather than overcounts.`;
+      `<strong>Methodology — institutions.</strong> Author institutions were looked up per publication DOI via the <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a> API, using each author's affiliation as recorded at time of publication (so the same person can show up under different institutions across papers). ${TOTAL_INSTITUTIONS} distinct institutions were found; at full range the cloud shows the ${effectiveWords(VIEWS.institutions).length} affiliated with 2+ papers, plus ${HOME_INSTITUTION} regardless of count — narrowing the years relaxes that the same way as the authors view. Coverage depends on what OpenAlex has on file, so this undercounts rather than overcounts.`;
+    document.getElementById("methodology-trends").innerHTML =
+      `<strong>Methodology — years & trends.</strong> The year filter and Trends tab recompute each term/author/institution's count from its own per-year breakdown rather than picking from a fixed list, so narrowing the years can surface names and terms that don't appear at full range (e.g. a one-off collaborator from a single paper). One real limit remains for topics: a term still has to clear a modest all-time significance floor to be tracked at all, so an unusual word used once in a single paper's title and nowhere else in the whole corpus won't surface even when you select that paper's exact year — everything else (every author, every institution, and any topic mentioned meaningfully across the corpus) is complete for whatever range you pick.`;
   }
 
   function init() {
