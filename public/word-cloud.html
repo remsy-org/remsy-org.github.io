@@ -359,6 +359,7 @@
   <div class="tabs" role="tablist" aria-label="Choose word cloud">
     <button type="button" class="tab" role="tab" id="tab-topics" aria-controls="view-panel" aria-selected="true" data-view="topics">Topics</button>
     <button type="button" class="tab" role="tab" id="tab-authors" aria-controls="view-panel" aria-selected="false" data-view="authors">Authors</button>
+    <button type="button" class="tab" role="tab" id="tab-institutions" aria-controls="view-panel" aria-selected="false" data-view="institutions">Institutions</button>
   </div>
 
   <div id="view-panel" role="tabpanel" style="display:contents;">
@@ -389,6 +390,7 @@
   <footer id="footer-topics">
     <p id="methodology-topics"></p>
     <p id="methodology-authors"></p>
+    <p id="methodology-institutions"></p>
   </footer>
 
 </div>
@@ -399,8 +401,12 @@
 
   const AUTHOR_WORDS = [{"text":"Lehahn, Y.","count":50,"category":"Current lab team"},{"text":"Koren, I.","count":15,"category":"Collaborator"},{"text":"Boss, E.","count":8,"category":"Collaborator"},{"text":"Sher, D.","count":7,"category":"Collaborator"},{"text":"Krom, M. D.","count":7,"category":"Collaborator"},{"text":"Heifetz, E.","count":5,"category":"Collaborator"},{"text":"Altaratz, O.","count":5,"category":"Collaborator"},{"text":"Rahav, E.","count":5,"category":"Collaborator"},{"text":"Herut, B.","count":5,"category":"Collaborator"},{"text":"Rudich, Y.","count":5,"category":"Collaborator"},{"text":"Vardi, A.","count":5,"category":"Collaborator"},{"text":"Ben-Ezra, T.","count":5,"category":"Collaborator"},{"text":"Tsemel, A.","count":5,"category":"Collaborator"},{"text":"Berman-Frank, I.","count":5,"category":"Collaborator"},{"text":"Solodoch, A.","count":5,"category":"Collaborator"},{"text":"d'Ovidio, F.","count":4,"category":"Collaborator"},{"text":"Aharonovich, D.","count":4,"category":"Collaborator"},{"text":"Toledo, Y.","count":4,"category":"Collaborator"},{"text":"Fadida, Y.","count":4,"category":"Current lab team"},{"text":"Lévy, M.","count":3,"category":"Collaborator"},{"text":"Sharoni, S.","count":3,"category":"Collaborator"},{"text":"Frada, M.","count":3,"category":"Collaborator"},{"text":"Sheyn, U.","count":3,"category":"Collaborator"},{"text":"Haber, M.","count":3,"category":"Collaborator"},{"text":"Steindler, L.","count":3,"category":"Collaborator"},{"text":"Sagi, T.","count":3,"category":"Collaborator"},{"text":"Roth-Rosenberg, D.","count":3,"category":"Collaborator"},{"text":"Reich, T.","count":3,"category":"Collaborator"},{"text":"Biton, E.","count":3,"category":"Collaborator"},{"text":"Ben-Ami, Y.","count":2,"category":"Collaborator"},{"text":"Amitai, Y.","count":2,"category":"Collaborator"},{"text":"Kostinsky, A. B.","count":2,"category":"Collaborator"},{"text":"Efrati, S.","count":2,"category":"Current lab team"},{"text":"Ozer, T.","count":2,"category":"Collaborator"},{"text":"Bidle, K. D.","count":2,"category":"Collaborator"},{"text":"Trainic, M.","count":2,"category":"Collaborator"},{"text":"Schatz, D.","count":2,"category":"Collaborator"},{"text":"Saurav, K.","count":2,"category":"Collaborator"},{"text":"Burgsdorf, I.","count":2,"category":"Collaborator"},{"text":"Lalzar, M.","count":2,"category":"Collaborator"},{"text":"Belkin, N.","count":2,"category":"Collaborator"},{"text":"Berenshtein, I.","count":2,"category":"Collaborator"},{"text":"Bourdin, G.","count":2,"category":"Collaborator"},{"text":"Gray, P. C.","count":2,"category":"Collaborator"},{"text":"Verma, V.","count":2,"category":"Collaborator"},{"text":"Barkan, R.","count":2,"category":"Collaborator"},{"text":"Bar, K.","count":1,"category":"Current lab team"},{"text":"Bloch Haimson, M.","count":1,"category":"Current lab team"},{"text":"Lapidot, O.","count":1,"category":"Current lab team"}];
 
+  const INSTITUTE_WORDS = [{"text":"University of Haifa","count":29,"category":"Home institution"},{"text":"Weizmann Institute of Science","count":21,"category":"Partner institution"},{"text":"Tel Aviv University","count":19,"category":"Partner institution"},{"text":"Israel Oceanographic and Limnological Research","count":10,"category":"Partner institution"},{"text":"University of Maine","count":7,"category":"Partner institution"},{"text":"Hebrew University of Jerusalem","count":7,"category":"Partner institution"},{"text":"Centre National de la Recherche Scientifique","count":6,"category":"Partner institution"},{"text":"Laboratoire d'Océanographie et du Climat : Expérimentations et Approches Numériques","count":6,"category":"Partner institution"},{"text":"Sorbonne Université","count":6,"category":"Partner institution"},{"text":"Rutgers, The State University of New Jersey","count":6,"category":"Partner institution"},{"text":"Institut Pierre-Simon Laplace","count":4,"category":"Partner institution"},{"text":"Institut de Recherche pour le Développement","count":4,"category":"Partner institution"},{"text":"University of Leeds","count":4,"category":"Partner institution"},{"text":"Michigan Technological University","count":3,"category":"Partner institution"},{"text":"Woods Hole Oceanographic Institution","count":3,"category":"Partner institution"},{"text":"Interuniversity Institute for Marine Sciences in Eilat","count":3,"category":"Partner institution"},{"text":"Aalborg University","count":3,"category":"Partner institution"},{"text":"University of Bergen","count":3,"category":"Partner institution"},{"text":"Ruppin Academic Center","count":3,"category":"Partner institution"},{"text":"Ben-Gurion University of the Negev","count":2,"category":"Partner institution"},{"text":"Institut Universitaire Européen de la Mer","count":2,"category":"Partner institution"},{"text":"Laboratoire des Sciences de l'Environnement Marin","count":2,"category":"Partner institution"},{"text":"Laboratoire d'Optique Atmosphérique","count":2,"category":"Partner institution"},{"text":"Bar-Ilan University","count":2,"category":"Partner institution"},{"text":"College of Charleston","count":2,"category":"Partner institution"},{"text":"Universidade dos Açores","count":2,"category":"Partner institution"},{"text":"Laboratoire d’Océanographie de Villefranche","count":2,"category":"Partner institution"},{"text":"Goddard Space Flight Center","count":2,"category":"Partner institution"},{"text":"Ollscoil na Gaillimhe – University of Galway","count":2,"category":"Partner institution"},{"text":"University of Southern California","count":2,"category":"Partner institution"},{"text":"Duke University","count":2,"category":"Partner institution"}];
+
   const N_PUBS = 50;
   const TOTAL_AUTHORS = 185;
+  const TOTAL_INSTITUTIONS = 112;
+  const HOME_INSTITUTION = "University of Haifa";
   const ABSTRACT_COUNT = 50;
   const YEAR_MIN = 2003;
   const YEAR_MAX = 2026;
@@ -461,6 +467,37 @@
       a11yLabel: w => `${w.text} — co-authored ${w.count} of ${N_PUBS} publications`,
       tableSummary: "View full author list as a table",
       tableHead: ["Author", "Role", "Publications"],
+      tableRow: (w, cat) => [
+        `<td class="word-cell">${w.text}</td>`,
+        `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
+        `<td class="num">${w.count} / ${N_PUBS}</td>`
+      ]
+    },
+    institutions: {
+      data: INSTITUTE_WORDS,
+      categories: [
+        { key: "Home institution", label: "Home institution", varName: "--accent-aqua" },
+        { key: "Partner institution", label: "Partner institution", varName: "--text-secondary" }
+      ],
+      title: "Where the collaborators are",
+      subtitle: `Every author institution across the lab's ${N_PUBS} publications, sized by how many of them it's affiliated with — sourced from OpenAlex, not every record has complete affiliation data. ${HOME_INSTITUTION} is highlighted; everyone else is a partner institution.`,
+      legendLabel: "Filter by role",
+      stats: () => {
+        const homeCount = INSTITUTE_WORDS.filter(w => w.category === "Home institution").length;
+        const top = INSTITUTE_WORDS.reduce((a, b) => (b.count > a.count ? b : a), INSTITUTE_WORDS[0]);
+        return [
+          [String(TOTAL_INSTITUTIONS), "distinct institutions"],
+          [String(INSTITUTE_WORDS.length), "shown (2+ papers, or home institution)"],
+          [String(homeCount), "home institution"],
+          [`${top.count} / ${N_PUBS}`, `papers involve ${top.text}`]
+        ];
+      },
+      tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
+        `<div>affiliated with ${w.count} of ${N_PUBS} publications</div>` +
+        `<div class="tt-cat"><span class="tt-dot" style="background:${catColor(cat)}"></span>${cat.label}</div>`,
+      a11yLabel: w => `${w.text} — affiliated with ${w.count} of ${N_PUBS} publications`,
+      tableSummary: "View full institution list as a table",
+      tableHead: ["Institution", "Role", "Publications"],
       tableRow: (w, cat) => [
         `<td class="word-cell">${w.text}</td>`,
         `<td><span class="cat-cell"><span class="dot" style="background:${catColor(cat)}"></span>${cat.label}</span></td>`,
@@ -674,6 +711,8 @@
       `<strong>Methodology — topics.</strong> Text pulled from remsy.org's publications page and the underlying markdown records in the <a href="https://github.com/remsy-org/remsy-org.github.io" target="_blank" rel="noopener">remsy-org/remsy-org.github.io</a> GitHub repo: titles weighted ×3, abstract text ×1 — ${ABSTRACT_COUNT} of ${N_PUBS} entries carry a full abstract. Author-supplied keywords are excluded (their accuracy hasn't been verified). Common stopwords and generic terms removed, plurals merged to their singular form. Terms are grouped into three themes and colored accordingly; size reflects the weighted score, not raw word count.`;
     document.getElementById("methodology-authors").innerHTML =
       `<strong>Methodology — authors.</strong> Author strings (e.g. "Lehahn, Y., Koren, I., &amp; Boss, E.") were parsed per publication and normalized for spelling/formatting variants (accents, hyphenation, initials). ${TOTAL_AUTHORS} distinct co-authors appear across the ${N_PUBS} publications; the cloud shows the ${AUTHOR_WORDS.length} who appear on 2+ papers, plus every current lab member (per remsy.org/team) regardless of count. Size reflects number of co-authored publications.`;
+    document.getElementById("methodology-institutions").innerHTML =
+      `<strong>Methodology — institutions.</strong> Author institutions were looked up per publication DOI via the <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a> API, using each author's affiliation as recorded at time of publication (so the same person can show up under different institutions across papers). ${TOTAL_INSTITUTIONS} distinct institutions were found; the cloud shows the ${INSTITUTE_WORDS.length} affiliated with 2+ papers, plus ${HOME_INSTITUTION} regardless of count. Coverage depends on what OpenAlex has on file, so this undercounts rather than overcounts.`;
   }
 
   function init() {

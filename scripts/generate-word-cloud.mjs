@@ -240,14 +240,118 @@ function buildAuthorWords(pubs, teamMembers) {
   return { words, totalAuthors };
 }
 
+// ---------- institution extraction (via OpenAlex) ----------
+
+const HOME_INSTITUTION = "University of Haifa";
+const OPENALEX_DELAY_MS = 200; // be polite to the shared/unauthenticated pool
+
+// A few institution names come back from OpenAlex as more than one variant
+// for the same real institution (parent/sub-unit records, etc). Merge known
+// cases here.
+const INSTITUTION_ALIASES = {
+  "University of Haifa (Israel)": HOME_INSTITUTION,
+};
+
+function normalizeInstitution(name) {
+  return INSTITUTION_ALIASES[name] || name;
+}
+
+function extractDoi(rawDoi) {
+  if (!rawDoi) return null;
+  return String(rawDoi).replace(/^https?:\/\/doi\.org\//i, "").trim();
+}
+
+async function fetchInstitutionsForDoi(doi) {
+  const url = `https://api.openalex.org/works/doi:${encodeURIComponent(doi)}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    console.warn(`  ! OpenAlex lookup failed for ${doi}: HTTP ${res.status}`);
+    return [];
+  }
+  const data = await res.json();
+  const names = new Set();
+  for (const authorship of data.authorships || []) {
+    for (const inst of authorship.institutions || []) {
+      if (inst.display_name) names.add(normalizeInstitution(inst.display_name));
+    }
+  }
+  return [...names];
+}
+
+async function buildInstituteWords(pubs) {
+  const counts = new Map();
+  let lookedUp = 0;
+
+  for (const pub of pubs) {
+    const doi = extractDoi(pub.doi);
+    if (!doi) continue;
+    let institutions;
+    try {
+      institutions = await fetchInstitutionsForDoi(doi);
+    } catch (err) {
+      console.warn(`  ! OpenAlex lookup errored for ${doi}: ${err.message}`);
+      institutions = [];
+    }
+    lookedUp++;
+    for (const inst of institutions) {
+      counts.set(inst, (counts.get(inst) || 0) + 1);
+    }
+    await new Promise((resolve) => setTimeout(resolve, OPENALEX_DELAY_MS));
+  }
+
+  const totalInstitutions = counts.size;
+  const words = [...counts.entries()]
+    .filter(([inst, count]) => count >= 2 || inst === HOME_INSTITUTION)
+    .sort((a, b) => b[1] - a[1])
+    .map(([text, count]) => ({
+      text,
+      count,
+      category: text === HOME_INSTITUTION ? "Home institution" : "Partner institution",
+    }));
+
+  console.log(`  Looked up ${lookedUp} DOIs on OpenAlex, found ${totalInstitutions} distinct institutions.`);
+  return { words, totalInstitutions };
+}
+
 // ---------- main ----------
 
-function main() {
+async function main() {
   const pubFiles = loadMarkdownFiles(PUBLICATIONS_DIR);
   const teamMembers = loadMarkdownFiles(TEAM_DIR).filter((t) => t.title && t.role);
 
   const topicWords = buildTopicWords(pubFiles);
   const { words: authorWords, totalAuthors } = buildAuthorWords(pubFiles, teamMembers);
+
+  const html = readFileSync(OUTPUT_FILE, "utf-8");
+  const marker = /  \/\/ GENERATED:DATA:START[\s\S]*?\/\/ GENERATED:DATA:END/;
+  if (!marker.test(html)) {
+    throw new Error("Could not find GENERATED:DATA markers in public/word-cloud.html");
+  }
+
+  console.log("Looking up author institutions via OpenAlex (this takes a bit)...");
+  let instituteWords, totalInstitutions;
+  try {
+    ({ words: instituteWords, totalInstitutions } = await buildInstituteWords(pubFiles));
+  } catch (err) {
+    console.warn(`  ! Institution lookup failed entirely: ${err.message}`);
+    instituteWords = [];
+    totalInstitutions = 0;
+  }
+
+  // OpenAlex being down/rate-limited shouldn't silently blank out a
+  // previously-good institutes cloud — fall back to whatever's already
+  // in the file if this run came back suspiciously empty.
+  if (instituteWords.length < 3) {
+    const existingMatch = html.match(/const INSTITUTE_WORDS = (\[.*?\]);/s);
+    const existingTotalMatch = html.match(/const TOTAL_INSTITUTIONS = (\d+);/);
+    if (existingMatch) {
+      console.warn(
+        `  ! Only found ${instituteWords.length} institution(s) this run — keeping the existing INSTITUTE_WORDS data instead of overwriting it.`
+      );
+      instituteWords = JSON.parse(existingMatch[1]);
+      totalInstitutions = existingTotalMatch ? Number(existingTotalMatch[1]) : totalInstitutions;
+    }
+  }
 
   const years = pubFiles.map((p) => Number(p.year)).filter((y) => Number.isFinite(y) && y > 1900);
   const yearMin = Math.min(...years);
@@ -259,22 +363,23 @@ function main() {
 
   const AUTHOR_WORDS = ${JSON.stringify(authorWords)};
 
+  const INSTITUTE_WORDS = ${JSON.stringify(instituteWords)};
+
   const N_PUBS = ${pubFiles.length};
   const TOTAL_AUTHORS = ${totalAuthors};
+  const TOTAL_INSTITUTIONS = ${totalInstitutions};
+  const HOME_INSTITUTION = ${JSON.stringify(HOME_INSTITUTION)};
   const ABSTRACT_COUNT = ${abstractCount};
   const YEAR_MIN = ${yearMin};
   const YEAR_MAX = ${yearMax};
   // GENERATED:DATA:END`;
 
-  const html = readFileSync(OUTPUT_FILE, "utf-8");
-  const marker = /  \/\/ GENERATED:DATA:START[\s\S]*?\/\/ GENERATED:DATA:END/;
-  if (!marker.test(html)) {
-    throw new Error("Could not find GENERATED:DATA markers in public/word-cloud.html");
-  }
   const updated = html.replace(marker, () => dataBlock); // fn form avoids $-pattern interpolation
   writeFileSync(OUTPUT_FILE, updated);
 
-  console.log(`Wrote ${topicWords.length} topic terms and ${authorWords.length}/${totalAuthors} authors from ${pubFiles.length} publications (${yearMin}–${yearMax}).`);
+  console.log(
+    `Wrote ${topicWords.length} topic terms, ${authorWords.length}/${totalAuthors} authors, and ${instituteWords.length}/${totalInstitutions} institutions from ${pubFiles.length} publications (${yearMin}–${yearMax}).`
+  );
 }
 
 main();
