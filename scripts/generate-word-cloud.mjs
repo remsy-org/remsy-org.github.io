@@ -266,7 +266,7 @@ async function fetchInstitutionsForDoi(doi) {
   const res = await fetch(url);
   if (!res.ok) {
     console.warn(`  ! OpenAlex lookup failed for ${doi}: HTTP ${res.status}`);
-    return [];
+    return { institutions: [], authorCount: 0 };
   }
   const data = await res.json();
   const names = new Set();
@@ -275,26 +275,38 @@ async function fetchInstitutionsForDoi(doi) {
       if (inst.display_name) names.add(normalizeInstitution(inst.display_name));
     }
   }
-  return [...names];
+  return { institutions: [...names], authorCount: (data.authorships || []).length };
 }
 
 async function buildInstituteWords(pubs) {
   const counts = new Map();
   let lookedUp = 0;
+  let maxInstitutionsPerPaper = { count: 0, title: null };
+  let maxAuthorsPerPaper = { count: 0, title: null };
 
   for (const pub of pubs) {
     const doi = extractDoi(pub.doi);
     if (!doi) continue;
-    let institutions;
+    let institutions, authorCount;
     try {
-      institutions = await fetchInstitutionsForDoi(doi);
+      ({ institutions, authorCount } = await fetchInstitutionsForDoi(doi));
     } catch (err) {
       console.warn(`  ! OpenAlex lookup errored for ${doi}: ${err.message}`);
       institutions = [];
+      authorCount = 0;
     }
     lookedUp++;
     for (const inst of institutions) {
       counts.set(inst, (counts.get(inst) || 0) + 1);
+    }
+    if (institutions.length > maxInstitutionsPerPaper.count) {
+      maxInstitutionsPerPaper = { count: institutions.length, title: pub.title };
+    }
+    // OpenAlex's authorship count is ground truth here — our own `authors:`
+    // frontmatter sometimes abbreviates huge consortium papers down to a
+    // couple of named authors plus a group name, which would undercount.
+    if (authorCount > maxAuthorsPerPaper.count) {
+      maxAuthorsPerPaper = { count: authorCount, title: pub.title };
     }
     await new Promise((resolve) => setTimeout(resolve, OPENALEX_DELAY_MS));
   }
@@ -310,7 +322,7 @@ async function buildInstituteWords(pubs) {
     }));
 
   console.log(`  Looked up ${lookedUp} DOIs on OpenAlex, found ${totalInstitutions} distinct institutions.`);
-  return { words, totalInstitutions };
+  return { words, totalInstitutions, maxInstitutionsPerPaper, maxAuthorsPerPaper };
 }
 
 // ---------- main ----------
@@ -329,13 +341,16 @@ async function main() {
   }
 
   console.log("Looking up author institutions via OpenAlex (this takes a bit)...");
-  let instituteWords, totalInstitutions;
+  let instituteWords, totalInstitutions, maxInstitutionsPerPaper, maxAuthorsPerPaper;
   try {
-    ({ words: instituteWords, totalInstitutions } = await buildInstituteWords(pubFiles));
+    ({ words: instituteWords, totalInstitutions, maxInstitutionsPerPaper, maxAuthorsPerPaper } =
+      await buildInstituteWords(pubFiles));
   } catch (err) {
     console.warn(`  ! Institution lookup failed entirely: ${err.message}`);
     instituteWords = [];
     totalInstitutions = 0;
+    maxInstitutionsPerPaper = { count: 0, title: null };
+    maxAuthorsPerPaper = { count: 0, title: null };
   }
 
   // OpenAlex being down/rate-limited shouldn't silently blank out a
@@ -344,12 +359,16 @@ async function main() {
   if (instituteWords.length < 3) {
     const existingMatch = html.match(/const INSTITUTE_WORDS = (\[.*?\]);/s);
     const existingTotalMatch = html.match(/const TOTAL_INSTITUTIONS = (\d+);/);
+    const existingMaxInstMatch = html.match(/const MAX_INSTITUTIONS_PER_PAPER = (\{.*?\});/s);
+    const existingMaxAuthMatch = html.match(/const MAX_AUTHORS_PER_PAPER = (\{.*?\});/s);
     if (existingMatch) {
       console.warn(
         `  ! Only found ${instituteWords.length} institution(s) this run — keeping the existing INSTITUTE_WORDS data instead of overwriting it.`
       );
       instituteWords = JSON.parse(existingMatch[1]);
       totalInstitutions = existingTotalMatch ? Number(existingTotalMatch[1]) : totalInstitutions;
+      maxInstitutionsPerPaper = existingMaxInstMatch ? JSON.parse(existingMaxInstMatch[1]) : maxInstitutionsPerPaper;
+      maxAuthorsPerPaper = existingMaxAuthMatch ? JSON.parse(existingMaxAuthMatch[1]) : maxAuthorsPerPaper;
     }
   }
 
@@ -368,6 +387,8 @@ async function main() {
   const N_PUBS = ${pubFiles.length};
   const TOTAL_AUTHORS = ${totalAuthors};
   const TOTAL_INSTITUTIONS = ${totalInstitutions};
+  const MAX_AUTHORS_PER_PAPER = ${JSON.stringify(maxAuthorsPerPaper)};
+  const MAX_INSTITUTIONS_PER_PAPER = ${JSON.stringify(maxInstitutionsPerPaper)};
   const HOME_INSTITUTION = ${JSON.stringify(HOME_INSTITUTION)};
   const ABSTRACT_COUNT = ${abstractCount};
   const YEAR_MIN = ${yearMin};
