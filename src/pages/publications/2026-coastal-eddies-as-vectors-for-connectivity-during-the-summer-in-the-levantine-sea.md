@@ -1,6 +1,6 @@
 ---
 title: "Coastal Eddies as Vectors for Connectivity During the Summer in the Levantine Sea"
-authors: "Fadida, Y., Ozer, T., Ben Ezra, T., Krom, M. D., Tsemel, A., Tsagaraki, T. M., Biton, E., Toledo, Y., & Lehahn, Y."
+authors: "Fadida, Y., Ozer, T., Ben-Ezra, T., Krom, M. D., Tsemel, A., Tsagaraki, T. M., Biton, E., Toledo, Y., & Lehahn, Y."
 journal: "EGUsphere [preprint]"
 year: "2026"
 doi: "https://doi.org/10.5194/egusphere-2026-1507"

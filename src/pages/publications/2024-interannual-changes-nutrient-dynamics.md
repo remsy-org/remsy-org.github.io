@@ -1,6 +1,6 @@
 ---
 title: "Interannual changes in nutrient and phytoplankton dynamics in the Eastern Mediterranean Sea (EMS) predict the consequences of climate change; results from the Sdot-Yam Time-series station 2018-2022"
-authors: "Ben Ezra, T., Blachinsky, A., Gozali, S., Tsemel, A., Fadida, Y., Tchernov, D., Lehahn, Y., Tsagaraki, T., Berman-Frank, I., & Krom, M."
+authors: "Ben-Ezra, T., Blachinsky, A., Gozali, S., Tsemel, A., Fadida, Y., Tchernov, D., Lehahn, Y., Tsagaraki, T., Berman-Frank, I., & Krom, M. D."
 journal: "Deep Sea Research Part I: Oceanographic Research Papers"
 volume: "213"
 pages: "104403"

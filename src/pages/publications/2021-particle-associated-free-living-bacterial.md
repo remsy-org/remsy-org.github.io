@@ -1,6 +1,6 @@
 ---
 title: "Particle-associated and free-living bacterial communities in an oligotrophic sea are affected by different environmental and anthropogenic factors"
-authors: "Roth Rosenberg, D., Haber, M., Goldford, J., Lalzar, M., Aharoonovich, D., Al-Ashhab, A., Lehahn, Y., Krom, M. D., Segrè, D., Steindler, L., & Sher, D."
+authors: "Roth-Rosenberg, D., Haber, M., Goldford, J., Lalzar, M., Aharonovich, D., Al-Ashhab, A., Lehahn, Y., Krom, M. D., Segrè, D., Steindler, L., & Sher, D."
 journal: "Environmental Microbiology"
 volume: "23"
 pages: "4295-4308"
