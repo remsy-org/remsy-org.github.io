@@ -596,34 +596,48 @@
     const cx = SVG_W / 2, cy = SVG_H / 2;
     const placed = [];
 
+    const minFontSize = 6;
+
     sorted.forEach((w, i) => {
-      const fontSize = sizeFor(w.count);
-      const weight = weightFor(fontSize);
-      ctx.font = `${weight} ${fontSize}px Archivo, sans-serif`;
-      const metrics = ctx.measureText(w.text);
-      const pad = 7;
-      const boxW = metrics.width + pad * 2;
-      const boxH = fontSize * 1.05 + pad;
+      let fontSize = sizeFor(w.count);
+      let weight, boxW, boxH, ok = false, x = 0, y = 0;
 
-      let angle = (i * 0.61803398875) * Math.PI * 2;
-      let radius = 0;
-      const angleStep = 0.32;
-      const radiusStep = 2.6;
-      let ok = false, x = 0, y = 0, attempts = 0;
+      // A word that can't find a non-overlapping spot at its "ideal" size
+      // shrinks and retries rather than silently vanishing from the cloud —
+      // long multi-word labels (institution names) hit this far more than
+      // short single-word topic/author terms.
+      while (true) {
+        weight = weightFor(fontSize);
+        ctx.font = `${weight} ${fontSize}px Archivo, sans-serif`;
+        const metrics = ctx.measureText(w.text);
+        const pad = 7;
+        boxW = metrics.width + pad * 2;
+        boxH = fontSize * 1.05 + pad;
 
-      while (!ok && attempts < 3000) {
-        x = cx + radius * Math.cos(angle) - boxW / 2;
-        y = cy + radius * Math.sin(angle) * 0.72 - boxH / 2;
-        const rect = { x, y, w: boxW, h: boxH };
-        if (x >= 4 && y >= 4 && x + boxW <= SVG_W - 4 && y + boxH <= SVG_H - 4 &&
-            !placed.some(p => rectOverlap(p, rect))) {
-          ok = true;
-        } else {
-          angle += angleStep;
-          radius += radiusStep;
-          attempts++;
+        let angle = (i * 0.61803398875) * Math.PI * 2;
+        let radius = 0;
+        const angleStep = 0.32;
+        const radiusStep = 2.6;
+        let attempts = 0;
+
+        while (!ok && attempts < 3000) {
+          x = cx + radius * Math.cos(angle) - boxW / 2;
+          y = cy + radius * Math.sin(angle) * 0.72 - boxH / 2;
+          const rect = { x, y, w: boxW, h: boxH };
+          if (x >= 4 && y >= 4 && x + boxW <= SVG_W - 4 && y + boxH <= SVG_H - 4 &&
+              !placed.some(p => rectOverlap(p, rect))) {
+            ok = true;
+          } else {
+            angle += angleStep;
+            radius += radiusStep;
+            attempts++;
+          }
         }
+
+        if (ok || fontSize <= minFontSize) break;
+        fontSize = Math.max(minFontSize, fontSize * 0.85);
       }
+
       if (ok) {
         placed.push({ x, y, w: boxW, h: boxH, word: w, fontSize, weight });
       }
