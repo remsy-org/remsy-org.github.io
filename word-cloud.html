@@ -141,6 +141,7 @@
     color: var(--text-primary);
     font-weight: 600;
   }
+  .stat[title] { cursor: help; }
 
   /* tab switcher */
   .tabs {
@@ -405,6 +406,8 @@
   const N_PUBS = 50;
   const TOTAL_AUTHORS = 185;
   const TOTAL_INSTITUTIONS = 112;
+  const MAX_AUTHORS_PER_PAPER = {"count":127,"title":"Emergent patterns of patchiness differ between physical and planktonic properties in the ocean"};
+  const MAX_INSTITUTIONS_PER_PAPER = {"count":50,"title":"Emergent patterns of patchiness differ between physical and planktonic properties in the ocean"};
   const HOME_INSTITUTION = "University of Haifa";
   const ABSTRACT_COUNT = 50;
   const YEAR_MIN = 2003;
@@ -457,7 +460,8 @@
           [String(TOTAL_AUTHORS), "distinct co-authors"],
           [String(AUTHOR_WORDS.length), "shown (2+ papers, or current team)"],
           [String(currentTeamCount), "current lab team"],
-          [`${top.count} / ${N_PUBS}`, `papers include ${top.text}`]
+          [`${top.count} / ${N_PUBS}`, `papers include ${top.text}`],
+          [String(MAX_AUTHORS_PER_PAPER.count), "authors on one paper", MAX_AUTHORS_PER_PAPER.title]
         ];
       },
       tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
@@ -488,7 +492,8 @@
           [String(TOTAL_INSTITUTIONS), "distinct institutions"],
           [String(INSTITUTE_WORDS.length), "shown (2+ papers, or home institution)"],
           [String(homeCount), "home institution"],
-          [`${top.count} / ${N_PUBS}`, `papers involve ${top.text}`]
+          [`${top.count} / ${N_PUBS}`, `papers involve ${top.text}`],
+          [String(MAX_INSTITUTIONS_PER_PAPER.count), "institutions on one paper", MAX_INSTITUTIONS_PER_PAPER.title]
         ];
       },
       tooltip: (w, cat) => `<div class="tt-title">${w.text}</div>` +
@@ -515,6 +520,10 @@
   }
   function catOf(view, key) { return view.categories.find(c => c.key === key); }
 
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+
   // ---------- chrome (masthead + legend) ----------
   function renderChrome() {
     const view = currentView();
@@ -522,8 +531,8 @@
     document.getElementById("view-subtitle").textContent = view.subtitle;
 
     const statsEl = document.getElementById("view-stats");
-    statsEl.innerHTML = view.stats().map(([v, l]) =>
-      `<span class="stat"><strong>${v}</strong>&nbsp;${l}</span>`
+    statsEl.innerHTML = view.stats().map(([v, l, note]) =>
+      `<span class="stat"${note ? ` title="${escapeAttr(note)}"` : ""}><strong>${v}</strong>&nbsp;${l}</span>`
     ).join("");
 
     const legendEl = document.getElementById("legend");
