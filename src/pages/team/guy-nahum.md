@@ -4,7 +4,7 @@ title: Guy Nahum
 position: M.Sc. Student
 description: M.Sc. Student
 role: msc-student
-research: Plankton Dynamics
+research: Numerical modelling of plankton interactions
 advisor: 
 email: guynahum12@gmail.com
 photo: /images/team/guy-nahum.png

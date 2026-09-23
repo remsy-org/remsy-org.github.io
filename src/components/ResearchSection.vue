@@ -210,7 +210,8 @@ const researchAreas = [
     topics: [
       "Global patterns of plankton patchiness",
       "Lagrangian study of phytoplankton patch dynamics",
-      "Physical and biological controls on plankton organization"
+      "Physical and biological controls on plankton organization",
+      "Numerical modelling of plankton interactions"
     ]
   },
   {
