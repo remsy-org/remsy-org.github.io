@@ -4,7 +4,7 @@ title: Maya Bloch
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Data driven ocean research
+research: Plankton patchiness
 email: maya.bloch@gmail.com
 photo: /images/team/maya-bloch.jpg
 author: Remote Sensing of Marine Systems

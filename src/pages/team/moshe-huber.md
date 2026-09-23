@@ -4,7 +4,7 @@ title: Moshe Huber
 position: M.Sc. Student
 description: M.Sc. Student
 role: msc-student
-research: Optical sensing of the sea surface microlayer
+research: Stereoscopic imaging og sea surface waves
 advisor: Jointly supervised with Dr. Aviv Solodoch
 email: moshehuber@gmail.com
 photo: /images/team/moshe-huber.jpg

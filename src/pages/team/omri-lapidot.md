@@ -4,7 +4,7 @@ title: Omri Lapidot
 position: PhD Student
 description: PhD Student
 role: phd-student
-research: Data driven ocean research
+research: Marine pollution
 advisor: Jointly supervised with Dr. Igal Berenshtein
 email: lapidot4@gmail.com
 photo: /images/team/omri-lapidot.jpg
