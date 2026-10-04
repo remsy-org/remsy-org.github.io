@@ -1,6 +1,9 @@
 # Regenerate the publication word clouds when their inputs are part of this commit.
-if git diff --cached --name-only | grep -qE '^(src/pages/(publications|team)/|scripts/generate-word-cloud\.mjs$)'; then
-  echo "Publications/team changed - regenerating word clouds..."
+# Team pages only matter through their `title:`/`role:` lines (who counts as
+# current lab team), so other team-page edits don't trigger a regeneration.
+if git diff --cached --name-only | grep -qE '^(src/pages/publications/|scripts/generate-word-cloud\.mjs$)' ||
+  git diff --cached -U0 -- src/pages/team/ | grep -qE '^[+-](title|role):'; then
+  echo "Word cloud inputs changed - regenerating word clouds..."
   npm run --silent word-cloud || exit 1
   git add public/word-cloud.html
 fi
