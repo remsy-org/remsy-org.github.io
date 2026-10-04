@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "word-cloud": "node scripts/generate-word-cloud.mjs"
+    "word-cloud": "node scripts/generate-word-cloud.mjs",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.4",
@@ -18,6 +19,7 @@
     "vue": "^3.5.21"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "js-yaml": "^5.3.0"
   }
 }
