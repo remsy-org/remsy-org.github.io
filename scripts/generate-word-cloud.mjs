@@ -61,7 +61,8 @@ const STOPWORDS = new Set(
   general generally therefore thus thereby moreover furthermore whether either neither
   case cases specific specifically particular particularly indicate indicates indicated
   consistent overall total number numbers order given rather still yet already whose
-  those such non both area characteristic condition conditions`
+  those such non both area characteristic condition conditions strongly together
+  integrated spatially seasonally`
     .split(/\s+/)
     .filter(Boolean)
 );
@@ -230,6 +231,8 @@ const CATEGORY_MAP = {
   emergent: "Ocean Physics & Atmosphere", nadir: "Remote Sensing & AI Methods", widespread: "Biology, Ecology & Environment",
   enhanced: "Ocean Physics & Atmosphere", wintertime: "Ocean Physics & Atmosphere", constrain: "Ocean Physics & Atmosphere",
   interferometry: "Remote Sensing & AI Methods", value: "Ocean Physics & Atmosphere",
+  "chl-a": "Biology, Ecology & Environment", nitrate: "Biology, Ecology & Environment", sst: "Ocean Physics & Atmosphere",
+  quantile: "Remote Sensing & AI Methods", trend: "Ocean Physics & Atmosphere",
 };
 const DEFAULT_CATEGORY = "Ocean Physics & Atmosphere";
 
