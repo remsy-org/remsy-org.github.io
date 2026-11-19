@@ -1,8 +1,8 @@
 ---
 layout: ../../layouts/MarkdownLayout.astro
 title: Jean Pierre Obeid
-position: M.Sc. Student
-description: M.Sc. Student
+position: PhD Student
+description: PhD Student
 role: msc-student
 research: Optical sensing of the sea surface microlayer
 advisor: Jointly supervised with Dr. Atef Shalabaney & Dr. Aviv Solodoch
