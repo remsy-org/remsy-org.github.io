@@ -2,19 +2,35 @@
   <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-blue-950">
     <!-- Background slideshow -->
     <div class="absolute inset-0 z-0" aria-hidden="true">
-      <img
-        v-for="(slide, i) in slides"
-        :key="slide.src"
-        :src="i <= loadedUpTo ? slide.src : undefined"
-        :srcset="i <= loadedUpTo ? slide.srcset : undefined"
-        sizes="100vw"
-        alt=""
-        decoding="async"
-        :fetchpriority="i === 0 ? 'high' : 'low'"
-        class="hero-slide"
-        :class="{ 'is-active': i === current, 'is-static': reducedMotion }"
-        :style="{ objectPosition: slide.focus, transformOrigin: slide.focus }"
-      />
+      <template v-for="(slide, i) in slides" :key="slide.src">
+        <video
+          v-if="slide.type === 'video'"
+          :ref="(el) => setVideoRef(i, el)"
+          :src="i <= loadedUpTo ? slide.src : undefined"
+          :poster="slide.poster"
+          :preload="i <= loadedUpTo ? 'auto' : 'none'"
+          :loop="slides.length === 1"
+          muted
+          playsinline
+          disablepictureinpicture
+          class="hero-slide is-video"
+          :class="{ 'is-active': i === current }"
+          :style="{ objectPosition: slide.focus }"
+          @ended="onVideoEnded(i)"
+        ></video>
+        <img
+          v-else
+          :src="i <= loadedUpTo ? slide.src : undefined"
+          :srcset="i <= loadedUpTo ? slide.srcset : undefined"
+          sizes="100vw"
+          alt=""
+          decoding="async"
+          :fetchpriority="i === 0 ? 'high' : 'low'"
+          class="hero-slide"
+          :class="{ 'is-active': i === current, 'is-static': reducedMotion }"
+          :style="{ objectPosition: slide.focus, transformOrigin: slide.focus }"
+        />
+      </template>
       <!-- Overlay keeps the white text readable on any photo -->
       <div class="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-blue-900/25 to-cyan-900/30"></div>
       <div class="ocean-wave"></div>
@@ -51,7 +67,7 @@
         type="button"
         class="hero-dot"
         :class="{ 'is-active': i === current }"
-        :aria-label="`Show background image ${i + 1}${slide.caption ? ': ' + slide.caption : ''}`"
+        :aria-label="`Show background ${slide.type === 'video' ? 'video' : 'image'} ${i + 1}${slide.caption ? ': ' + slide.caption : ''}`"
         :aria-current="i === current"
         @click="goTo(i)"
       ></button>
@@ -77,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface HeroData {
   title: string;
@@ -85,12 +101,9 @@ interface HeroData {
   tagline: string;
 }
 
-interface HeroSlide {
-  src: string;
-  srcset: string;
-  caption: string;
-  focus: string;
-}
+type HeroSlide =
+  | { type: 'image'; src: string; srcset: string; caption: string; focus: string }
+  | { type: 'video'; src: string; poster?: string; caption: string; focus: string };
 
 const props = withDefaults(defineProps<{
   heroData?: HeroData;
@@ -99,62 +112,134 @@ const props = withDefaults(defineProps<{
   slides: () => [],
 });
 
-const INTERVAL_MS = 7000;
+// How long a photo stays up. A video stays up until it ends (capped as a safety net).
+const IMAGE_MS = 7000;
+const MAX_VIDEO_MS = 60000;
+// How long to wait for an upcoming video to be playable before skipping it.
+const VIDEO_READY_TIMEOUT_MS = 8000;
 
 const current = ref(0);
-// Highest slide index whose image may load; the next slide is preloaded one step ahead.
+// Highest slide index whose media may load; the next slide is preloaded one step ahead.
 const loadedUpTo = ref(0);
 const paused = ref(false);
 const reducedMotion = ref(false);
-let timer: ReturnType<typeof setInterval> | undefined;
+const videoEls: (HTMLVideoElement | null)[] = [];
+let timer: ReturnType<typeof setTimeout> | undefined;
+// Bumped on every navigation, so a slow-loading video can't switch slides after the visitor moved on.
+let navigation = 0;
 
 const currentCaption = computed(() => props.slides[current.value]?.caption ?? '');
 
-function goTo(index: number) {
+function setVideoRef(index: number, el: unknown) {
+  videoEls[index] = (el as HTMLVideoElement | null) ?? null;
+}
+
+function waitUntilPlayable(video: HTMLVideoElement): Promise<boolean> {
+  if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const done = (ok: boolean) => {
+      clearTimeout(timeout);
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('error', onError);
+      resolve(ok);
+    };
+    const onReady = () => done(true);
+    const onError = () => done(false);
+    const timeout = setTimeout(() => done(false), VIDEO_READY_TIMEOUT_MS);
+    video.addEventListener('canplay', onReady);
+    video.addEventListener('error', onError);
+  });
+}
+
+function preloadFrom(index: number) {
+  loadedUpTo.value = Math.min(props.slides.length - 1, Math.max(loadedUpTo.value, index));
+}
+
+async function goTo(index: number, { auto = false } = {}) {
+  const thisNavigation = ++navigation;
+  stopTimer();
+  preloadFrom(index);
+
+  const video = props.slides[index]?.type === 'video' ? await videoAt(index) : null;
+  if (video) {
+    // Keep the current slide up until the video can actually play.
+    const playable = await waitUntilPlayable(video);
+    if (thisNavigation !== navigation) return;
+    if (!playable && auto) {
+      goTo((index + 1) % props.slides.length, { auto });
+      return;
+    }
+    video.currentTime = 0;
+  }
+
+  const previous = videoEls[current.value];
+  if (previous && current.value !== index) previous.pause();
+
   current.value = index;
-  loadedUpTo.value = Math.min(
-    props.slides.length - 1,
-    Math.max(loadedUpTo.value, index + 1)
-  );
-  restart();
+  preloadFrom(index + 1);
+  play();
+}
+
+async function videoAt(index: number) {
+  await nextTick(); // let the src attribute render before checking readiness
+  return videoEls[index] ?? null;
 }
 
 function next() {
-  goTo((current.value + 1) % props.slides.length);
+  goTo((current.value + 1) % props.slides.length, { auto: true });
 }
 
-function stop() {
-  if (timer) clearInterval(timer);
+function stopTimer() {
+  if (timer) clearTimeout(timer);
   timer = undefined;
 }
 
-function restart() {
-  stop();
-  if (!paused.value && !document.hidden && props.slides.length > 1) {
-    timer = setInterval(next, INTERVAL_MS);
+/** Start or resume the current slide: play its video (if any) and schedule the next slide. */
+function play() {
+  stopTimer();
+  const slide = props.slides[current.value];
+  const video = videoEls[current.value];
+  const running = !paused.value && !document.hidden;
+
+  if (slide?.type === 'video' && video) {
+    if (running) {
+      video.muted = true; // required for autoplay; set explicitly in case hydration skipped it
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
   }
+
+  if (!running || props.slides.length < 2) return;
+  timer = setTimeout(next, slide?.type === 'video' ? MAX_VIDEO_MS : IMAGE_MS);
+}
+
+function onVideoEnded(index: number) {
+  if (index === current.value && !paused.value) next();
 }
 
 function togglePause() {
   paused.value = !paused.value;
-  restart();
+  play();
 }
 
 function onVisibilityChange() {
-  restart();
+  play();
 }
 
 onMounted(() => {
   reducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // With reduced motion, show the first image only; the dots still let visitors browse.
+  // With reduced motion, show the first slide only (a video shows its still frame);
+  // the dots still let visitors browse.
   paused.value = reducedMotion.value;
-  loadedUpTo.value = Math.min(props.slides.length - 1, 1);
+  preloadFrom(1);
   document.addEventListener('visibilitychange', onVisibilityChange);
-  restart();
+  play();
 });
 
 onBeforeUnmount(() => {
-  stop();
+  navigation++;
+  stopTimer();
   document.removeEventListener('visibilitychange', onVisibilityChange);
 });
 </script>
@@ -179,9 +264,17 @@ onBeforeUnmount(() => {
   transition: opacity 1.5s ease-in-out, transform 9s linear;
 }
 
+/* Videos move on their own, so they don't get the zoom. */
+.hero-slide.is-video,
+.hero-slide.is-video.is-active,
 .hero-slide.is-static,
 .hero-slide.is-static.is-active {
   transform: none;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-slide.is-static,
+.hero-slide.is-static.is-active {
   transition: opacity 0.3s linear;
 }
 
