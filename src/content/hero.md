@@ -2,17 +2,12 @@
 title: "Remote Sensing of Marine Systems"
 subtitle: "Yoav Lehahn's research group at the Charney School of Marine Sciences (CSMS), University of Haifa"
 tagline: "A bird's eye view on processes and patterns in the marine environment"
-features:
-  - icon: "monitor"
-    title: "Satellite Monitoring"
-    description: "Real-time ocean observation using advanced satellite imagery and sensors"
-    image: "/images/features/phytoplankton.png"
-  - icon: "chart"
-    title: "Data Analytics"
-    description: "Machine learning and AI for ocean pattern recognition and prediction"
-    image: "/images/features/front_alexander_river.jpg"
-  - icon: "globe"
-    title: "Climate Impact"
-    description: "Understanding ocean-atmosphere interactions and climate change effects"
-    image: "/images/features/jellyfish.jpg"
+
+# Background slideshow
+# Every image in src/assets/hero/ is shown, in filename order (prefix with 01-, 02-, ...).
+# Captions are optional: key them by the image's filename. Images without a caption show none.
+captions:
+  01-phytoplankton.png: "Mapping a phytoplankton patch"
+  02-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
+  03-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
 ---
