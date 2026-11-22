@@ -16,6 +16,7 @@
           <a href="/#research" class="nav-link">Research</a>
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/#team" class="nav-link">Team</a>
+          <a href="/gallery" class="nav-link">Gallery</a>
           <a href="/#contact" class="nav-link">Contact</a>
           <div class="ml-8 pl-8">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
@@ -39,6 +40,7 @@
           <a href="/#projects" @click="closeMobileMenu" class="nav-link-mobile">Projects</a>
           <a href="/#publications" @click="closeMobileMenu" class="nav-link-mobile">Publications</a>
           <a href="/#team" @click="closeMobileMenu" class="nav-link-mobile">Team</a>
+          <a href="/gallery" @click="closeMobileMenu" class="nav-link-mobile">Gallery</a>
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
           <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">

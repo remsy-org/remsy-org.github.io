@@ -1,5 +1,5 @@
 ---
-import { getImage } from 'astro:assets';
+import { getHeroSlides } from '../utils/heroImages';
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.vue';
 import HeroSection from '../components/HeroSection.vue';
@@ -51,33 +51,8 @@ const mscStudents = teamMembers.filter(member => member.role === 'msc-student');
 const heroFile = await import('../content/hero.md');
 const heroData = heroFile.frontmatter;
 
-// Hero background slideshow: every image in src/assets/hero/, in filename order,
-// resized and converted to WebP at build time.
-const heroImageFiles = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/hero/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP}',
-  { eager: true }
-);
-const heroCaptions: Record<string, string> = heroData.captions ?? {};
-const heroFocus: Record<string, string> = heroData.focus ?? {};
-const heroSlides = await Promise.all(
-  Object.entries(heroImageFiles)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(async ([path, mod]) => {
-      const fileName = path.split('/').pop() ?? '';
-      const image = await getImage({
-        src: mod.default,
-        widths: [960, 1600, 2400],
-        sizes: '100vw',
-        format: 'webp',
-      });
-      return {
-        src: image.src,
-        srcset: image.srcSet.attribute,
-        caption: heroCaptions[fileName] ?? '',
-        focus: heroFocus[fileName] ?? 'center',
-      };
-    })
-);
+// Hero background slideshow (shared with the /gallery page)
+const heroSlides = await getHeroSlides();
 
 // Get contact content
 const contactFile = await import('../content/contact.md');
