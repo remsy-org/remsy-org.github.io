@@ -16,7 +16,7 @@ captions:
   03-phytoplankton.png: "Mapping a phytoplankton patch"
   04-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
   05-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
-  06-48hrs-field-campaign.png: "48-hour field campaign"
+  06-vessel-sunset.mp4: "48-hour field campaign"
 
 # Optional: which part of the photo to keep when it's cropped to fit the screen
 # (useful for portrait photos). "center 30%" keeps the area 30% from the top;
