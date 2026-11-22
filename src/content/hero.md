@@ -15,7 +15,6 @@ captions:
   02-water-sampling.jpg: "SML sampling cruise"
   03-water-sampling.jpg: "SML sampling cruise"
   04-phytoplankton.png: "Mapping a phytoplankton patch"
-  05-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
   06-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
 
 # Optional: which part of the photo to keep when it's cropped to fit the screen
