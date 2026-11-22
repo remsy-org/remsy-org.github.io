@@ -8,6 +8,7 @@ tagline: "A bird's eye view on processes and patterns in the marine environment"
 # Captions are optional: key them by the image's filename. Images without a caption show none.
 captions:
   01-water-sampling.jpg: "SML sampling cruise"
+  02-water-sampling.jpg: "SML sampling cruise"
   03-phytoplankton.png: "Mapping a phytoplankton patch"
   04-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
   05-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
