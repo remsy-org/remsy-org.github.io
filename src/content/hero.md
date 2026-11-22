@@ -10,17 +10,17 @@ tagline: "A bird's eye view on processes and patterns in the marine environment"
 #   with the same name (clip.mp4 + clip.jpg); otherwise its first frame is used.
 # Captions are optional: key them by the file's name. Files without a caption show none.
 captions:
-  00-48hrs-field-campaign.jpg: "48-hour field campaign"
-  01-water-sampling.jpg: "SML sampling cruise"
+  00-vessel-sunset.mp4: "48-hour field campaign"
+  01-48hrs-field-campaign.jpg: "48-hour field campaign"
   02-water-sampling.jpg: "SML sampling cruise"
-  03-phytoplankton.png: "Mapping a phytoplankton patch"
-  04-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
-  05-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
-  06-vessel-sunset.mp4: "48-hour field campaign"
+  03-water-sampling.jpg: "SML sampling cruise"
+  04-phytoplankton.png: "Mapping a phytoplankton patch"
+  05-alexander-river-front.jpg: "Alexander River plume front, seen from a drone"
+  06-jellyfish.jpg: "Jellyfish swarm · Photo: H. Nativ"
 
 # Optional: which part of the photo to keep when it's cropped to fit the screen
 # (useful for portrait photos). "center 30%" keeps the area 30% from the top;
 # images not listed are centered.
 focus:
-  01-water-sampling.jpg: "center 30%"
+  02-water-sampling.jpg: "center 30%"
 ---
