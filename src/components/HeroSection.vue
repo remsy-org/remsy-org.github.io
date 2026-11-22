@@ -13,6 +13,7 @@
         :fetchpriority="i === 0 ? 'high' : 'low'"
         class="hero-slide"
         :class="{ 'is-active': i === current, 'is-static': reducedMotion }"
+        :style="{ objectPosition: slide.focus, transformOrigin: slide.focus }"
       />
       <!-- Overlay keeps the white text readable on any photo -->
       <div class="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-blue-900/25 to-cyan-900/30"></div>
@@ -88,6 +89,7 @@ interface HeroSlide {
   src: string;
   srcset: string;
   caption: string;
+  focus: string;
 }
 
 const props = withDefaults(defineProps<{

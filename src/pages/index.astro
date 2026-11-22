@@ -58,6 +58,7 @@ const heroImageFiles = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 const heroCaptions: Record<string, string> = heroData.captions ?? {};
+const heroFocus: Record<string, string> = heroData.focus ?? {};
 const heroSlides = await Promise.all(
   Object.entries(heroImageFiles)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -73,6 +74,7 @@ const heroSlides = await Promise.all(
         src: image.src,
         srcset: image.srcSet.attribute,
         caption: heroCaptions[fileName] ?? '',
+        focus: heroFocus[fileName] ?? 'center',
       };
     })
 );
