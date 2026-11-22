@@ -7,6 +7,7 @@ tagline: "A bird's eye view on processes and patterns in the marine environment"
 # Every image in src/assets/hero/ is shown, in filename order (prefix with 01-, 02-, ...).
 # Captions are optional: key them by the image's filename. Images without a caption show none.
 captions:
+  00-48hrs-field-campaign.jpg: "48-hour field campaign"
   01-water-sampling.jpg: "SML sampling cruise"
   02-water-sampling.jpg: "SML sampling cruise"
   03-phytoplankton.png: "Mapping a phytoplankton patch"
