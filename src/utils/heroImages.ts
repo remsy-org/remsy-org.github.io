@@ -22,9 +22,28 @@ export interface CuratedImage {
   focus: string;
 }
 
+const warned = new Set<string>();
+
+// Captions and focus are matched by filename, so a renamed image silently loses them.
+// Point out entries in hero.md that no longer match any image (usually a rename or typo).
+function warnAboutUnmatchedKeys(settings: Record<string, Record<string, string>>) {
+  const fileNames = new Set(Object.keys(imageFiles).map((path) => path.split('/').pop()));
+  for (const [setting, entries] of Object.entries(settings)) {
+    for (const key of Object.keys(entries)) {
+      const message = `⚠ hero.md: ${setting} for "${key}" doesn't match any image in src/assets/hero/`;
+      if (!fileNames.has(key) && !warned.has(message)) {
+        warned.add(message);
+        console.warn(message);
+      }
+    }
+  }
+}
+
 export async function getCuratedImages(): Promise<CuratedImage[]> {
   const heroFile = await import('../content/hero.md');
   const { captions = {}, focus = {} } = heroFile.frontmatter as HeroFrontmatter;
+
+  warnAboutUnmatchedKeys({ caption: captions, focus });
 
   return Object.entries(imageFiles)
     .sort(([a], [b]) => a.localeCompare(b))
