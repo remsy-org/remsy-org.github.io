@@ -25,6 +25,11 @@
           </div>
         </div>
         
+        <!-- Medium screens: logo beside the menu button (too cramped on phones, where it stays in the menu) -->
+        <a href="https://marsci.haifa.ac.il/en" target="_blank" class="hidden sm:flex xl:hidden items-center ml-auto mr-3 shrink-0 hover:opacity-80 transition-opacity">
+          <img src="/images/haifa-university-logo-nav.png" alt="Haifa University" width="471" height="168" class="h-10 w-auto max-w-none">
+        </a>
+
         <button @click="mobileMenuOpen = !mobileMenuOpen" class="xl:hidden p-2 shrink-0" :aria-expanded="mobileMenuOpen" aria-label="Menu">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -42,7 +47,7 @@
           <a href="/#team" @click="closeMobileMenu" class="nav-link-mobile">Team</a>
           <a href="/gallery" @click="closeMobileMenu" class="nav-link-mobile">Gallery</a>
           <a href="/#contact" @click="closeMobileMenu" class="nav-link-mobile">Contact</a>
-          <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center">
+          <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center sm:hidden">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
               <img src="/images/Haifa_logo_secondary_logo_dark_english.png" alt="Haifa University" class="h-14 w-auto">
             </a>
