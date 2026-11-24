@@ -2,30 +2,30 @@
   <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
     <div class="container-custom">
       <div class="flex justify-between items-center h-20 md:h-20">
-        <div class="flex items-center">
-          <a href="/" class="flex items-center space-x-3">
-            <div>
-              <h1 class="text-lg md:text-xl font-bold text-gray-900 nav-brand">Remote Sensing of Marine Systems</h1>
-              <p class="text-xs text-gray-600 nav-brand hidden md:block" style="font-weight: 400; text-transform: uppercase;">Yoav Lehahn's research group</p>
+        <div class="flex items-center min-w-0 mr-4">
+          <a href="/" class="flex items-center space-x-3 min-w-0">
+            <div class="min-w-0">
+              <h1 class="text-base sm:text-lg xl:text-xl font-bold text-gray-900 nav-brand leading-tight text-balance">Remote Sensing of Marine Systems</h1>
+              <p class="text-xs text-gray-600 nav-brand hidden sm:block mt-1" style="font-weight: 400; text-transform: uppercase;">Yoav Lehahn's research group</p>
             </div>
           </a>
         </div>
         
-        <div class="hidden md:flex items-center space-x-5 lg:space-x-8">
+        <div class="hidden xl:flex items-center space-x-8 shrink-0">
           <a href="/" class="nav-link">Home</a>
           <a href="/#research" class="nav-link">Research</a>
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/#team" class="nav-link">Team</a>
           <a href="/gallery" class="nav-link">Gallery</a>
           <a href="/#contact" class="nav-link">Contact</a>
-          <div class="ml-4 pl-4 lg:ml-8 lg:pl-8 shrink-0">
+          <div class="ml-8 pl-8 shrink-0">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/images/haifa-university-logo-nav.png" alt="Haifa University" width="471" height="168" class="h-12 lg:h-14 w-auto max-w-none shrink-0">
+              <img src="/images/haifa-university-logo-nav.png" alt="Haifa University" width="471" height="168" class="h-14 w-auto max-w-none shrink-0">
             </a>
           </div>
         </div>
         
-        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2">
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="xl:hidden p-2 shrink-0" :aria-expanded="mobileMenuOpen" aria-label="Menu">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -33,7 +33,7 @@
         </button>
       </div>
       
-      <div v-if="mobileMenuOpen" class="md:hidden py-4 border-t border-gray-100">
+      <div v-if="mobileMenuOpen" class="xl:hidden py-4 border-t border-gray-100">
         <div class="flex flex-col space-y-4">
           <a href="/" @click="closeMobileMenu" class="nav-link-mobile">Home</a>
           <a href="/#research" @click="closeMobileMenu" class="nav-link-mobile">Research</a>
