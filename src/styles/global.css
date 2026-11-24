@@ -6,8 +6,8 @@
   --color-accent: #00d4aa;
   --color-dark: #0a1628;
   --color-light: #f7f9fb;
-  --font-heading: Orbitron, monospace;
-  --font-body: Roboto, sans-serif;
+  --font-heading: 'Orbitron Variable', Orbitron, monospace;
+  --font-body: 'Roboto Variable', Roboto, sans-serif;
 }
 
 /* Global Typography */

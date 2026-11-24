@@ -67,7 +67,7 @@ const staff = teamMembers.filter(member =>
   <main class="pt-20 md:pt-24">
     <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
       <div class="container-custom">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: 'Orbitron', monospace; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Our Research Team</h1>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: var(--font-heading); font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Our Research Team</h1>
         <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
         </p>
       </div>
@@ -94,7 +94,7 @@ const staff = teamMembers.filter(member =>
                       </div>
                     )}
                     <div class="flex-1">
-                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.5px;">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: var(--font-heading); font-weight: 600; letter-spacing: 0.5px;">
                         {member.frontmatter.title}
                       </h3>
                       <p class="text-blue-600 text-sm font-medium">{member.frontmatter.position}</p>
@@ -131,7 +131,7 @@ const staff = teamMembers.filter(member =>
                       </div>
                     )}
                     <div class="flex-1">
-                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: 0.3px;">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: var(--font-heading); font-weight: 600; letter-spacing: 0.3px;">
                         {member.frontmatter.title}
                       </h3>
                       <p class="text-purple-600 text-sm font-medium">{member.frontmatter.position}, {member.frontmatter.research}</p>
@@ -151,7 +151,7 @@ const staff = teamMembers.filter(member =>
       {alumni.length === 0 && (
         <section class="text-center py-12">
           <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 max-w-2xl mx-auto">
-            <h2 class="text-3xl font-bold mb-4" style="font-family: 'Orbitron', monospace; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Alumni Network</h2>
+            <h2 class="text-3xl font-bold mb-4" style="font-family: var(--font-heading); font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Alumni Network</h2>
             <p class="text-xl mb-6">200+ graduates working worldwide in academia, government, and industry</p>
             <a href="/team/alumni" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
               View Alumni Directory →
