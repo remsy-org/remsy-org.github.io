@@ -11,16 +11,16 @@
           </a>
         </div>
         
-        <div class="hidden md:flex items-center space-x-8">
+        <div class="hidden md:flex items-center space-x-5 lg:space-x-8">
           <a href="/" class="nav-link">Home</a>
           <a href="/#research" class="nav-link">Research</a>
           <a href="/#publications" class="nav-link">Publications</a>
           <a href="/#team" class="nav-link">Team</a>
           <a href="/gallery" class="nav-link">Gallery</a>
           <a href="/#contact" class="nav-link">Contact</a>
-          <div class="ml-8 pl-8">
+          <div class="ml-4 pl-4 lg:ml-8 lg:pl-8 shrink-0">
             <a href="https://marsci.haifa.ac.il/en" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/images/Haifa_logo_official_apperence_dark_english.png" alt="Haifa University" class="h-50 w-auto">
+              <img src="/images/haifa-university-logo-nav.png" alt="Haifa University" width="471" height="168" class="h-12 lg:h-14 w-auto max-w-none shrink-0">
             </a>
           </div>
         </div>
