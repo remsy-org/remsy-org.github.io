@@ -1,0 +1,39 @@
+---
+// Translation tool for one language: lists every text on the site with its English
+// source, lets a translator edit the translation and export it as a file.
+// The file is written back with `npm run translations:import -- <file>`.
+// Not linked from the site and hidden from search engines.
+import Layout from '../layouts/Layout.astro';
+import TranslationEditor from '../components/TranslationEditor.vue';
+import { locales, type Locale } from '../i18n';
+import { getTranslationEntries } from '../i18n/translatable';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const stringFiles = import.meta.glob<{ default: Record<string, unknown> }>('../i18n/strings/*.json', { eager: true });
+const reviewedFiles = import.meta.glob<{ default: string[] }>('../i18n/reviewed/*.json', { eager: true });
+
+const ownStrings = stringFiles[`../i18n/strings/${locale}.json`]?.default ?? {};
+const reviewed = reviewedFiles[`../i18n/reviewed/${locale}.json`]?.default ?? [];
+const references = (['he', 'ar'] as Locale[]).filter((code) => code !== locale);
+const entries = getTranslationEntries(locale, ownStrings, references);
+const language = locales[locale];
+---
+
+<Layout title={`Translation: ${language.name}`} noindex>
+  <main class="min-h-screen bg-slate-50">
+    <TranslationEditor
+      client:load
+      locale={locale}
+      languageName={language.name}
+      dir={language.dir}
+      entries={entries}
+      reviewed={reviewed}
+      referenceNames={Object.fromEntries(references.map((code) => [code, locales[code].name]))}
+    />
+  </main>
+</Layout>

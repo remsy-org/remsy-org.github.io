@@ -30,3 +30,9 @@ export function getContent<T = Record<string, any>>(name: string, locale: Locale
   const translated = frontmatterOf(`${name}.${locale}.md`);
   return (translated ? merge(english, translated) : english) as T;
 }
+
+/** Only what the translation file itself contains (no English fallback); {} if there's none. */
+export function getOwnContent<T = Record<string, any>>(name: string, locale: Locale): T {
+  const fileName = locale === defaultLocale ? `${name}.md` : `${name}.${locale}.md`;
+  return (frontmatterOf(fileName) ?? {}) as T;
+}
