@@ -11,16 +11,44 @@
           </a>
         </div>
         
-        <div class="hidden xl:flex items-center space-x-6 shrink-0">
+        <div class="hidden xl:flex items-center space-x-5 shrink-0">
           <a v-for="item in links" :key="item.href" :href="item.href" class="nav-link">{{ item.label }}</a>
-          <a
-            v-for="other in otherLocales"
-            :key="other.code"
-            :href="other.href"
-            :lang="other.code"
-            :hreflang="other.code"
-            class="nav-link nav-link-language"
-          >{{ other.name }}</a>
+          <div ref="languageMenu" class="relative" @keydown.esc="languageMenuOpen = false">
+            <button
+              type="button"
+              class="language-button"
+              :aria-expanded="languageMenuOpen"
+              aria-haspopup="true"
+              :aria-label="`${t.nav.language}: ${locales[locale].name}`"
+              @click="languageMenuOpen = !languageMenuOpen"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>
+              </svg>
+              <span>{{ locale.toUpperCase() }}</span>
+              <svg class="w-3 h-3 transition-transform" :class="{ 'rotate-180': languageMenuOpen }" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <ul v-if="languageMenuOpen" class="absolute end-0 top-full mt-2 min-w-36 rounded-lg border border-gray-100 bg-white py-1 shadow-lg">
+              <li v-for="option in languageOptions" :key="option.code">
+                <a
+                  :href="option.href"
+                  :lang="option.code"
+                  :hreflang="option.code"
+                  :aria-current="option.current ? 'true' : undefined"
+                  class="language-option"
+                  :class="{ 'is-current': option.current }"
+                >
+                  <span>{{ option.name }}</span>
+                  <svg v-if="option.current" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7"/>
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
           <div class="ms-2 ps-4 shrink-0">
             <a :href="t.site.universityUrl" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
               <img :src="logo.src" :alt="t.site.universityName" :width="logo.width" :height="logo.height" class="w-auto max-w-none shrink-0" :class="tallLogo ? 'h-16' : 'h-14'">
@@ -44,15 +72,19 @@
       <div v-if="mobileMenuOpen" class="xl:hidden py-4 border-t border-gray-100">
         <div class="flex flex-col space-y-4">
           <a v-for="item in mobileLinks" :key="item.href" :href="item.href" @click="closeMobileMenu" class="nav-link-mobile">{{ item.label }}</a>
-          <div class="pt-4 border-t border-gray-100 flex gap-6" :aria-label="t.nav.language">
-            <a
-              v-for="other in otherLocales"
-              :key="other.code"
-              :href="other.href"
-              :lang="other.code"
-              :hreflang="other.code"
-              class="nav-link-mobile nav-link-language"
-            >{{ other.name }}</a>
+          <div class="pt-4 border-t border-gray-100">
+            <div class="inline-flex rounded-lg bg-gray-100 p-1" role="group" :aria-label="t.nav.language">
+              <a
+                v-for="option in languageOptions"
+                :key="option.code"
+                :href="option.href"
+                :lang="option.code"
+                :hreflang="option.code"
+                :aria-current="option.current ? 'true' : undefined"
+                class="language-segment"
+                :class="{ 'is-current': option.current }"
+              >{{ option.name }}</a>
+            </div>
           </div>
           <div class="mt-4 pt-4 border-t border-gray-100 flex justify-center sm:hidden">
             <a :href="t.site.universityUrl" target="_blank" class="flex items-center hover:opacity-80 transition-opacity">
@@ -66,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { defaultLocale, getStrings, locales, localizePath, publicLocales, switchPath, type Locale } from '../i18n';
 
 const props = withDefaults(defineProps<{
@@ -100,13 +132,25 @@ const mobileLinks = computed(() => [
   ...links.value.slice(2),
 ]);
 
-const otherLocales = computed(() =>
-  publicLocales
-    .filter((code) => code !== props.locale)
-    .map((code) => ({ code, name: locales[code].name, href: switchPath(props.path, code) }))
+// Every public language, the current one included (marked), so the picker always shows the full set.
+const languageOptions = computed(() =>
+  publicLocales.map((code) => ({
+    code,
+    name: locales[code].name,
+    href: switchPath(props.path, code),
+    current: code === props.locale,
+  }))
 );
 
 const mobileMenuOpen = ref(false);
+
+const languageMenuOpen = ref(false);
+const languageMenu = ref<HTMLElement | null>(null);
+const closeOnOutsideClick = (event: MouseEvent) => {
+  if (languageMenu.value && !languageMenu.value.contains(event.target as Node)) languageMenuOpen.value = false;
+};
+onMounted(() => document.addEventListener('click', closeOnOutsideClick));
+onBeforeUnmount(() => document.removeEventListener('click', closeOnOutsideClick));
 
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false;
@@ -143,9 +187,65 @@ const closeMobileMenu = () => {
   color: rgb(37 99 235);
 }
 
-/* Language names are written in their own script: no uppercase or spacing tricks. */
-.nav-link-language {
-  text-transform: none;
-  letter-spacing: normal;
+/* Language picker. Language names are written in their own script: no uppercase or spacing tricks. */
+.language-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 9999px;
+  color: rgb(55 65 81);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.language-button:hover,
+.language-button[aria-expanded='true'] {
+  color: rgb(37 99 235);
+  border-color: rgb(147 197 253);
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  color: rgb(55 65 81);
+  font-size: 0.95rem;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.language-option:hover {
+  background-color: rgb(239 246 255);
+  color: rgb(37 99 235);
+}
+
+.language-option.is-current {
+  color: rgb(37 99 235);
+  font-weight: 500;
+}
+
+.language-segment {
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.375rem;
+  color: rgb(75 85 99);
+  font-size: 0.95rem;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.language-segment:hover {
+  color: rgb(37 99 235);
+}
+
+.language-segment.is-current {
+  background-color: white;
+  color: rgb(37 99 235);
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
 }
 </style>
