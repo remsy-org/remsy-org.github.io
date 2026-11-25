@@ -10,7 +10,7 @@
         <button
           type="button"
           class="group relative block w-full overflow-hidden rounded-xl bg-blue-50 shadow-sm hover:shadow-lg transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-          :aria-label="`${item.type === 'video' ? 'Play video' : 'Open photo'}: ${item.alt}`"
+          :aria-label="`${item.type === 'video' ? t.gallery.playVideo : t.gallery.openPhoto}: ${item.alt}`"
           @click="open(i, $event)"
         >
           <template v-if="item.type === 'video'">
@@ -68,12 +68,12 @@
         @click.self="close"
       >
         <div class="flex items-center justify-between px-4 py-3 text-white/80 text-sm">
-          <span>{{ activeIndex + 1 }} / {{ items.length }}</span>
+          <span dir="ltr">{{ activeIndex + 1 }} / {{ items.length }}</span>
           <button
             ref="closeButton"
             type="button"
             class="lightbox-btn"
-            aria-label="Close"
+            :aria-label="t.gallery.close"
             @click="close"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -107,19 +107,19 @@
           <template v-if="items.length > 1">
             <button
               type="button"
-              class="lightbox-btn absolute left-2 md:left-6 top-1/2 -translate-y-1/2"
-              aria-label="Previous"
+              class="lightbox-btn absolute start-2 md:start-6 top-1/2 -translate-y-1/2"
+              :aria-label="t.gallery.previous"
               @click="step(-1)"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              <svg class="w-7 h-7 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
             <button
               type="button"
-              class="lightbox-btn absolute right-2 md:right-6 top-1/2 -translate-y-1/2"
-              aria-label="Next"
+              class="lightbox-btn absolute end-2 md:end-6 top-1/2 -translate-y-1/2"
+              :aria-label="t.gallery.next"
               @click="step(1)"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              <svg class="w-7 h-7 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
           </template>
         </div>
@@ -134,6 +134,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
+import { defaultLocale, dirOf, getStrings, type Locale } from '../i18n';
 
 type GalleryItem =
   | {
@@ -157,7 +158,13 @@ type GalleryItem =
       alt: string;
     };
 
-const props = defineProps<{ items: GalleryItem[] }>();
+const props = withDefaults(defineProps<{ items: GalleryItem[]; locale?: Locale }>(), {
+  locale: defaultLocale,
+});
+
+const t = computed(() => getStrings(props.locale));
+
+const rtl = computed(() => dirOf(props.locale) === 'rtl');
 
 const activeIndex = ref<number | null>(null);
 const closeButton = ref<HTMLButtonElement | null>(null);
@@ -191,8 +198,9 @@ function step(delta: number) {
 
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') close();
-  else if (event.key === 'ArrowLeft') step(-1);
-  else if (event.key === 'ArrowRight') step(1);
+  // The arrow keys follow the reading direction: in Hebrew, left is "next".
+  else if (event.key === 'ArrowLeft') step(rtl.value ? 1 : -1);
+  else if (event.key === 'ArrowRight') step(rtl.value ? -1 : 1);
   else return;
   event.preventDefault();
   event.stopPropagation();

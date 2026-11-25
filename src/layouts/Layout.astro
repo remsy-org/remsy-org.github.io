@@ -2,24 +2,35 @@
 // Fonts are bundled with the site (not loaded from Google Fonts), so they work in every browser.
 import '@fontsource-variable/orbitron';
 import '@fontsource-variable/roboto';
+// Hebrew letters (the browser only downloads these on pages with Hebrew text)
+import '@fontsource-variable/heebo';
+import '@fontsource-variable/rubik';
+import { defaultLocale, dirOf, getStrings, locales, localizePath, type Locale } from '../i18n';
 
 export interface Props {
   title: string;
   description?: string;
+  locale?: Locale;
+  /** English address of this page, when it exists in every language (e.g. '/gallery'). */
+  translatedPath?: string;
 }
 
-const { title, description = 'Remote Sensing of Marine Systems - Academic Research Lab' } = Astro.props;
+const { title, description, locale = defaultLocale, translatedPath } = Astro.props;
+const t = getStrings(locale);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale} dir={dirOf(locale)}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
+    <meta name="description" content={description ?? t.site.description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} - Marine Remote Sensing Lab</title>
+    {translatedPath && Object.keys(locales).map((code) => (
+      <link rel="alternate" hreflang={code} href={localizePath(translatedPath, code as Locale)} />
+    ))}
+    <title>{title} - {t.site.name}</title>
   </head>
   <body>
     <slot />
@@ -28,11 +39,11 @@ const { title, description = 'Remote Sensing of Marine Systems - Academic Resear
 
 <style is:global>
   @import '../styles/global.css';
-  
+
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* Standard font declarations (font families are defined in global.css) */
   body {
     font-family: var(--font-body);

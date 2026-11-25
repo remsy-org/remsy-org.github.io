@@ -2,11 +2,9 @@
   <section id="research" class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">Research</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 heading-section">{{ t.research.heading }}</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto text-body">
-          We integrate in-situ data with remote-sensing observations from satellites, 
-          airplanes and drones to characterize variability patterns and motions over multiple spatial and temporal scales,
-          providing observational insights into various aspects of marine research. 
+          {{ content.intro }}
         </p>
       </div>
       
@@ -20,10 +18,9 @@
           </div>
           <div class="p-6">
             <h3 class="text-xl font-semibold text-gray-900 mb-3 heading-card">{{ area.title }}</h3>
-            <p class="text-gray-600 mb-4 text-body">{{ area.description }}</p>
-            <ul class="space-y-2">
+                        <ul class="space-y-2">
               <li v-for="topic in area.topics" :key="topic" class="flex items-start">
-                <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-blue-500 mt-0.5 me-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
                 <span class="text-sm text-gray-700 text-body">{{ topic }}</span>
@@ -37,7 +34,23 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue';
+import { computed, h } from 'vue';
+import { defaultLocale, getStrings, type Locale } from '../i18n';
+
+export interface ResearchArea {
+  id: string;
+  title: string;
+  topics: string[];
+}
+
+const props = withDefaults(defineProps<{
+  content: { intro: string; areas: ResearchArea[] };
+  locale?: Locale;
+}>(), {
+  locale: defaultLocale,
+});
+
+const t = computed(() => getStrings(props.locale));
 
 const WaveIcon = {
   render() {
@@ -200,80 +213,20 @@ const OceanCirculationIcon = {
   }
 };
 
-const researchAreas = [
-  {
-    id: 1,
-    title: 'Plankton dynamics, biogeography and spatial patterning',
-    description: '',
-    gradient: 'from-blue-500 to-cyan-500',
-    icon: PhytoplanktonIcon,
-    topics: [
-      "Global patterns of plankton patchiness",
-      "Lagrangian study of phytoplankton patch dynamics",
-      "Physical and biological controls on plankton organization",
-      "Numerical modelling of plankton interactions"
-    ]
-  },
-  {
-    id: 2,
-    title: 'Dynamics of jellyfish swarms',
-    description: '',
-    gradient: 'from-orange-500 to-red-500',
-    icon: JellyfishIcon,
-    topics: [
-      "Characterization of swimming patterns",
-      "Impact of swimming on movement",
-      "Spatiotemporal distribution patterns"
-    ]
-  },
-  {
-    id: 3,
-    title: 'Circulation, biogeochemistry, and ecology of the Eastern Mediterranean Sea (EMS)',
-    description: '',
-    gradient: 'from-purple-500 to-indigo-500',
-    icon: OceanCirculationIcon,
-    topics: [
-      "Connectivity between coastal and pelagic waters",
-      "Ecological impact of submesoscale horizontal stirring",
-      "Quantification of variability patterns across space (meters to hundreds of km) and time (days to decades)"
-    ]
-  },
-  {
-    id: 4,
-    title: 'Data-driven ocean research',
-    description: '',
-    gradient: 'from-green-500 to-teal-500',
-    icon: DatabaseIcon,
-    topics: [
-      "Automatization of the ocean data integration process",
-      "Identification of emerging patterns in multidisciplinary oceanic datasets",
-    ]
-  },
-  {
-    id: 5,
-    title: 'The sea surface microlayer (SML): from dynamics to variability patterns ',
-    description: '',
-    gradient: 'from-pink-500 to-rose-500',
-    icon: SeaSurfaceLayerIcon,
-    topics: [
-      "Impact of ocean circulation on SML physicochemical properties",
-      "Development and implementation of remote sensing approaches",
-      "Quantification of spatiotemporal variability patterns"
-    ]
-  },
-  {
-    id: 6,
-    title: "Ecology of Israel's inland water bodies",
-    description: '',
-    gradient: 'from-gray-600 to-gray-800',
-    icon: LakeKinneretIcon,
-    topics: [
-      "Data-driven research of Lake Kinneret ecosystem",
-      "Ecosystem sensitivity to changes in weather condition",
-      "Satellite remote sensing of reservoir water quality"
-    ]
-  }
-];
+// Icon and colors of each research area, by its id in src/content/research.md
+const looks: Record<string, { icon: object; gradient: string }> = {
+  plankton: { icon: PhytoplanktonIcon, gradient: 'from-blue-500 to-cyan-500' },
+  jellyfish: { icon: JellyfishIcon, gradient: 'from-orange-500 to-red-500' },
+  circulation: { icon: OceanCirculationIcon, gradient: 'from-purple-500 to-indigo-500' },
+  data: { icon: DatabaseIcon, gradient: 'from-green-500 to-teal-500' },
+  sml: { icon: SeaSurfaceLayerIcon, gradient: 'from-pink-500 to-rose-500' },
+  inland: { icon: LakeKinneretIcon, gradient: 'from-gray-600 to-gray-800' },
+};
+const defaultLook = { icon: GlobeIcon, gradient: 'from-blue-500 to-cyan-500' };
+
+const researchAreas = computed(() =>
+  props.content.areas.map((area) => ({ ...area, ...(looks[area.id] ?? defaultLook) }))
+);
 </script>
 
 <style scoped>

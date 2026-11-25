@@ -1,0 +1,90 @@
+---
+// The home page, in any language. src/pages/index.astro (English) and
+// src/pages/he/index.astro (Hebrew) both render this with their language.
+import { getHeroSlides } from '../utils/heroMedia';
+import { getContent } from '../i18n/content';
+import { getStrings, type Locale } from '../i18n';
+import { localizeMember } from '../utils/team';
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.vue';
+import HeroSection from '../components/HeroSection.vue';
+import ResearchSection, { type ResearchArea } from '../components/ResearchSection.vue';
+import TeamSection from '../components/TeamSection.vue';
+import PublicationsSection from '../components/PublicationsSection.vue';
+import ContactSection from '../components/ContactSection.vue';
+import Footer from '../components/Footer.vue';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getStrings(locale);
+
+// Get content from MD files
+const publicationFiles = import.meta.glob('../pages/publications/*.md', { eager: true });
+const featuredPublications = Object.values(publicationFiles)
+  .filter(file => file.frontmatter?.featured === true)
+  .map(file => ({
+    title: file.frontmatter.title,
+    authors: file.frontmatter.authors,
+    journal: file.frontmatter.journal,
+    volume: file.frontmatter.volume,
+    pages: file.frontmatter.pages,
+    year: file.frontmatter.year,
+    doi: file.frontmatter.doi,
+    url: file.frontmatter.url,
+    pdf: file.frontmatter.pdf,
+    openAccess: file.frontmatter.openAccess,
+    abstract: file.frontmatter.abstract,
+    keywords: file.frontmatter.keywords,
+    featured: file.frontmatter.featured
+  }))
+  .sort((a, b) => b.year - a.year);
+
+// Get team members from MD files
+const teamFiles = import.meta.glob('../pages/team/*.md', { eager: true });
+const teamMembers = Object.entries(teamFiles).map(([filepath, file]) => ({
+  ...localizeMember(file.frontmatter, locale),
+  url: filepath.replace('../pages', '').replace('.md', '')
+}));
+
+// Filter and categorize team members
+const principals = teamMembers.filter(member =>
+  member.role === 'principal-investigator' ||
+  member.role === 'lab-manager'
+).sort((a, b) => (a.order || 999) - (b.order || 999));
+
+const phdStudents = teamMembers.filter(member => member.role === 'phd-student');
+const mscStudents = teamMembers.filter(member => member.role === 'msc-student');
+
+// Page content (src/content/), translated where available
+const heroData = getContent('hero', locale);
+const contactData = getContent('contact', locale);
+
+// Research areas: a translation replaces the English text of each area with the same id.
+const englishResearch = getContent<{ intro: string; areas: ResearchArea[] }>('research');
+const translatedResearch = getContent<{ intro: string; areas: ResearchArea[] }>('research', locale);
+const translatedAreas = new Map(
+  (translatedResearch === englishResearch ? [] : translatedResearch.areas ?? []).map((area) => [area.id, area])
+);
+const researchContent = {
+  intro: translatedResearch.intro,
+  areas: englishResearch.areas.map((area) => ({ ...area, ...translatedAreas.get(area.id) })),
+};
+
+// Hero background slideshow (shared with the /gallery page)
+const heroSlides = await getHeroSlides(locale);
+---
+
+<Layout title={t.site.name} locale={locale} translatedPath="/">
+  <Navigation client:load locale={locale} path="/" />
+  <main>
+    <HeroSection client:visible heroData={heroData} slides={heroSlides} locale={locale} />
+    <ResearchSection client:visible content={researchContent} locale={locale} />
+    <TeamSection client:visible teamData={{ principals, phdStudents, mscStudents }} locale={locale} />
+    <PublicationsSection client:visible featuredPublications={featuredPublications} locale={locale} />
+    <ContactSection client:visible contactData={contactData} locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</Layout>

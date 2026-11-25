@@ -1,8 +1,11 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { defaultLocale, locales, type Locale } from '../i18n';
+import { getContent } from '../i18n/content';
 
 // The curated media set: every image and video in src/assets/hero/, in filename order.
-// Captions and crop focus come from src/content/hero.md (keyed by filename).
+// Captions and crop focus come from src/content/hero.md (keyed by filename);
+// translated captions come from hero.<locale>.md, falling back to English.
 // Used by the homepage hero slideshow and the /gallery page.
 //
 // Videos (.mp4/.webm) are used as-is, so they should be short, silent and compressed.
@@ -53,16 +56,29 @@ function warnOnce(message: string) {
 
 // Captions and focus are matched by filename, so a renamed file silently loses them.
 // Point out entries in hero.md that no longer match any file (usually a rename or typo).
-function warnAboutUnmatchedKeys(settings: Record<string, Record<string, string>>) {
+function warnAboutUnmatchedKeys(contentFile: string, settings: Record<string, Record<string, string>>) {
   const fileNames = new Set(
     [...Object.keys(imageFiles), ...Object.keys(videoFiles)].map(fileNameOf)
   );
   for (const [setting, entries] of Object.entries(settings)) {
     for (const key of Object.keys(entries)) {
       if (!fileNames.has(key)) {
-        warnOnce(`⚠ hero.md: ${setting} for "${key}" doesn't match any file in src/assets/hero/`);
+        warnOnce(`⚠ ${contentFile}: ${setting} for "${key}" doesn't match any file in src/assets/hero/`);
       }
     }
+  }
+}
+
+const translatedCaptions = import.meta.glob<{ frontmatter: HeroFrontmatter }>(
+  '../content/hero.*.md',
+  { eager: true }
+);
+
+function warnAboutTranslations() {
+  for (const [path, file] of Object.entries(translatedCaptions)) {
+    const locale = fileNameOf(path).split('.')[1];
+    if (!(locale in locales)) continue;
+    warnAboutUnmatchedKeys(fileNameOf(path), { caption: file.frontmatter.captions ?? {} });
   }
 }
 
@@ -72,11 +88,13 @@ function warnAboutUnsupportedFiles() {
   }
 }
 
-export async function getCuratedItems(): Promise<CuratedItem[]> {
-  const heroFile = await import('../content/hero.md');
-  const { captions = {}, focus = {} } = heroFile.frontmatter as HeroFrontmatter;
+export async function getCuratedItems(locale: Locale = defaultLocale): Promise<CuratedItem[]> {
+  const english = getContent<HeroFrontmatter>('hero');
+  const { focus = {} } = english;
+  const { captions = {} } = getContent<HeroFrontmatter>('hero', locale);
 
-  warnAboutUnmatchedKeys({ caption: captions, focus });
+  warnAboutUnmatchedKeys('hero.md', { caption: english.captions ?? {}, focus });
+  warnAboutTranslations();
   warnAboutUnsupportedFiles();
 
   const videoBaseNames = new Set(Object.keys(videoFiles).map((p) => baseNameOf(fileNameOf(p))));
@@ -121,8 +139,8 @@ export type HeroSlide =
   | { type: 'video'; src: string; poster?: string; caption: string; focus: string };
 
 /** Full-screen background versions for the hero slideshow. */
-export async function getHeroSlides(): Promise<HeroSlide[]> {
-  const items = await getCuratedItems();
+export async function getHeroSlides(locale: Locale = defaultLocale): Promise<HeroSlide[]> {
+  const items = await getCuratedItems(locale);
   return Promise.all(
     items.map(async (item): Promise<HeroSlide> => {
       const { caption, focus } = item;
@@ -172,8 +190,8 @@ export type GalleryItem =
     };
 
 /** Thumbnail and full-size versions for the gallery page. */
-export async function getGalleryItems(): Promise<GalleryItem[]> {
-  const items = await getCuratedItems();
+export async function getGalleryItems(locale: Locale = defaultLocale): Promise<GalleryItem[]> {
+  const items = await getCuratedItems(locale);
   return Promise.all(
     items.map(async (item): Promise<GalleryItem> => {
       const { caption } = item;

@@ -6,8 +6,17 @@
   --color-accent: #00d4aa;
   --color-dark: #0a1628;
   --color-light: #f7f9fb;
-  --font-heading: 'Orbitron Variable', Orbitron, monospace;
-  --font-body: 'Roboto Variable', Roboto, sans-serif;
+  /* Orbitron and Roboto have no Hebrew letters; the browser takes those from the
+     next font in the list (Rubik for headings, Heebo for text). */
+  --font-heading: 'Orbitron Variable', Orbitron, 'Rubik Variable', monospace;
+  --font-body: 'Roboto Variable', Roboto, 'Heebo Variable', sans-serif;
+}
+
+/* Right-to-left pages (Hebrew, Arabic): the extra letter spacing of the English
+   headings looks off in Hebrew and breaks Arabic's joined letters. */
+[dir='rtl'] :is(h1, h2, h3, h4, h5, h6, .heading-hero, .heading-section, .heading-subsection,
+  .heading-card, .heading-small, .nav-brand, .nav-link-styled, .text-subtitle) {
+  letter-spacing: normal !important;
 }
 
 /* Global Typography */

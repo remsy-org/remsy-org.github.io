@@ -50,12 +50,12 @@
     <!-- Slideshow controls -->
     <div
       v-if="slides.length > 1"
-      class="absolute bottom-8 left-4 md:left-8 z-10 flex items-center gap-3"
+      class="absolute bottom-8 start-4 md:start-8 z-10 flex items-center gap-3"
     >
       <button
         type="button"
         class="hero-control"
-        :aria-label="paused ? 'Play background slideshow' : 'Pause background slideshow'"
+        :aria-label="paused ? t.hero.play : t.hero.pause"
         @click="togglePause"
       >
         <svg v-if="paused" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -67,7 +67,7 @@
         type="button"
         class="hero-dot"
         :class="{ 'is-active': i === current }"
-        :aria-label="`Show background ${slide.type === 'video' ? 'video' : 'image'} ${i + 1}${slide.caption ? ': ' + slide.caption : ''}`"
+        :aria-label="`${slide.type === 'video' ? t.hero.showVideo : t.hero.showImage} ${i + 1}${slide.caption ? ': ' + slide.caption : ''}`"
         :aria-current="i === current"
         @click="goTo(i)"
       ></button>
@@ -78,7 +78,7 @@
       <p
         v-if="currentCaption"
         :key="current"
-        class="absolute bottom-8 right-4 md:right-8 z-10 max-w-[60vw] text-right text-sm text-white/85 hero-text-shadow"
+        class="absolute bottom-8 end-4 md:end-8 z-10 max-w-[60vw] text-end text-sm text-white/85 hero-text-shadow"
       >
         {{ currentCaption }}
       </p>
@@ -94,6 +94,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { defaultLocale, getStrings, type Locale } from '../i18n';
 
 interface HeroData {
   title: string;
@@ -108,9 +109,13 @@ type HeroSlide =
 const props = withDefaults(defineProps<{
   heroData?: HeroData;
   slides?: HeroSlide[];
+  locale?: Locale;
 }>(), {
   slides: () => [],
+  locale: defaultLocale,
 });
+
+const t = computed(() => getStrings(props.locale));
 
 // How long a photo stays up. A video stays up until it ends (capped as a safety net).
 const IMAGE_MS = 7000;

@@ -2,7 +2,7 @@
   <section id="team" class="py-20 bg-white">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Research Team</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">{{ t.team.heading }}</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
         </p>
       </div>
@@ -26,7 +26,7 @@
               <div class="flex-1">
                 <h4 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">{{ member.title }}</h4>
                 <p class="text-sm text-blue-600 mb-2">{{ member.position }}</p>
-                <p v-if="member.research" class="text-sm text-gray-600">{{ member.research }}</p>
+                <p v-if="member.research" dir="auto" class="text-sm text-gray-600">{{ member.research }}</p>
               </div>
             </div>
           </a>
@@ -35,11 +35,11 @@
 
       <!-- Students Section -->
       <div class="mb-16" v-if="(teamData?.phdStudents?.length > 0) || (teamData?.mscStudents?.length > 0)">
-        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">Graduate Students</h3>
+        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">{{ t.team.graduateStudents }}</h3>
         
         <!-- PhD Students -->
         <div v-if="teamData?.phdStudents?.length > 0" class="mb-8">
-          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">PhD Students</h4>
+          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">{{ t.team.phdStudents }}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
             <a v-for="student in teamData.phdStudents" 
                :key="student.title" 
@@ -57,7 +57,7 @@
                 <div class="flex-1">
                   <h5 class="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">{{ student.title }}</h5>
                   <p class="text-xs text-gray-600">{{ student.position }}</p>
-                  <p v-if="student.research" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
+                  <p v-if="student.research" dir="auto" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
                 </div>
               </div>
             </a>
@@ -66,7 +66,7 @@
         
         <!-- MSc Students -->
         <div v-if="teamData?.mscStudents?.length > 0">
-          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">M.Sc. Students</h4>
+          <h4 class="text-lg font-medium text-gray-700 mb-4 text-center">{{ t.team.mscStudents }}</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
             <a v-for="student in teamData.mscStudents" 
                :key="student.title" 
@@ -84,7 +84,7 @@
                 <div class="flex-1">
                   <h5 class="font-semibold text-gray-900 group-hover:text-green-600 transition-colors">{{ student.title }}</h5>
                   <p class="text-xs text-gray-600">{{ student.position }}</p>
-                  <p v-if="student.research" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
+                  <p v-if="student.research" dir="auto" class="text-xs text-gray-500 mt-1 line-clamp-2">{{ student.research }}</p>
                 </div>
               </div>
             </a>
@@ -96,11 +96,11 @@
 
       <!-- Call to Action -->
       <div class="text-center">
-        <a href="/team" class="btn-primary inline-block">
-          View Full Team Directory →
+        <a :href="localizePath('/team', locale)" class="btn-primary inline-block">
+          {{ t.team.viewDirectory }} <span class="inline-block rtl:-scale-x-100" aria-hidden="true">→</span>
         </a>
         <p class="mt-4 text-gray-600">
-          Explore detailed profiles of all team members, students, and alumni
+          {{ t.team.directoryNote }}
         </p>
       </div>
     </div>
@@ -108,6 +108,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { defaultLocale, getStrings, localizePath, type Locale } from '../i18n';
+
 interface TeamMember {
   title: string;
   position: string;
@@ -125,9 +128,14 @@ interface TeamData {
   mscStudents: TeamMember[];
 }
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   teamData: TeamData;
-}>();
+  locale?: Locale;
+}>(), {
+  locale: defaultLocale,
+});
+
+const t = computed(() => getStrings(props.locale));
 
 // Get initials from name
 const getInitials = (name: string) => {

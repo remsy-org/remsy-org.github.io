@@ -1,0 +1,177 @@
+---
+// The team page, in any language (see src/pages/team/index.astro and src/pages/he/team/index.astro).
+// Member pages themselves are English only; see src/utils/team.ts for translated names and positions.
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.vue';
+import Footer from '../components/Footer.vue';
+import { getStrings, type Locale } from '../i18n';
+import { localizeMember } from '../utils/team';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getStrings(locale);
+
+// Get all team member markdown files using import.meta.glob
+const teamMemberModules = import.meta.glob('../pages/team/*.md', { eager: true });
+const alumniModules = import.meta.glob('../pages/team/alumni/*.md', { eager: true });
+
+// Convert to array format similar to Astro.glob
+const teamMembers = Object.entries(teamMemberModules).map(([filepath, module]) => ({
+  frontmatter: localizeMember(module.frontmatter, locale),
+  url: filepath.replace('../pages', '').replace('.md', ''),
+  file: filepath,
+  Content: module.Content
+}));
+
+const alumni = Object.entries(alumniModules).map(([filepath, module]) => ({
+  frontmatter: module.frontmatter,
+  url: filepath.replace('../pages', '').replace('.md', ''),
+  file: filepath,
+  Content: module.Content
+}));
+
+// Filter and categorize team members based on frontmatter
+const principals = teamMembers.filter(member => 
+  member.frontmatter.role === 'principal-investigator' || 
+  member.frontmatter.role === 'professor' ||
+  member.frontmatter.role === 'lab-manager' || 
+  member.frontmatter.role === 'admin'
+).sort((a, b) => (a.frontmatter.order || 999) - (b.frontmatter.order || 999));
+
+const admin = teamMembers.filter(member => 
+  member.frontmatter.role === 'lab-manager' || 
+  member.frontmatter.role === 'admin'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const researchers = teamMembers.filter(member => 
+  member.frontmatter.role === 'research-scientist' || 
+  member.frontmatter.role === 'postdoc'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const phdStudents = teamMembers.filter(member => 
+  member.frontmatter.role === 'phd-student'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const mscStudents = teamMembers.filter(member => 
+  member.frontmatter.role === 'msc-student'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const students = teamMembers.filter(member => 
+  member.frontmatter.role === 'msc-student' || member.frontmatter.role === 'phd-student'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const undergrads = teamMembers.filter(member => 
+  member.frontmatter.role === 'undergraduate'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+
+const staff = teamMembers.filter(member => 
+  member.frontmatter.role === 'staff'
+).sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title));
+---
+
+<Layout title={t.team.heading} locale={locale} translatedPath="/team">
+  <Navigation client:load locale={locale} path="/team" />
+  
+  <main class="pt-20 md:pt-24">
+    <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <div class="container-custom">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: var(--font-heading); font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">{t.team.heading}</h1>
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+        </p>
+      </div>
+    </div>
+
+    <div class="container-custom py-12">
+      <!-- Principal Investigators -->
+      {principals.length > 0 && (
+        <section class="mb-16">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {principals.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-top: 3px solid #6366f1;">
+                  <div class="flex items-start space-x-4">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-24 h-24 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: var(--font-heading); font-weight: 600; letter-spacing: 0.5px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-blue-600 text-sm font-medium">{member.frontmatter.position}</p>
+                      <p class="text-gray-600 text-sm mt-2" dir="auto">{member.frontmatter.research}</p>
+                      {member.frontmatter.email && (
+                        <p class="text-gray-500 text-sm mt-2">📧 <span dir="ltr">{member.frontmatter.email}</span></p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Students -->
+      {students.length > 0 && (
+        <section class="mb-16">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {students.map((member) => (
+              <a href={member.url} class="block group">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-md transition-all duration-300" style="border-top: 3px solid #6366f1;">
+                  <div class="flex items-center space-x-4">
+                    {member.frontmatter.photo ? (
+                      <img 
+                        src={member.frontmatter.photo} 
+                        alt={member.frontmatter.title}
+                        class="w-24 h-24 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
+                        {member.frontmatter.title.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div class="flex-1">
+                      <h3 class="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style="font-family: var(--font-heading); font-weight: 600; letter-spacing: 0.3px;">
+                        {member.frontmatter.title}
+                      </h3>
+                      <p class="text-purple-600 text-sm font-medium">{member.frontmatter.position}{member.frontmatter.research && <>, <bdi>{member.frontmatter.research}</bdi></>}</p>
+                      {member.frontmatter.advisor && (
+                        <p class="text-gray-500 text-xs mt-1">{member.frontmatter.advisor}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Alumni Link -->
+      {alumni.length === 0 && (
+        <section class="text-center py-12">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4" style="font-family: var(--font-heading); font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Alumni Network</h2>
+            <p class="text-xl mb-6">200+ graduates working worldwide in academia, government, and industry</p>
+            <a href="/team/alumni" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+              View Alumni Directory →
+            </a>
+          </div>
+        </section>
+      )}
+    </div>
+  </main>
+  
+  <Footer locale={locale} />
+</Layout>

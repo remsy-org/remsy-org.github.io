@@ -2,7 +2,8 @@
   <div class="grid gap-6 md:gap-8">
     <article v-for="pub in featuredPublications" :key="pub.url" 
              class="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors">
-      <div class="space-y-3">
+      <!-- Papers are in English, so they read left to right on every page -->
+      <div class="space-y-3" lang="en" dir="ltr">
         <h3 class="text-xl font-semibold text-gray-900 heading-small">
           <a v-if="pub.url" :href="pub.url" target="_blank" rel="noopener noreferrer" 
              class="hover:text-blue-600 transition-colors">
@@ -23,10 +24,10 @@
           {{ pub.abstract }}
         </div>
         
-        <div class="flex flex-wrap gap-4 items-center">
+        <div class="flex flex-wrap gap-4 items-center" :lang="locale" :dir="dirOf(locale)">
           <a v-if="pub.url" :href="pub.url" target="_blank" rel="noopener noreferrer" 
              class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium">
-            View Article
+            {{ t.publications.viewArticle }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
@@ -37,7 +38,7 @@
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 016 0v2h2V7a5 5 0 00-5-5z"/>
             </svg>
-            Open Access
+            {{ t.publications.openAccess }}
           </span>
         </div>
       </div>
@@ -46,6 +47,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { defaultLocale, dirOf, getStrings, type Locale } from '../i18n';
+
 interface Publication {
   title: string;
   authors: string;
@@ -62,9 +66,14 @@ interface Publication {
   featured?: boolean;
 }
 
-defineProps<{
-  featuredPublications: Publication[]
-}>();
+const props = withDefaults(defineProps<{
+  featuredPublications: Publication[];
+  locale?: Locale;
+}>(), {
+  locale: defaultLocale,
+});
+
+const t = computed(() => getStrings(props.locale));
 </script>
 
 <style scoped>

@@ -1,31 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.vue';
-import Footer from '../components/Footer.vue';
-import PhotoGallery from '../components/PhotoGallery.vue';
-import { getGalleryItems } from '../utils/heroMedia';
-
-// Same curated set as the homepage hero: src/assets/hero/ + captions in src/content/hero.md
-const items = await getGalleryItems();
+import GalleryPage from '../views/GalleryPage.astro';
 ---
 
-<Layout title="Gallery">
-  <Navigation client:load />
-
-  <main class="pt-20 md:pt-24">
-    <div class="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
-      <div class="container-custom">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4" style="font-family: var(--font-heading); font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">Gallery</h1>
-        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
-          Moments from the field, the lab and above the sea
-        </p>
-      </div>
-    </div>
-
-    <div class="container-custom py-12">
-      <PhotoGallery client:load items={items} />
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+<GalleryPage locale="en" />
