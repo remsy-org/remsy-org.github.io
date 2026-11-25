@@ -5,14 +5,17 @@
         <div class="flex items-center min-w-0 me-4">
           <a :href="link('/')" class="flex items-center space-x-3 min-w-0">
             <div class="min-w-0">
-              <h1 class="text-base sm:text-lg xl:text-xl font-bold text-gray-900 nav-brand leading-tight text-balance">{{ t.site.brandTitle }}</h1>
-              <p class="text-xs text-gray-600 nav-brand hidden sm:block mt-1" style="font-weight: 400; text-transform: uppercase;">{{ t.site.brandSubtitle }}</p>
+              <h1 class="text-base sm:text-lg xl:text-xl font-bold text-gray-900 nav-brand nav-brand-title leading-tight text-balance">{{ t.site.brandTitle }}</h1>
+              <p class="text-xs text-gray-600 nav-brand nav-brand-subtitle hidden sm:block mt-1" style="font-weight: 400; text-transform: uppercase;">{{ t.site.brandSubtitle }}</p>
             </div>
           </a>
         </div>
         
-        <div class="hidden xl:flex items-center space-x-5 shrink-0">
-          <a v-for="item in links" :key="item.href" :href="item.href" class="nav-link">{{ item.label }}</a>
+        <!-- The links are centered in the room between the title and the language picker. -->
+        <div class="hidden xl:flex grow shrink-0 items-center gap-5">
+          <div class="mx-auto flex items-center space-x-5">
+            <a v-for="item in links" :key="item.href" :href="item.href" class="nav-link">{{ item.label }}</a>
+          </div>
           <div ref="languageMenu" class="relative" @keydown.esc="languageMenuOpen = false">
             <button
               type="button"

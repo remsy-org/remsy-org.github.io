@@ -20,6 +20,44 @@
   letter-spacing: normal !important;
 }
 
+/* Right-to-left pages: Rubik (Hebrew, Arabic) is much narrower than Orbitron, so the
+   header title and menu links are set larger to fill about the same room as the
+   English ones. The title sizes keep it on one line at every width (Arabic is the
+   longest). */
+[dir='rtl'] nav .nav-brand-title {
+  font-size: 1.125rem;
+}
+
+[dir='rtl'] nav .nav-brand-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+  [dir='rtl'] nav .nav-brand-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  [dir='rtl'] nav .nav-brand-title {
+    font-size: 1.625rem;
+  }
+
+  /* The Arabic title and menu are longer: a bit smaller so the title stays on one line. */
+  [lang='ar'] nav .nav-brand-title {
+    font-size: 1.375rem;
+  }
+}
+
+[dir='rtl'] nav .nav-link {
+  font-size: 1.375rem;
+}
+
+[dir='rtl'] nav .nav-link-mobile {
+  font-size: 1.25rem;
+}
+
 /* Global Typography */
 body {
   font-family: var(--font-body);
