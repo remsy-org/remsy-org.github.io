@@ -226,6 +226,7 @@ Edit `src/styles/global.css`:
 | `npm run dev` | Start dev server at `localhost:4321` |
 | `npm run build` | Build production site to `./dist/` |
 | `npm run preview` | Preview production build locally |
+| `npm run translations:import -- <file>` | Import a file exported from the translation page (see [docs/TRANSLATIONS.md](docs/TRANSLATIONS.md)) |
 | `npm run astro add` | Add integrations (e.g., `astro add tailwind`) |
 
 ## 🔧 Technical Stack
