@@ -20,7 +20,7 @@ import ar from './strings/ar';
 export const locales = {
   en: { name: 'English', dir: 'ltr', public: true },
   he: { name: 'עברית', dir: 'rtl', public: true },
-  ar: { name: 'العربية', dir: 'rtl', public: false },
+  ar: { name: 'العربية', dir: 'rtl', public: true },
 } as const;
 
 export type Locale = keyof typeof locales;

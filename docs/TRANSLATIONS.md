@@ -6,7 +6,7 @@ The site has three languages:
 |----------|---------|--------|
 | English  | `/`     | Source text |
 | Hebrew   | `/he/`  | Public, linked from the language switcher |
-| Arabic   | `/ar/`  | Built but not linked, and hidden from search engines until the translation is reviewed |
+| Arabic   | `/ar/`  | Public, linked from the language switcher |
 
 The Arabic translation is done through a **translation page** at `/translate/ar`. The translator works there in a browser and exports a **translation file**, which is then imported into the site with one command. The translator doesn't need the code or an account.
 
@@ -22,7 +22,7 @@ The Arabic translation is done through a **translation page** at `/translate/ar`
 
 4. **Review** the changes with `git diff`, and preview with `npm run dev` at http://localhost:4321/ar/.
 5. **Commit and push.** After the deploy, the translation page shows the imported text, so the translator can carry on from there in a later round.
-6. **Publish Arabic** once the translation is reviewed: in `src/i18n/index.ts`, change `ar` to `public: true`. Arabic then appears in the language switcher and in the `hreflang` links, and its pages are no longer marked `noindex`.
+6. **Publishing a language:** a language shows in the language switcher and the `hreflang` links only when it has `public: true` in `src/i18n/index.ts`. With `public: false` its pages are still built, but not linked and marked `noindex`.
 
 ## For the translator
 
