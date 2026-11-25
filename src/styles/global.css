@@ -6,10 +6,11 @@
   --color-accent: #00d4aa;
   --color-dark: #0a1628;
   --color-light: #f7f9fb;
-  /* Orbitron and Roboto have no Hebrew letters; the browser takes those from the
-     next font in the list (Rubik for headings, Heebo for text). */
+  /* Orbitron and Roboto have no Hebrew or Arabic letters; the browser takes those
+     from the next font in the list: Rubik for headings (Hebrew and Arabic), Heebo
+     for Hebrew text and Noto Sans Arabic for Arabic text. */
   --font-heading: 'Orbitron Variable', Orbitron, 'Rubik Variable', monospace;
-  --font-body: 'Roboto Variable', Roboto, 'Heebo Variable', sans-serif;
+  --font-body: 'Roboto Variable', Roboto, 'Heebo Variable', 'Noto Sans Arabic Variable', sans-serif;
 }
 
 /* Right-to-left pages (Hebrew, Arabic): the extra letter spacing of the English

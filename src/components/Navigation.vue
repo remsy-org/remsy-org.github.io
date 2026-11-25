@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { defaultLocale, getStrings, locales, localizePath, switchPath, type Locale } from '../i18n';
+import { defaultLocale, getStrings, locales, localizePath, publicLocales, switchPath, type Locale } from '../i18n';
 
 const props = withDefaults(defineProps<{
   locale?: Locale;
@@ -101,7 +101,7 @@ const mobileLinks = computed(() => [
 ]);
 
 const otherLocales = computed(() =>
-  (Object.keys(locales) as Locale[])
+  publicLocales
     .filter((code) => code !== props.locale)
     .map((code) => ({ code, name: locales[code].name, href: switchPath(props.path, code) }))
 );

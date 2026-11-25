@@ -70,7 +70,15 @@ const translatedAreas = new Map(
 );
 const researchContent = {
   intro: translatedResearch.intro,
-  areas: englishResearch.areas.map((area) => ({ ...area, ...translatedAreas.get(area.id) })),
+  areas: englishResearch.areas.map((area) => {
+    const translated = translatedAreas.get(area.id);
+    return {
+      ...area,
+      title: translated?.title || area.title,
+      // A topic left empty in the translation shows in English.
+      topics: area.topics.map((topic, n) => translated?.topics?.[n] || topic),
+    };
+  }),
 };
 
 // Hero background slideshow (shared with the /gallery page)

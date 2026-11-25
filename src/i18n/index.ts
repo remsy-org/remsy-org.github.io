@@ -3,18 +3,24 @@
 // English lives at the site root (/, /gallery, /team); every other language lives
 // under its own prefix (/he/, /he/gallery, /he/team).
 //
-// To add a language (e.g. Arabic):
+// To add a language:
 //   1. Add it to `locales` below and add a `strings/<code>.ts` file (copy he.ts).
 //   2. Add its pages: copy src/pages/he/ to src/pages/<code>/ and change the locale.
 //   3. Optionally add translated content: src/content/hero.<code>.md, contact.<code>.md,
 //      research.<code>.md. Anything missing falls back to English.
+//
+// A language with `public: false` is built (e.g. /ar/) but not linked from the
+// language switcher and hidden from search engines, so it can be reviewed first.
+// Its translators work on /translate/<code> (see src/pages/translate/).
 
 import en from './strings/en';
 import he from './strings/he';
+import ar from './strings/ar';
 
 export const locales = {
-  en: { name: 'English', dir: 'ltr' },
-  he: { name: 'עברית', dir: 'rtl' },
+  en: { name: 'English', dir: 'ltr', public: true },
+  he: { name: 'עברית', dir: 'rtl', public: true },
+  ar: { name: 'العربية', dir: 'rtl', public: false },
 } as const;
 
 export type Locale = keyof typeof locales;
@@ -22,7 +28,7 @@ export type Strings = typeof en;
 
 export const defaultLocale: Locale = 'en';
 
-const strings: Record<Locale, Strings> = { en, he };
+const strings: Record<Locale, Strings> = { en, he, ar };
 
 export function isLocale(value: unknown): value is Locale {
   return typeof value === 'string' && value in locales;
@@ -31,6 +37,12 @@ export function isLocale(value: unknown): value is Locale {
 export function getStrings(locale: Locale = defaultLocale): Strings {
   return strings[locale] ?? strings[defaultLocale];
 }
+
+export function isPublic(locale: Locale) {
+  return locales[locale]?.public ?? false;
+}
+
+export const publicLocales = (Object.keys(locales) as Locale[]).filter(isPublic);
 
 export function dirOf(locale: Locale = defaultLocale) {
   return locales[locale]?.dir ?? 'ltr';
