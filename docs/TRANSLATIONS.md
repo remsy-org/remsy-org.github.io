@@ -85,5 +85,5 @@ The exported file is JSON:
 ## Not covered by the translation page
 
 - **Publications** stay in English.
-- **Team members:** names, titles, positions and research lines can be translated in each member's file under `src/pages/team/` with the optional fields `title_ar`, `position_ar` and `research_ar` (or `_he`). Without them, positions come from the role labels in the interface text, and the rest shows in English. Bios show in English.
+- **Team members:** names, positions and research lines can be translated in each member's file under `src/pages/team/` with the optional fields `name_ar`, `position_ar` and `research_ar` (or `_he`). Without them, positions come from the role labels in the interface text, and the rest shows in English. Bios show in English.
 - **Hebrew** is edited directly in the code: interface text in `src/i18n/strings/he.ts`, and page text in `src/content/{hero,research,contact}.he.md`.

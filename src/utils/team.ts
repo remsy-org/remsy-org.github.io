@@ -3,7 +3,7 @@ import { defaultLocale, getStrings, type Locale } from '../i18n';
 // Team member pages (src/pages/team/*.md) are written in English. For another
 // language, a member's file may add translated fields with the language as suffix:
 //
-//   title_he: "..."      name
+//   name_he: "..."       name
 //   position_he: "..."   position (otherwise a general one is used, from the role)
 //   research_he: "..."   research topic (otherwise shown in English)
 
@@ -14,7 +14,7 @@ export function localizeMember<T extends Frontmatter>(member: T, locale: Locale 
   const positions = getStrings(locale).team.positions;
   return {
     ...member,
-    title: member[`title_${locale}`] || member.title,
+    title: member[`name_${locale}`] || member.title,
     position: member[`position_${locale}`] || positions[member.role] || member.position,
     research: member[`research_${locale}`] || member.research,
   };
